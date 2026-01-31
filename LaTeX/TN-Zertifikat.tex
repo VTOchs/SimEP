@@ -1,0 +1,111 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry} % Adjust margins as needed
+\usepackage{graphicx}
+\usepackage[ngerman]{babel}
+\usepackage{datatool}
+\usepackage{etoolbox}
+\usepackage{tikz}
+\usepackage{verbatim}
+\usepackage{xstring}
+\usepackage[utf8]{inputenc} % Use utf8 encoding for special characters
+\input{Meta/var.tex}
+\input{Meta/shinyin.tex}
+%\newcommand{\klasse}{test}
+
+\DTLloaddb[keys={Vorname,Nachname}]{class}{../Daten/SuS/\klasse.csv}
+
+\IfEqCase{\Thema}{%
+	{Green Deal}{\newcommand{\theme}{zur Europäischen Klimapolitik im Rahmen des Green Deal}}%
+	{Asyl}{\newcommand{\theme}{{zu einem gemeinsamen Europäischen Asylsystem}}}%
+	{Armee}{\newcommand{\theme}{zu einer Europäischen Armee}}%
+}
+
+\newcommand{\constrainedlogo}[4][2cm]{%
+  \raisebox{#3}{\includegraphics[width=#2,height=#1,keepaspectratio]{#4}}%
+}
+
+\newcommand{\jeflogo}{\constrainedlogo[2.5cm]{5cm}{0pt}{Logos/jef.png}}
+\newcommand{\simeplogo}{\constrainedlogo[2.5cm]{5cm}{0pt}{Logos/simep.png}}
+\newcommand{\financelogo}{\constrainedlogo[1.5cm]{4cm}{0pt}{Logos/finance\_\city.png}}
+\newcommand{\citylogo}{\constrainedlogo[1.5cm]{4cm}{0pt}{Logos/\city.png}}
+\newcommand{\signature}{Logos/signature.png}
+
+
+\begin{document}
+\DTLforeach{class}{\prename=Vorname, \surname=Nachname}{
+    \thispagestyle{empty} % No page number on the certificate
+    
+    \vspace*{2cm}
+    
+    \begin{center}
+        \textbf{\huge Teilnahmebescheinigung}
+    \end{center}
+    
+    \begin{center}
+        \LARGE Simulation des Europäischen Parlaments
+    \end{center}
+    
+    \begin{center}
+        \Large \datum
+    \end{center}
+    \vspace{1cm}
+    \begin{hyphenrules}{nohyphenation}
+    \prename\ \surname\ hat am \datum\ an der Simulation des Europäischen Parlaments (SimEP) in \city\ teilgenommen. \newline
+    \newline
+    \prename\ \surname\ hat an den Gruppendiskussionen in den Fraktions- und Ausschusssitzungen sowie in der Plenardebatte mitgewirkt und eine Entschließung des Europäischen Parlaments \theme\ erarbeitet. Dabei wurden das europäische politische System im Allgemeinen und die Funktionsweise des Parlaments im Speziellen beleuchtet.\newline
+    \newline
+    Die Simulation des Europäischen Parlaments ist eine Veranstaltung der Jungen Europäischen Föderalist:innen (JEF) Bayern. Als unabhängiger und überparteilicher Jugendverband bemüht sich die JEF, Jugendliche für den europäischen Gedanken zu begeistern und sie zu europapolitischem Engagement zu motivieren. Die~SimEP  bietet zahlreichen Schüler:innen die Gelegenheit, in die Rolle von Abgeordneten des Europäischen Parlaments zu schlüpfen und zu erleben, wie europäische Politik in der parlamentarischen Praxis abläuft. Die~Simulation des Europäischen Parlaments wurde durch \sponsor\ und \localSupport\ unterstützt.\newline
+    \end{hyphenrules}
+    \newline
+    Europäische Grüße \newline
+    \newline
+    \includegraphics[width=0.15\textwidth]{\signature}
+    \newline
+    \jefvorsitz \newline
+    \newline
+    \gendervorsitz\ Junge Europäische Föderalist:innen Bayern
+    
+    
+    \vfill
+    
+    \begin{tikzpicture}[remember picture, overlay]
+        % Top left corner
+        \node at ([xshift=10mm, yshift=-8mm] current page.north west) [anchor=north west, inner sep=0pt] {
+            {\jeflogo}
+        };
+        
+        % Top right corner
+        \node at ([xshift=-7.5mm, yshift=-6mm] current page.north east) [anchor=north east, inner sep=0pt] {
+            {\simeplogo}
+        };      
+        
+        % Bottom left corner
+        \node[anchor=south west, inner sep=0pt, text width=4.5cm, align=left] at ([xshift=10mm, yshift=10mm] current page.south west) {
+            \small Kofinanziert durch:\\[3mm]
+            \financelogo
+        };
+        
+    
+        % Bottom right corner
+        \node[anchor=south east, inner sep=0pt, text width=4.5cm, align=right] at ([xshift=-10mm, yshift=8mm] current page.south east) {
+            \small Unterstützt durch:\\[3mm]
+            \citylogo
+        };
+    
+
+    \end{tikzpicture}
+    
+	\vspace{1cm}
+	
+	\begin{center}
+        \footnotesize Junge Europäische Föderalist:innen Bayern e.V.
+	\end{center}
+	\begin{center}  
+        \footnotesize jef-bayern.de $|$ @jef\_bayern $|$ geschaeftsstelle@jef-bayern.de
+	\end{center}
+	\begin{center}
+		\footnotesize Oberanger 32, 80331 München
+	\end{center}
+    \newpage
+}%
+\end{document}

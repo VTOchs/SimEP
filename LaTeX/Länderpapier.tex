@@ -1,0 +1,1036 @@
+\documentclass[11pt]{article}
+\usepackage{adjustbox}
+\usepackage[ngerman]{babel}
+\usepackage{caption}
+\usepackage{changepage}
+\usepackage{csvsimple}
+\usepackage{datatool}
+\usepackage{expl3} 
+\usepackage{etoolbox}
+\usepackage[utf8]{inputenc} % Use utf8 encoding for special characters
+\usepackage[margin=1in]{geometry} % Adjust margins as needed
+\usepackage{gensymb}
+\usepackage{graphicx}
+\usepackage{mailmerge}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usepackage{verbatim}
+\usepackage{wasysym}
+\usepackage{xstring}
+\input{Meta/var.tex}
+\input{Meta/shinyin.tex}
+
+\DTLloaddb{members}{../Daten/data_landerpapiere.csv}
+
+\IfEqCase{\Thema}{
+	{Green Deal}{
+		\newcommand{\theme}{zur Bewertung der Klima- und Umweltpolitik}
+		\newcommand{\facts}{
+			\item \textbf{BIP} (Größe der Wirtschaft): \gdp\ Mrd. \$ (\largediameter EU:\gdpeu\ Mrd. \$) \newline
+			\textbf{BIP/Kopf}: \qquad \qquad \qquad \qquad \quad \gdpcap\ \$ (\largediameter EU: \gdpcapeu\ \$)        		\newline
+        		\item \textbf{C0$_2$-Emissionen/Kopf}: \cocap t (\largediameter EU: \cocapeu t)
+        		\newline
+        		\item \textbf{Strommix}:
+        		\begin{itemize}
+            		\item Fossile Energieträger: \fossilshare \% (\largediameter EU: \fossilshareeu \%)
+            		\item Atomenergie: \nuclearshare \% (\largediameter EU: \nuclearshareeu \%)
+            		\item Erneuerbare Energien: \renewshare \% (\largediameter EU: \renewshareeu \%)
+        		\end{itemize}
+			\vspace*{0.25cm}
+			\item \textbf{Bedeutung der Landwirtschaft} (Anteil am BIP): \agriperc \% (\largediameter EU: \agriperceu \%)
+		}
+	}%
+	{Asyl}{
+		\newcommand{\theme}{zur Bewertung der Asylpolitik}
+		\newcommand{\facts}{
+			\item \textbf{BIP} (Größe der Wirtschaft): \gdp\ Mrd. \$ (\largediameter EU:\gdpeu\ Mrd. \$) \newline
+			\textbf{BIP/Kopf}: \qquad \qquad \qquad \qquad \quad \gdpcap\ \$ (\largediameter EU: \gdpcapeu\ \$)
+        		\newline
+        		\item \textbf{Anteil Geflüchtete an Bevölkerung}: \refperc \% (\largediameter EU: \refperceu \%)
+        		\newline
+        		\item \textbf{Anteil Bevölkerung im arbeitsfähigen Alter} \newline (je niedriger, desto mehr Einwanderung benötigt): \newline 
+        		\workageperc \% (\largediameter EU: \workageperceu \%)
+        		\newline
+        		\item \textbf{EU-Außengrenze (ohne EFTA)}: \border
+        	}
+	}%
+	{Armee}{
+		\newcommand{\theme}{zur Bewertung der Außen- und Sicherheitspolitik}
+		\newcommand{\facts}{
+			\item \textbf{BIP} (Größe der Wirtschaft): \gdp\ Mrd. \$ (\largediameter EU:\gdpeu\ Mrd. \$) \newline
+			\textbf{BIP/Kopf}: \qquad \qquad \qquad \qquad \quad \gdpcap\ \$ (\largediameter EU: \gdpcapeu\ \$)
+			\newline
+		 	\item \textbf{Militärausgaben (Prozent der Wirtschaftsleistung)}: \milperc \% (\largediameter EU: \milperceu \%)
+		 	\newline
+   			\item \textbf{Wehrdienst}: \sub
+   			\newline
+   			\item \textbf{Zustimmung Bevölkerung zu verstärkter militärischer EU-Kooperation}: \newline
+   			\agree \% (\largediameter EU: \agreeeu \%)
+   		}		
+	}%
+}
+
+
+\newcommand{\largediameter}{\scalebox{1.5}{\diameter}}
+\newcommand{\constrainedlogo}[4][2cm]{%
+  \raisebox{#3}{\includegraphics[width=#2,height=#1,keepaspectratio]{#4}}%
+}
+
+\newcommand{\jeflogo}{\constrainedlogo[2.5cm]{5cm}{0pt}{Logos/jef.png}}
+\newcommand{\simeplogo}{\constrainedlogo[2.5cm]{5cm}{0pt}{Logos/simep.png}}
+\newcommand{\financelogo}{\constrainedlogo[1.5cm]{4cm}{0pt}{Logos/finance\_\city.png}}
+\newcommand{\citylogo}{\constrainedlogo[1.5cm]{4cm}{0pt}{Logos/\city.png}}
+
+
+\newcommand{\getcountry}[1]{%
+    \DTLforeach{members}{\iso=iso,\country=country}{%
+        \ifthenelse{\equal{#1}{\iso}}{\country}{}%
+    }%
+}
+
+\newcommand{\getgdp}[1]{%
+    \DTLforeach{members}{\iso=iso,\gdp=gdp}{%
+        \ifthenelse{\equal{#1}{\iso}}{\gdp}{}%
+    }%
+}
+
+\newcommand{\getgdpcap}[1]{%
+    \DTLforeach{members}{\iso=iso,\gdpCap=gdpCap}{%
+        \ifthenelse{\equal{#1}{\iso}}{\gdpCap}{}%
+    }%
+}
+
+\newcommand{\getrefperc}[1]{%
+    \DTLforeach{members}{\iso=iso,\refPerc=refPerc}{%
+        \ifthenelse{\equal{#1}{\iso}}{\refPerc}{}%
+    }%
+}
+
+\newcommand{\getworkageperc}[1]{%
+    \DTLforeach{members}{\iso=iso,\workAgePerc=workAgePerc}{%
+        \ifthenelse{\equal{#1}{\iso}}{\workAgePerc}{}%
+    }%
+}
+
+\newcommand{\getborder}[1]{%
+    \DTLforeach{members}{\iso=iso,\border=border}{%
+        \ifthenelse{\equal{#1}{\iso}}{\border}{}%
+    }%
+}
+
+\newcommand{\getmilperc}[1]{%
+    \DTLforeach{members}{\iso=iso,\milPerc=milPerc}{%
+        \ifthenelse{\equal{#1}{\iso}}{\milPerc}{}%
+    }%
+}
+
+\newcommand{\getsub}[1]{%
+    \DTLforeach{members}{\iso=iso,\subscription=subscription}{%
+        \ifthenelse{\equal{#1}{\iso}}{\subscription}{}%
+    }%
+}
+
+\newcommand{\getagree}[1]{%
+    \DTLforeach{members}{\iso=iso,\agree=agree}{%
+        \ifthenelse{\equal{#1}{\iso}}{\agree}{}%
+    }%
+}
+
+\newcommand{\getagriperc}[1]{%
+    \DTLforeach{members}{\iso=iso,\agriPerc=agriPerc}{%
+        \ifthenelse{\equal{#1}{\iso}}{\agriPerc}{}%
+    }%
+}
+
+\newcommand{\getcocap}[1]{%
+    \DTLforeach{members}{\iso=iso,\coCap=coCap}{%
+        \ifthenelse{\equal{#1}{\iso}}{\coCap}{}%
+    }%
+}
+
+\newcommand{\getfossilshare}[1]{%
+    \DTLforeach{members}{\iso=iso,\fossilShare=fossilShare}{%
+        \ifthenelse{\equal{#1}{\iso}}{\fossilShare}{}%
+    }%
+}
+
+\newcommand{\getnuclearshare}[1]{%
+    \DTLforeach{members}{\iso=iso,\nuclearShare=nuclearShare}{%
+        \ifthenelse{\equal{#1}{\iso}}{\nuclearShare}{}%
+    }%
+}
+
+\newcommand{\getrenewshare}[1]{%
+    \DTLforeach{members}{\iso=iso,\renewShare=renewShare}{%
+        \ifthenelse{\equal{#1}{\iso}}{\renewShare}{}%
+    }%
+}
+
+
+
+\newcommand{\getgdpeu}[1]{%
+    \DTLforeach{members}{\iso=iso,\gdpEu=gdpEu}{%
+        \ifthenelse{\equal{#1}{\iso}}{\gdpEu}{}%
+    }%
+}
+
+
+\newcommand{\getgdpcapeu}[1]{%
+    \DTLforeach{members}{\iso=iso,\gdpCapEu=gdpCapEu}{%
+        \ifthenelse{\equal{#1}{\iso}}{\gdpCapEu}{}%
+    }%
+}
+
+\newcommand{\getrefperceu}[1]{%
+    \DTLforeach{members}{\iso=iso,\refPercEu=refPercEu}{%
+        \ifthenelse{\equal{#1}{\iso}}{\refPercEu}{}%
+    }%
+}
+
+\newcommand{\getworkeageperceu}[1]{%
+    \DTLforeach{members}{\iso=iso,\workAgePercEu=workAgePercEu}{%
+        \ifthenelse{\equal{#1}{\iso}}{\workAgePercEu}{}%
+    }%
+}
+
+\newcommand{\getmilperceu}[1]{%
+    \DTLforeach{members}{\iso=iso,\milPercEU=milPercEU}{%
+        \ifthenelse{\equal{#1}{\iso}}{\milPercEU}{}%
+    }%
+}
+
+\newcommand{\getagreeeu}[1]{%
+    \DTLforeach{members}{\iso=iso,\agreeEU=agreeEU}{%
+        \ifthenelse{\equal{#1}{\iso}}{\agreeEU}{}%
+    }%
+}
+
+\newcommand{\getagriperceu}[1]{%
+    \DTLforeach{members}{\iso=iso,\agriPercEu=agriPercEu}{%
+        \ifthenelse{\equal{#1}{\iso}}{\agriPercEu}{}%
+    }%
+}
+
+\newcommand{\getcocapeu}[1]{%
+    \DTLforeach{members}{\iso=iso,\coCapEu=coCapEu}{%
+        \ifthenelse{\equal{#1}{\iso}}{\coCap}{}%
+    }%
+}
+
+\newcommand{\getfossilshareeu}[1]{%
+    \DTLforeach{members}{\iso=iso,\fossilShareEu=fossilShareEu}{%
+        \ifthenelse{\equal{#1}{\iso}}{\fossilShareEu}{}%
+    }%
+}
+
+\newcommand{\getnuclearshareeu}[1]{%
+    \DTLforeach{members}{\iso=iso,\nuclearShareEu=nuclearShareEu}{%
+        \ifthenelse{\equal{#1}{\iso}}{\nuclearShareEu}{}%
+    }%
+}
+
+\newcommand{\getrenewshareeu}[1]{%
+    \DTLforeach{members}{\iso=iso,\renewShareEu=renewShareEu}{%
+        \ifthenelse{\equal{#1}{\iso}}{\renewShareEu}{}%
+    }%
+}
+
+
+
+\IfEqCase{\kurzel}{
+	{AUT}{
+		\newcommand{\country}{\getcountry{AUT}}
+		\newcommand{\gdp}{\getgdp{AUT}}	
+		\newcommand{\gdpeu}{\getgdpeu{AUT}}		
+		\newcommand{\gdpcap}{\getgdpcap{AUT}}
+		\newcommand{\refperc}{\getrefperc{AUT}}
+		\newcommand{\workageperc}{\getworkageperc{AUT}}
+		\newcommand{\border}{\getborder{AUT}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{AUT}}
+		\newcommand{\refperceu}{\getrefperceu{AUT}}
+		\newcommand{\workageperceu}{\getworkeageperceu{AUT}}
+		\newcommand{\milperc}{\getmilperc{AUT}}	
+		\newcommand{\sub}{\getsub{AUT}}	
+		\newcommand{\agree}{\getagree{AUT}}	
+		\newcommand{\milperceu}{\getmilperceu{AUT}}	
+		\newcommand{\agreeeu}{\getagreeeu{AUT}}
+		\newcommand{\agriperc}{\getagriperc{AUT}}
+		\newcommand{\cocap}{\getcocap{AUT}}
+		\newcommand{\fossilshare}{\getfossilshare{AUT}}
+		\newcommand{\nuclearshare}{\getnuclearshare{AUT}}
+		\newcommand{\renewshare}{\getrenewshare{AUT}}
+		\newcommand{\agriperceu}{\getagriperceu{AUT}}
+		\newcommand{\cocapeu}{\getcocapeu{AUT}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{AUT}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{AUT}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{AUT}}	
+	}%
+	{BEL}{
+		\newcommand{\country}{\getcountry{BEL}}
+		\newcommand{\gdp}{\getgdp{BEL}}	
+		\newcommand{\gdpeu}{\getgdpeu{BEL}}
+		\newcommand{\gdpcap}{\getgdpcap{BEL}}
+		\newcommand{\refperc}{\getrefperc{BEL}}
+		\newcommand{\workageperc}{\getworkageperc{BEL}}
+		\newcommand{\border}{\getborder{BEL}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{BEL}}
+		\newcommand{\refperceu}{\getrefperceu{BEL}}
+		\newcommand{\workageperceu}{\getworkeageperceu{BEL}}
+		\newcommand{\milperc}{\getmilperc{BEL}}	
+		\newcommand{\sub}{\getsub{BEL}}	
+		\newcommand{\agree}{\getagree{BEL}}	
+		\newcommand{\milperceu}{\getmilperceu{BEL}}	
+		\newcommand{\agreeeu}{\getagreeeu{BEL}}
+		\newcommand{\agriperc}{\getagriperc{BEL}}
+		\newcommand{\cocap}{\getcocap{BEL}}
+		\newcommand{\fossilshare}{\getfossilshare{BEL}}
+		\newcommand{\nuclearshare}{\getnuclearshare{BEL}}
+		\newcommand{\renewshare}{\getrenewshare{BEL}}
+		\newcommand{\agriperceu}{\getagriperceu{BEL}}
+		\newcommand{\cocapeu}{\getcocapeu{BEL}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{BEL}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{BEL}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{BEL}}
+	}%
+	{BGR}{
+		\newcommand{\country}{\getcountry{BGR}}
+		\newcommand{\gdp}{\getgdp{BGR}}	
+		\newcommand{\gdpeu}{\getgdpeu{BGR}}
+		\newcommand{\gdpcap}{\getgdpcap{BGR}}
+		\newcommand{\refperc}{\getrefperc{BGR}}
+		\newcommand{\workageperc}{\getworkageperc{BGR}}
+		\newcommand{\border}{\getborder{BGR}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{BGR}}
+		\newcommand{\refperceu}{\getrefperceu{BGR}}
+		\newcommand{\workageperceu}{\getworkeageperceu{BGR}}
+		\newcommand{\milperc}{\getmilperc{BGR}}	
+		\newcommand{\sub}{\getsub{BGR}}	
+		\newcommand{\agree}{\getagree{BGR}}	
+		\newcommand{\milperceu}{\getmilperceu{BGR}}	
+		\newcommand{\agreeeu}{\getagreeeu{BGR}}
+		\newcommand{\agriperc}{\getagriperc{BGR}}
+		\newcommand{\cocap}{\getcocap{BGR}}
+		\newcommand{\fossilshare}{\getfossilshare{BGR}}
+		\newcommand{\nuclearshare}{\getnuclearshare{BGR}}
+		\newcommand{\renewshare}{\getrenewshare{BGR}}
+		\newcommand{\agriperceu}{\getagriperceu{BGR}}
+		\newcommand{\cocapeu}{\getcocapeu{BGR}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{BGR}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{BGR}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{BGR}}
+	}%
+	{HRV}{
+		\newcommand{\country}{\getcountry{HRV}}
+		\newcommand{\gdp}{\getgdp{HRV}}	
+		\newcommand{\gdpeu}{\getgdpeu{HRV}}
+		\newcommand{\gdpcap}{\getgdpcap{HRV}}
+		\newcommand{\refperc}{\getrefperc{HRV}}
+		\newcommand{\workageperc}{\getworkageperc{HRV}}
+		\newcommand{\border}{\getborder{HRV}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{HRV}}
+		\newcommand{\refperceu}{\getrefperceu{HRV}}
+		\newcommand{\workageperceu}{\getworkeageperceu{HRV}}
+		\newcommand{\milperc}{\getmilperc{HRV}}	
+		\newcommand{\sub}{\getsub{HRV}}	
+		\newcommand{\agree}{\getagree{HRV}}	
+		\newcommand{\milperceu}{\getmilperceu{HRV}}	
+		\newcommand{\agreeeu}{\getagreeeu{HRV}}
+		\newcommand{\agriperc}{\getagriperc{HRV}}
+		\newcommand{\cocap}{\getcocap{HRV}}
+		\newcommand{\fossilshare}{\getfossilshare{HRV}}
+		\newcommand{\nuclearshare}{\getnuclearshare{HRV}}
+		\newcommand{\renewshare}{\getrenewshare{HRV}}
+		\newcommand{\agriperceu}{\getagriperceu{HRV}}
+		\newcommand{\cocapeu}{\getcocapeu{HRV}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{HRV}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{HRV}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{HRV}}
+	}%
+	{CYP}{
+		\newcommand{\country}{\getcountry{CYP}}
+		\newcommand{\gdp}{\getgdp{CYP}}	
+		\newcommand{\gdpeu}{\getgdpeu{CYP}}
+		\newcommand{\gdpcap}{\getgdpcap{CYP}}
+		\newcommand{\refperc}{\getrefperc{CYP}}
+		\newcommand{\workageperc}{\getworkageperc{CYP}}
+		\newcommand{\border}{\getborder{CYP}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{CYP}}
+		\newcommand{\refperceu}{\getrefperceu{CYP}}
+		\newcommand{\workageperceu}{\getworkeageperceu{CYP}}
+		\newcommand{\milperc}{\getmilperc{CYP}}	
+		\newcommand{\sub}{\getsub{CYP}}	
+		\newcommand{\agree}{\getagree{CYP}}	
+		\newcommand{\milperceu}{\getmilperceu{CYP}}	
+		\newcommand{\agreeeu}{\getagreeeu{CYP}}
+		\newcommand{\agriperc}{\getagriperc{CYP}}
+		\newcommand{\cocap}{\getcocap{CYP}}
+		\newcommand{\fossilshare}{\getfossilshare{CYP}}
+		\newcommand{\nuclearshare}{\getnuclearshare{CYP}}
+		\newcommand{\renewshare}{\getrenewshare{CYP}}
+		\newcommand{\agriperceu}{\getagriperceu{CYP}}
+		\newcommand{\cocapeu}{\getcocapeu{CYP}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{CYP}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{CYP}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{CYP}}
+	}%
+	{CZE}{
+		\newcommand{\country}{\getcountry{CZE}}
+		\newcommand{\gdp}{\getgdp{CZE}}	
+		\newcommand{\gdpeu}{\getgdpeu{CZE}}
+		\newcommand{\gdpcap}{\getgdpcap{CZE}}
+		\newcommand{\refperc}{\getrefperc{CZE}}
+		\newcommand{\workageperc}{\getworkageperc{CZE}}
+		\newcommand{\border}{\getborder{CZE}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{CZE}}
+		\newcommand{\refperceu}{\getrefperceu{CZE}}
+		\newcommand{\workageperceu}{\getworkeageperceu{CZE}}
+		\newcommand{\milperc}{\getmilperc{CZE}}	
+		\newcommand{\sub}{\getsub{CZE}}	
+		\newcommand{\agree}{\getagree{CZE}}	
+		\newcommand{\milperceu}{\getmilperceu{CZE}}	
+		\newcommand{\agreeeu}{\getagreeeu{CZE}}
+		\newcommand{\agriperc}{\getagriperc{CZE}}
+		\newcommand{\cocap}{\getcocap{CZE}}
+		\newcommand{\fossilshare}{\getfossilshare{CZE}}
+		\newcommand{\nuclearshare}{\getnuclearshare{CZE}}
+		\newcommand{\renewshare}{\getrenewshare{CZE}}
+		\newcommand{\agriperceu}{\getagriperceu{CZE}}
+		\newcommand{\cocapeu}{\getcocapeu{CZE}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{CZE}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{CZE}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{CZE}}
+	}%
+	{DNK}{
+		\newcommand{\country}{\getcountry{DNK}}
+		\newcommand{\gdp}{\getgdp{DNK}}	
+		\newcommand{\gdpeu}{\getgdpeu{DNK}}
+		\newcommand{\gdpcap}{\getgdpcap{DNK}}
+		\newcommand{\refperc}{\getrefperc{DNK}}
+		\newcommand{\workageperc}{\getworkageperc{DNK}}
+		\newcommand{\border}{\getborder{DNK}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{DNK}}
+		\newcommand{\refperceu}{\getrefperceu{DNK}}
+		\newcommand{\workageperceu}{\getworkeageperceu{DNK}}
+		\newcommand{\milperc}{\getmilperc{DNK}}	
+		\newcommand{\sub}{\getsub{DNK}}	
+		\newcommand{\agree}{\getagree{DNK}}	
+		\newcommand{\milperceu}{\getmilperceu{DNK}}	
+		\newcommand{\agreeeu}{\getagreeeu{DNK}}
+		\newcommand{\agriperc}{\getagriperc{DNK}}
+		\newcommand{\cocap}{\getcocap{DNK}}
+		\newcommand{\fossilshare}{\getfossilshare{DNK}}
+		\newcommand{\nuclearshare}{\getnuclearshare{DNK}}
+		\newcommand{\renewshare}{\getrenewshare{DNK}}
+		\newcommand{\agriperceu}{\getagriperceu{DNK}}
+		\newcommand{\cocapeu}{\getcocapeu{DNK}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{DNK}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{DNK}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{DNK}}	
+	}%
+	{EST}{
+		\newcommand{\country}{\getcountry{EST}}
+		\newcommand{\gdp}{\getgdp{EST}}	
+		\newcommand{\gdpeu}{\getgdpeu{EST}}
+		\newcommand{\gdpcap}{\getgdpcap{EST}}
+		\newcommand{\refperc}{\getrefperc{EST}}
+		\newcommand{\workageperc}{\getworkageperc{EST}}
+		\newcommand{\border}{\getborder{EST}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{EST}}
+		\newcommand{\refperceu}{\getrefperceu{EST}}
+		\newcommand{\workageperceu}{\getworkeageperceu{EST}}
+		\newcommand{\milperc}{\getmilperc{EST}}	
+		\newcommand{\sub}{\getsub{EST}}	
+		\newcommand{\agree}{\getagree{EST}}	
+		\newcommand{\milperceu}{\getmilperceu{EST}}	
+		\newcommand{\agreeeu}{\getagreeeu{EST}}
+		\newcommand{\agriperc}{\getagriperc{EST}}
+		\newcommand{\cocap}{\getcocap{EST}}
+		\newcommand{\fossilshare}{\getfossilshare{EST}}
+		\newcommand{\nuclearshare}{\getnuclearshare{EST}}
+		\newcommand{\renewshare}{\getrenewshare{EST}}
+		\newcommand{\agriperceu}{\getagriperceu{EST}}
+		\newcommand{\cocapeu}{\getcocapeu{EST}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{EST}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{EST}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{EST}}		
+	}%
+	{FIN}{
+		\newcommand{\country}{\getcountry{FIN}}
+		\newcommand{\gdp}{\getgdp{FIN}}	
+		\newcommand{\gdpeu}{\getgdpeu{FIN}}
+		\newcommand{\gdpcap}{\getgdpcap{FIN}}
+		\newcommand{\refperc}{\getrefperc{FIN}}
+		\newcommand{\workageperc}{\getworkageperc{FIN}}
+		\newcommand{\border}{\getborder{FIN}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{FIN}}
+		\newcommand{\refperceu}{\getrefperceu{FIN}}
+		\newcommand{\workageperceu}{\getworkeageperceu{FIN}}
+		\newcommand{\milperc}{\getmilperc{FIN}}	
+		\newcommand{\sub}{\getsub{FIN}}	
+		\newcommand{\agree}{\getagree{FIN}}	
+		\newcommand{\milperceu}{\getmilperceu{FIN}}	
+		\newcommand{\agreeeu}{\getagreeeu{FIN}}
+		\newcommand{\agriperc}{\getagriperc{FIN}}
+		\newcommand{\cocap}{\getcocap{FIN}}
+		\newcommand{\fossilshare}{\getfossilshare{FIN}}
+		\newcommand{\nuclearshare}{\getnuclearshare{FIN}}
+		\newcommand{\renewshare}{\getrenewshare{FIN}}
+		\newcommand{\agriperceu}{\getagriperceu{FIN}}
+		\newcommand{\cocapeu}{\getcocapeu{FIN}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{FIN}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{FIN}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{FIN}}	
+	}%
+	{FRA}{
+		\newcommand{\country}{\getcountry{FRA}}
+		\newcommand{\gdp}{\getgdp{FRA}}	
+		\newcommand{\gdpeu}{\getgdpeu{FRA}}
+		\newcommand{\gdpcap}{\getgdpcap{FRA}}
+		\newcommand{\refperc}{\getrefperc{FRA}}
+		\newcommand{\workageperc}{\getworkageperc{FRA}}
+		\newcommand{\border}{\getborder{FRA}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{FRA}}
+		\newcommand{\refperceu}{\getrefperceu{FRA}}
+		\newcommand{\workageperceu}{\getworkeageperceu{FRA}}
+		\newcommand{\milperc}{\getmilperc{FRA}}	
+		\newcommand{\sub}{\getsub{FRA}}	
+		\newcommand{\agree}{\getagree{FRA}}	
+		\newcommand{\milperceu}{\getmilperceu{FRA}}	
+		\newcommand{\agreeeu}{\getagreeeu{FRA}}
+		\newcommand{\agriperc}{\getagriperc{FRA}}
+		\newcommand{\cocap}{\getcocap{FRA}}
+		\newcommand{\fossilshare}{\getfossilshare{FRA}}
+		\newcommand{\nuclearshare}{\getnuclearshare{FRA}}
+		\newcommand{\renewshare}{\getrenewshare{FRA}}
+		\newcommand{\agriperceu}{\getagriperceu{FRA}}
+		\newcommand{\cocapeu}{\getcocapeu{FRA}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{FRA}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{FRA}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{FRA}}			
+	}%
+	{DEU}{
+		\newcommand{\country}{\getcountry{DEU}}
+		\newcommand{\gdp}{\getgdp{DEU}}	
+		\newcommand{\gdpeu}{\getgdpeu{DEU}}
+		\newcommand{\gdpcap}{\getgdpcap{DEU}}
+		\newcommand{\refperc}{\getrefperc{DEU}}
+		\newcommand{\workageperc}{\getworkageperc{DEU}}
+		\newcommand{\border}{\getborder{DEU}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{DEU}}
+		\newcommand{\refperceu}{\getrefperceu{DEU}}
+		\newcommand{\workageperceu}{\getworkeageperceu{DEU}}
+		\newcommand{\milperc}{\getmilperc{DEU}}	
+		\newcommand{\sub}{\getsub{DEU}}	
+		\newcommand{\agree}{\getagree{DEU}}	
+		\newcommand{\milperceu}{\getmilperceu{DEU}}	
+		\newcommand{\agreeeu}{\getagreeeu{DEU}}
+		\newcommand{\agriperc}{\getagriperc{DEU}}
+		\newcommand{\cocap}{\getcocap{DEU}}
+		\newcommand{\fossilshare}{\getfossilshare{DEU}}
+		\newcommand{\nuclearshare}{\getnuclearshare{DEU}}
+		\newcommand{\renewshare}{\getrenewshare{DEU}}
+		\newcommand{\agriperceu}{\getagriperceu{DEU}}
+		\newcommand{\cocapeu}{\getcocapeu{DEU}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{DEU}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{DEU}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{DEU}}	
+	}%
+	{GRC}{
+		\newcommand{\country}{\getcountry{GRC}}
+		\newcommand{\gdp}{\getgdp{GRC}}	
+		\newcommand{\gdpeu}{\getgdpeu{GRC}}
+		\newcommand{\gdpcap}{\getgdpcap{GRC}}
+		\newcommand{\refperc}{\getrefperc{GRC}}
+		\newcommand{\workageperc}{\getworkageperc{GRC}}
+		\newcommand{\border}{\getborder{GRC}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{GRC}}
+		\newcommand{\refperceu}{\getrefperceu{GRC}}
+		\newcommand{\workageperceu}{\getworkeageperceu{GRC}}
+		\newcommand{\milperc}{\getmilperc{GRC}}	
+		\newcommand{\sub}{\getsub{GRC}}	
+		\newcommand{\agree}{\getagree{GRC}}	
+		\newcommand{\milperceu}{\getmilperceu{GRC}}	
+		\newcommand{\agreeeu}{\getagreeeu{GRC}}
+		\newcommand{\agriperc}{\getagriperc{GRC}}
+		\newcommand{\cocap}{\getcocap{GRC}}
+		\newcommand{\fossilshare}{\getfossilshare{GRC}}
+		\newcommand{\nuclearshare}{\getnuclearshare{GRC}}
+		\newcommand{\renewshare}{\getrenewshare{GRC}}
+		\newcommand{\agriperceu}{\getagriperceu{GRC}}
+		\newcommand{\cocapeu}{\getcocapeu{GRC}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{GRC}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{GRC}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{GRC}}		
+	}%
+	{HUN}{
+		\newcommand{\country}{\getcountry{HUN}}
+		\newcommand{\gdp}{\getgdp{HUN}}	
+		\newcommand{\gdpeu}{\getgdpeu{HUN}}
+		\newcommand{\gdpcap}{\getgdpcap{HUN}}
+		\newcommand{\refperc}{\getrefperc{HUN}}
+		\newcommand{\workageperc}{\getworkageperc{HUN}}
+		\newcommand{\border}{\getborder{HUN}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{HUN}}
+		\newcommand{\refperceu}{\getrefperceu{HUN}}
+		\newcommand{\workageperceu}{\getworkeageperceu{HUN}}
+		\newcommand{\milperc}{\getmilperc{HUN}}	
+		\newcommand{\sub}{\getsub{HUN}}	
+		\newcommand{\agree}{\getagree{HUN}}	
+		\newcommand{\milperceu}{\getmilperceu{HUN}}	
+		\newcommand{\agreeeu}{\getagreeeu{HUN}}
+		\newcommand{\agriperc}{\getagriperc{HUN}}
+		\newcommand{\cocap}{\getcocap{HUN}}
+		\newcommand{\fossilshare}{\getfossilshare{HUN}}
+		\newcommand{\nuclearshare}{\getnuclearshare{HUN}}
+		\newcommand{\renewshare}{\getrenewshare{HUN}}
+		\newcommand{\agriperceu}{\getagriperceu{HUN}}
+		\newcommand{\cocapeu}{\getcocapeu{HUN}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{HUN}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{HUN}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{HUN}}	
+	}%
+	{IRL}{
+		\newcommand{\country}{\getcountry{IRL}}
+		\newcommand{\gdp}{\getgdp{IRL}}	
+		\newcommand{\gdpeu}{\getgdpeu{IRL}}
+		\newcommand{\gdpcap}{\getgdpcap{IRL}}
+		\newcommand{\refperc}{\getrefperc{IRL}}
+		\newcommand{\workageperc}{\getworkageperc{IRL}}
+		\newcommand{\border}{\getborder{IRL}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{IRL}}
+		\newcommand{\refperceu}{\getrefperceu{IRL}}
+		\newcommand{\workageperceu}{\getworkeageperceu{IRL}}
+		\newcommand{\milperc}{\getmilperc{IRL}}	
+		\newcommand{\sub}{\getsub{IRL}}	
+		\newcommand{\agree}{\getagree{IRL}}	
+		\newcommand{\milperceu}{\getmilperceu{IRL}}	
+		\newcommand{\agreeeu}{\getagreeeu{IRL}}
+		\newcommand{\agriperc}{\getagriperc{IRL}}
+		\newcommand{\cocap}{\getcocap{IRL}}
+		\newcommand{\fossilshare}{\getfossilshare{IRL}}
+		\newcommand{\nuclearshare}{\getnuclearshare{IRL}}
+		\newcommand{\renewshare}{\getrenewshare{IRL}}
+		\newcommand{\agriperceu}{\getagriperceu{IRL}}
+		\newcommand{\cocapeu}{\getcocapeu{IRL}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{IRL}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{IRL}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{IRL}}		
+	}%
+	{ITA}{
+		\newcommand{\country}{\getcountry{ITA}}
+		\newcommand{\gdp}{\getgdp{ITA}}	
+		\newcommand{\gdpeu}{\getgdpeu{ITA}}
+		\newcommand{\gdpcap}{\getgdpcap{ITA}}
+		\newcommand{\refperc}{\getrefperc{ITA}}
+		\newcommand{\workageperc}{\getworkageperc{ITA}}
+		\newcommand{\border}{\getborder{ITA}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{ITA}}
+		\newcommand{\refperceu}{\getrefperceu{ITA}}
+		\newcommand{\workageperceu}{\getworkeageperceu{ITA}}
+		\newcommand{\milperc}{\getmilperc{ITA}}	
+		\newcommand{\sub}{\getsub{ITA}}	
+		\newcommand{\agree}{\getagree{ITA}}	
+		\newcommand{\milperceu}{\getmilperceu{ITA}}	
+		\newcommand{\agreeeu}{\getagreeeu{ITA}}
+		\newcommand{\agriperc}{\getagriperc{ITA}}
+		\newcommand{\cocap}{\getcocap{ITA}}
+		\newcommand{\fossilshare}{\getfossilshare{ITA}}
+		\newcommand{\nuclearshare}{\getnuclearshare{ITA}}
+		\newcommand{\renewshare}{\getrenewshare{ITA}}
+		\newcommand{\agriperceu}{\getagriperceu{ITA}}
+		\newcommand{\cocapeu}{\getcocapeu{ITA}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{ITA}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{ITA}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{ITA}}	
+	}%
+	{LVA}{
+		\newcommand{\country}{\getcountry{LVA}}
+		\newcommand{\gdp}{\getgdp{LVA}}	
+		\newcommand{\gdpeu}{\getgdpeu{LVA}}
+		\newcommand{\gdpcap}{\getgdpcap{LVA}}
+		\newcommand{\refperc}{\getrefperc{LVA}}
+		\newcommand{\workageperc}{\getworkageperc{LVA}}
+		\newcommand{\border}{\getborder{LVA}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{LVA}}
+		\newcommand{\refperceu}{\getrefperceu{LVA}}
+		\newcommand{\workageperceu}{\getworkeageperceu{LVA}}
+		\newcommand{\milperc}{\getmilperc{LVA}}	
+		\newcommand{\sub}{\getsub{LVA}}	
+		\newcommand{\agree}{\getagree{LVA}}	
+		\newcommand{\milperceu}{\getmilperceu{LVA}}	
+		\newcommand{\agreeeu}{\getagreeeu{LVA}}
+		\newcommand{\agriperc}{\getagriperc{LVA}}
+		\newcommand{\cocap}{\getcocap{LVA}}
+		\newcommand{\fossilshare}{\getfossilshare{LVA}}
+		\newcommand{\nuclearshare}{\getnuclearshare{LVA}}
+		\newcommand{\renewshare}{\getrenewshare{LVA}}
+		\newcommand{\agriperceu}{\getagriperceu{LVA}}
+		\newcommand{\cocapeu}{\getcocapeu{LVA}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{LVA}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{LVA}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{LVA}}	
+	}%
+	{LTU}{
+		\newcommand{\country}{\getcountry{LTU}}
+		\newcommand{\gdp}{\getgdp{LTU}}	
+		\newcommand{\gdpeu}{\getgdpeu{LTU}}
+		\newcommand{\gdpcap}{\getgdpcap{LTU}}
+		\newcommand{\refperc}{\getrefperc{LTU}}
+		\newcommand{\workageperc}{\getworkageperc{LTU}}
+		\newcommand{\border}{\getborder{LTU}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{LTU}}
+		\newcommand{\refperceu}{\getrefperceu{LTU}}
+		\newcommand{\workageperceu}{\getworkeageperceu{LTU}}
+		\newcommand{\milperc}{\getmilperc{LTU}}	
+		\newcommand{\sub}{\getsub{LTU}}	
+		\newcommand{\agree}{\getagree{LTU}}	
+		\newcommand{\milperceu}{\getmilperceu{LTU}}	
+		\newcommand{\agreeeu}{\getagreeeu{LTU}}
+		\newcommand{\agriperc}{\getagriperc{LTU}}
+		\newcommand{\cocap}{\getcocap{LTU}}
+		\newcommand{\fossilshare}{\getfossilshare{LTU}}
+		\newcommand{\nuclearshare}{\getnuclearshare{LTU}}
+		\newcommand{\renewshare}{\getrenewshare{LTU}}
+		\newcommand{\agriperceu}{\getagriperceu{LTU}}
+		\newcommand{\cocapeu}{\getcocapeu{LTU}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{LTU}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{LTU}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{LTU}}	
+	}%
+	{LUX}{
+		\newcommand{\country}{\getcountry{LUX}}
+		\newcommand{\gdp}{\getgdp{LUX}}	
+		\newcommand{\gdpeu}{\getgdpeu{LUX}}
+		\newcommand{\gdpcap}{\getgdpcap{LUX}}
+		\newcommand{\refperc}{\getrefperc{LUX}}
+		\newcommand{\workageperc}{\getworkageperc{LUX}}
+		\newcommand{\border}{\getborder{LUX}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{LUX}}
+		\newcommand{\refperceu}{\getrefperceu{LUX}}
+		\newcommand{\workageperceu}{\getworkeageperceu{LUX}}
+		\newcommand{\milperc}{\getmilperc{LUX}}	
+		\newcommand{\sub}{\getsub{LUX}}	
+		\newcommand{\agree}{\getagree{LUX}}	
+		\newcommand{\milperceu}{\getmilperceu{LUX}}	
+		\newcommand{\agreeeu}{\getagreeeu{LUX}}
+		\newcommand{\agriperc}{\getagriperc{LUX}}
+		\newcommand{\cocap}{\getcocap{LUX}}
+		\newcommand{\fossilshare}{\getfossilshare{LUX}}
+		\newcommand{\nuclearshare}{\getnuclearshare{LUX}}
+		\newcommand{\renewshare}{\getrenewshare{LUX}}
+		\newcommand{\agriperceu}{\getagriperceu{LUX}}
+		\newcommand{\cocapeu}{\getcocapeu{LUX}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{LUX}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{LUX}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{LUX}}	
+	}%
+	{MLT}{
+		\newcommand{\country}{\getcountry{MLT}}
+		\newcommand{\gdp}{\getgdp{MLT}}	
+		\newcommand{\gdpeu}{\getgdpeu{MLT}}
+		\newcommand{\gdpcap}{\getgdpcap{MLT}}
+		\newcommand{\refperc}{\getrefperc{MLT}}
+		\newcommand{\workageperc}{\getworkageperc{MLT}}
+		\newcommand{\border}{\getborder{MLT}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{MLT}}
+		\newcommand{\refperceu}{\getrefperceu{MLT}}
+		\newcommand{\workageperceu}{\getworkeageperceu{MLT}}
+		\newcommand{\milperc}{\getmilperc{MLT}}	
+		\newcommand{\sub}{\getsub{MLT}}	
+		\newcommand{\agree}{\getagree{MLT}}	
+		\newcommand{\milperceu}{\getmilperceu{MLT}}	
+		\newcommand{\agreeeu}{\getagreeeu{MLT}}
+		\newcommand{\agriperc}{\getagriperc{MLT}}
+		\newcommand{\cocap}{\getcocap{MLT}}
+		\newcommand{\fossilshare}{\getfossilshare{MLT}}
+		\newcommand{\nuclearshare}{\getnuclearshare{MLT}}
+		\newcommand{\renewshare}{\getrenewshare{MLT}}
+		\newcommand{\agriperceu}{\getagriperceu{MLT}}
+		\newcommand{\cocapeu}{\getcocapeu{MLT}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{MLT}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{MLT}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{MLT}}	
+	}%
+	{NLD}{
+		\newcommand{\country}{\getcountry{NLD}}
+		\newcommand{\gdp}{\getgdp{NLD}}	
+		\newcommand{\gdpeu}{\getgdpeu{NLD}}
+		\newcommand{\gdpcap}{\getgdpcap{NLD}}
+		\newcommand{\refperc}{\getrefperc{NLD}}
+		\newcommand{\workageperc}{\getworkageperc{NLD}}
+		\newcommand{\border}{\getborder{NLD}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{NLD}}
+		\newcommand{\refperceu}{\getrefperceu{NLD}}
+		\newcommand{\workageperceu}{\getworkeageperceu{NLD}}
+		\newcommand{\milperc}{\getmilperc{NLD}}	
+		\newcommand{\sub}{\getsub{NLD}}	
+		\newcommand{\agree}{\getagree{NLD}}	
+		\newcommand{\milperceu}{\getmilperceu{NLD}}	
+		\newcommand{\agreeeu}{\getagreeeu{NLD}}
+		\newcommand{\agriperc}{\getagriperc{NLD}}
+		\newcommand{\cocap}{\getcocap{NLD}}
+		\newcommand{\fossilshare}{\getfossilshare{NLD}}
+		\newcommand{\nuclearshare}{\getnuclearshare{NLD}}
+		\newcommand{\renewshare}{\getrenewshare{NLD}}
+		\newcommand{\agriperceu}{\getagriperceu{NLD}}
+		\newcommand{\cocapeu}{\getcocapeu{NLD}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{NLD}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{NLD}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{NLD}}	
+	}%
+	{POL}{
+		\newcommand{\country}{\getcountry{POL}}
+		\newcommand{\gdp}{\getgdp{POL}}	
+		\newcommand{\gdpeu}{\getgdpeu{POL}}
+		\newcommand{\gdpcap}{\getgdpcap{POL}}
+		\newcommand{\refperc}{\getrefperc{POL}}
+		\newcommand{\workageperc}{\getworkageperc{POL}}
+		\newcommand{\border}{\getborder{POL}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{POL}}
+		\newcommand{\refperceu}{\getrefperceu{POL}}
+		\newcommand{\workageperceu}{\getworkeageperceu{POL}}
+		\newcommand{\milperc}{\getmilperc{POL}}	
+		\newcommand{\sub}{\getsub{POL}}	
+		\newcommand{\agree}{\getagree{POL}}	
+		\newcommand{\milperceu}{\getmilperceu{POL}}	
+		\newcommand{\agreeeu}{\getagreeeu{POL}}
+		\newcommand{\agriperc}{\getagriperc{POL}}
+		\newcommand{\cocap}{\getcocap{POL}}
+		\newcommand{\fossilshare}{\getfossilshare{POL}}
+		\newcommand{\nuclearshare}{\getnuclearshare{POL}}
+		\newcommand{\renewshare}{\getrenewshare{POL}}
+		\newcommand{\agriperceu}{\getagriperceu{POL}}
+		\newcommand{\cocapeu}{\getcocapeu{POL}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{POL}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{POL}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{POL}}	
+	}%
+	{PRT}{
+		\newcommand{\country}{\getcountry{PRT}}
+		\newcommand{\gdp}{\getgdp{PRT}}	
+		\newcommand{\gdpeu}{\getgdpeu{PRT}}
+		\newcommand{\gdpcap}{\getgdpcap{PRT}}
+		\newcommand{\refperc}{\getrefperc{PRT}}
+		\newcommand{\workageperc}{\getworkageperc{PRT}}
+		\newcommand{\border}{\getborder{PRT}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{PRT}}
+		\newcommand{\refperceu}{\getrefperceu{PRT}}
+		\newcommand{\workageperceu}{\getworkeageperceu{PRT}}
+		\newcommand{\milperc}{\getmilperc{PRT}}	
+		\newcommand{\sub}{\getsub{PRT}}	
+		\newcommand{\agree}{\getagree{PRT}}	
+		\newcommand{\milperceu}{\getmilperceu{PRT}}	
+		\newcommand{\agreeeu}{\getagreeeu{PRT}}
+		\newcommand{\agriperc}{\getagriperc{PRT}}
+		\newcommand{\cocap}{\getcocap{PRT}}
+		\newcommand{\fossilshare}{\getfossilshare{PRT}}
+		\newcommand{\nuclearshare}{\getnuclearshare{PRT}}
+		\newcommand{\renewshare}{\getrenewshare{PRT}}
+		\newcommand{\agriperceu}{\getagriperceu{PRT}}
+		\newcommand{\cocapeu}{\getcocapeu{PRT}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{PRT}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{PRT}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{PRT}}	
+	}%
+	{ROU}{
+		\newcommand{\country}{\getcountry{ROU}}
+		\newcommand{\gdp}{\getgdp{ROU}}	
+		\newcommand{\gdpeu}{\getgdpeu{ROU}}
+		\newcommand{\gdpcap}{\getgdpcap{ROU}}
+		\newcommand{\refperc}{\getrefperc{ROU}}
+		\newcommand{\workageperc}{\getworkageperc{ROU}}
+		\newcommand{\border}{\getborder{ROU}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{ROU}}
+		\newcommand{\refperceu}{\getrefperceu{ROU}}
+		\newcommand{\workageperceu}{\getworkeageperceu{ROU}}
+		\newcommand{\milperc}{\getmilperc{ROU}}	
+		\newcommand{\sub}{\getsub{ROU}}	
+		\newcommand{\agree}{\getagree{ROU}}	
+		\newcommand{\milperceu}{\getmilperceu{ROU}}	
+		\newcommand{\agreeeu}{\getagreeeu{ROU}}
+		\newcommand{\agriperc}{\getagriperc{ROU}}
+		\newcommand{\cocap}{\getcocap{ROU}}
+		\newcommand{\fossilshare}{\getfossilshare{ROU}}
+		\newcommand{\nuclearshare}{\getnuclearshare{ROU}}
+		\newcommand{\renewshare}{\getrenewshare{ROU}}
+		\newcommand{\agriperceu}{\getagriperceu{ROU}}
+		\newcommand{\cocapeu}{\getcocapeu{ROU}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{ROU}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{ROU}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{ROU}}		
+	}%
+	{SVK}{
+		\newcommand{\country}{\getcountry{SVK}}
+		\newcommand{\gdp}{\getgdp{SVK}}	
+		\newcommand{\gdpeu}{\getgdpeu{SVK}}
+		\newcommand{\gdpcap}{\getgdpcap{SVK}}
+		\newcommand{\refperc}{\getrefperc{SVK}}
+		\newcommand{\workageperc}{\getworkageperc{SVK}}
+		\newcommand{\border}{\getborder{SVK}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{SVK}}
+		\newcommand{\refperceu}{\getrefperceu{SVK}}
+		\newcommand{\workageperceu}{\getworkeageperceu{SVK}}
+		\newcommand{\milperc}{\getmilperc{SVK}}	
+		\newcommand{\sub}{\getsub{SVK}}	
+		\newcommand{\agree}{\getagree{SVK}}	
+		\newcommand{\milperceu}{\getmilperceu{SVK}}	
+		\newcommand{\agreeeu}{\getagreeeu{SVK}}
+		\newcommand{\agriperc}{\getagriperc{SVK}}
+		\newcommand{\cocap}{\getcocap{SVK}}
+		\newcommand{\fossilshare}{\getfossilshare{SVK}}
+		\newcommand{\nuclearshare}{\getnuclearshare{SVK}}
+		\newcommand{\renewshare}{\getrenewshare{SVK}}
+		\newcommand{\agriperceu}{\getagriperceu{SVK}}
+		\newcommand{\cocapeu}{\getcocapeu{SVK}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{SVK}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{SVK}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{SVK}}		
+	}%
+	{SVN}{
+		\newcommand{\country}{\getcountry{SVN}}
+		\newcommand{\gdp}{\getgdp{SVN}}	
+		\newcommand{\gdpeu}{\getgdpeu{SVN}}
+		\newcommand{\gdpcap}{\getgdpcap{SVN}}
+		\newcommand{\refperc}{\getrefperc{SVN}}
+		\newcommand{\workageperc}{\getworkageperc{SVN}}
+		\newcommand{\border}{\getborder{SVN}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{SVN}}
+		\newcommand{\refperceu}{\getrefperceu{SVN}}
+		\newcommand{\workageperceu}{\getworkeageperceu{SVN}}
+		\newcommand{\milperc}{\getmilperc{SVN}}	
+		\newcommand{\sub}{\getsub{SVN}}	
+		\newcommand{\agree}{\getagree{SVN}}	
+		\newcommand{\milperceu}{\getmilperceu{SVN}}	
+		\newcommand{\agreeeu}{\getagreeeu{SVN}}
+		\newcommand{\agriperc}{\getagriperc{SVN}}
+		\newcommand{\cocap}{\getcocap{SVN}}
+		\newcommand{\fossilshare}{\getfossilshare{SVN}}
+		\newcommand{\nuclearshare}{\getnuclearshare{SVN}}
+		\newcommand{\renewshare}{\getrenewshare{SVN}}
+		\newcommand{\agriperceu}{\getagriperceu{SVN}}
+		\newcommand{\cocapeu}{\getcocapeu{SVN}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{SVN}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{SVN}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{SVN}}		
+	}%
+	{ESP}{
+		\newcommand{\country}{\getcountry{ESP}}
+		\newcommand{\gdp}{\getgdp{ESP}}	
+		\newcommand{\gdpeu}{\getgdpeu{ESP}}
+		\newcommand{\gdpcap}{\getgdpcap{ESP}}
+		\newcommand{\refperc}{\getrefperc{ESP}}
+		\newcommand{\workageperc}{\getworkageperc{ESP}}
+		\newcommand{\border}{\getborder{ESP}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{ESP}}
+		\newcommand{\refperceu}{\getrefperceu{ESP}}
+		\newcommand{\workageperceu}{\getworkeageperceu{ESP}}
+		\newcommand{\milperc}{\getmilperc{ESP}}	
+		\newcommand{\sub}{\getsub{ESP}}	
+		\newcommand{\agree}{\getagree{ESP}}	
+		\newcommand{\milperceu}{\getmilperceu{ESP}}	
+		\newcommand{\agreeeu}{\getagreeeu{ESP}}
+		\newcommand{\agriperc}{\getagriperc{ESP}}
+		\newcommand{\cocap}{\getcocap{ESP}}
+		\newcommand{\fossilshare}{\getfossilshare{ESP}}
+		\newcommand{\nuclearshare}{\getnuclearshare{ESP}}
+		\newcommand{\renewshare}{\getrenewshare{ESP}}
+		\newcommand{\agriperceu}{\getagriperceu{ESP}}
+		\newcommand{\cocapeu}{\getcocapeu{ESP}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{ESP}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{ESP}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{ESP}}	
+	}%
+	{SWE}{
+		\newcommand{\country}{\getcountry{SWE}}
+		\newcommand{\gdp}{\getgdp{SWE}}	
+		\newcommand{\gdpeu}{\getgdpeu{SWE}}
+		\newcommand{\gdpcap}{\getgdpcap{SWE}}
+		\newcommand{\refperc}{\getrefperc{SWE}}
+		\newcommand{\workageperc}{\getworkageperc{SWE}}
+		\newcommand{\border}{\getborder{SWE}}
+		\newcommand{\gdpcapeu}{\getgdpcapeu{SWE}}
+		\newcommand{\refperceu}{\getrefperceu{SWE}}
+		\newcommand{\workageperceu}{\getworkeageperceu{SWE}}
+		\newcommand{\milperc}{\getmilperc{SWE}}	
+		\newcommand{\sub}{\getsub{SWE}}	
+		\newcommand{\agree}{\getagree{SWE}}	
+		\newcommand{\milperceu}{\getmilperceu{SWE}}	
+		\newcommand{\agreeeu}{\getagreeeu{SWE}}
+		\newcommand{\agriperc}{\getagriperc{SWE}}
+		\newcommand{\cocap}{\getcocap{SWE}}
+		\newcommand{\fossilshare}{\getfossilshare{SWE}}
+		\newcommand{\nuclearshare}{\getnuclearshare{SWE}}
+		\newcommand{\renewshare}{\getrenewshare{SWE}}
+		\newcommand{\agriperceu}{\getagriperceu{SWE}}
+		\newcommand{\cocapeu}{\getcocapeu{SWE}}					
+		\newcommand{\fossilshareeu}{\getfossilshareeu{SWE}}
+		\newcommand{\nuclearshareeu}{\getnuclearshareeu{SWE}}
+		\newcommand{\renewshareeu}{\getrenewshareeu{SWE}}	
+	}%
+}
+
+\begin{document}
+    \thispagestyle{empty} % No page number
+    
+    \vspace*{2.5cm}
+    
+    \begin{center}
+        \Large Du bist ein:e Parlamentarier:in aus \country
+    \end{center}
+    
+    \vspace*{1cm}
+    
+    \begin{center}
+            \includegraphics[height=3.5cm]{Flaggen/\kurzel.png}
+    \end{center}
+    
+    \vspace*{1.2cm}
+    
+    \begin{center}
+        \large Wichtige Kennzahlen deines Landes \theme:
+        \newline
+    \end{center}
+    
+    \begin{minipage}[t]{0.7\textwidth}
+		\begin{itemize}
+			\facts
+	    \end{itemize}    
+    \end{minipage}%
+    \begin{minipage}[t]{0.25\textwidth}
+    		\vspace{1cm}
+    		\hspace{-0.2cm}
+    		\includegraphics[height=3.5cm]{Maps/\kurzel.png}
+    \end{minipage}
+    
+    
+    \vfill
+    
+\begin{tikzpicture}[remember picture, overlay]
+        % Top left corner
+        \node at ([xshift=10mm, yshift=-8mm] current page.north west) [anchor=north west, inner sep=0pt] {
+            {\jeflogo}
+        };
+        
+        % Top right corner
+        \node at ([xshift=-7.5mm, yshift=-6mm] current page.north east) [anchor=north east, inner sep=0pt] {
+            {\simeplogo}
+        };      
+        
+        % Bottom left corner
+        \node[anchor=south west, inner sep=0pt, text width=4.5cm, align=left] at ([xshift=10mm, yshift=10mm] current page.south west) {
+            \small Kofinanziert durch:\\[3mm]
+            \financelogo
+        };
+        
+    
+        % Bottom right corner
+        \node[anchor=south east, inner sep=0pt, text width=4.5cm, align=right] at ([xshift=-10mm, yshift=8mm] current page.south east) {
+            \small Unterstützt durch:\\[3mm]
+            \citylogo
+        };
+    
+    
+
+    \end{tikzpicture}
+    
+\end{document}

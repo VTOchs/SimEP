@@ -1,0 +1,267 @@
+\documentclass{article}
+\usepackage{verbatim}
+\usepackage{etoolbox}
+\usepackage{datatool}
+\usepackage{xstring}
+\input{Meta/shinyin.tex}
+
+\title{SimEP How-To Guide}
+\author{Svea \& Vincent}
+
+\newcommand{\KOM}{Vincent}
+\newcommand{\EP}{Svea}
+\date{April 2025}
+
+
+\IfEqCase{\Thema}{%
+	{Green Deal}{\newcommand{\THEMA}{zur Europäischen Klimapolitik im Rahmen des Green Deal}}%
+	{Asyl}{\newcommand{\THEMA}{zu einem gemeinsamen Europäischen Asylsystem}}%
+	{Armee}{\newcommand{\THEMA}{zu einer Europäischen Armee}}
+}
+
+\IfEqCase{\city}{%
+	{Nürnberg}{
+		\newcommand{\VERANSTALTUNGSORT}{Rathaus Nürnberg}%
+        \newcommand{\FOERDERER}{Europe Direct Nürnberg, Stadt Nürnberg \& Rudolf und Eberhard Bauer Stiftung}%
+	}%
+	{München}{
+        \newcommand{\VERANSTALTUNGSORT}{Landtag Bayern}%
+        \newcommand{\FOERDERER}{Europe Direct München, Stadt München \& Landtag Bayern}%
+	}%
+}
+ 
+ 
+ 
+ 
+ 
+
+\begin{document}
+
+	\section{Ablauf}
+	\subsection{Vorbereitung (\timeVorb)}
+	\begin{itemize}
+		\item Raumtour \& Raumschilder aushängen
+        \item Technikcheck in Fraktionsräumen [Fraktionsteamer:innen]
+		\item Technikcheck Plenum [\KOM\ \& \EP]
+		\begin{itemize}
+			\item fester Laptop
+			\item Standby-Modus aus
+			\item alle (und nur) nötigen Programme offen \& laufen
+		\end{itemize}
+		\item Dekoration Plenum \& Mappen abzählen [Fraktionsteamer:innen]
+		\item Schüler in Empfang nehmen [\KOM\ \& \EP]
+		\item \politiker\ in Empfang nehmen [\KOM\ \& \EP]		
+	\end{itemize}
+	
+	\subsection{Einführung (\timeEinf)}
+	\begin{itemize}
+		\item Kurze Begrüßung/Intro [\KOM]
+		\item Grußwort [\politiker]
+		\item Präsentation Briefing [\KOM]
+        \item SuS-Anzahl nachzählen \& Mappen entsprechend anpassen
+        \item Aufgaben:
+        \begin{itemize}
+            \item Fraktionsleiter am Podium
+            \item Rest verteilt Mappen auf Stichwort
+        \end{itemize}
+    \end{itemize}
+	
+	\subsection{1. Fraktionssitzung (\timeFrakOne)}
+	\begin{enumerate}
+		\item Icebreaker (Bildkarten) [5 min]: \newline Assoziationen mit Fraktion \& Thema
+		\item Unterlagen, insbesondere den Gesetzentwurf durchgehen \newline $\to$
+		Jeden Abschnitt grob durchgehen, sodass die SuS einen Überblick über den gesamten Entwurf haben [15 min]
+		\item Restliche Präsentation [10 min]
+		\begin{itemize}
+			\item Rolle der Schüler deutlich machen: \newline
+            Nicht persönliche Meinung vertreten, aber auch kein Fraktionszwang
+			\item Überblick über Fraktion
+			\item Weltanschauung der Fraktion
+			\item Rolle der Nationalität/Länderpapiere
+			\item Weiteren Ablauf des Gesetzgebungsprozesses/der SimEP klarstellen
+            \item Raum für Fragen
+		\end{itemize}
+		\item Kahoot-"Zwischenprüfung" über den Entwurf und die Position der Fraktion \THEMA \newline [10 min]
+        \item Zufällig in \anzahlcomm\ gleichgroße Kleingruppen einteilen \newline $\to$
+        Jeder Kleingruppe durch Namensschilder Ausschuss zuweisen (einen der Namensschilderbögen geben)
+		\item In den Auschussgruppen [50 min]
+		\begin{enumerate}
+			\item Gesetzesentwurf (besonders zugewiesener Abschnitt) lesen
+			\item EINEN (!) ÄA pro Ausschussgruppe erarbeiten \newline (muss sich auf einen inhaltlichen Aspekt beschränken)
+	        \item Ausschusssprecher:in festlegen		
+            \item ÄA in Antragsgrün einbringen
+            \begin{itemize}
+            		\item Entsprechenden Absatz auswählen
+            		\item Änderungen vornehmen
+            		\item Nach unten scrollen
+            		\begin{itemize}
+					\item Unter \textbf{Name} die \textit{Fraktion} eintragen
+            			\item Unter \textbf{Gremium,LAG...} den betreffenden \textit{Ausschuss} eintragen
+            			\item Unter \textbf{E-Mail} \textit{simep@jef-bayern.de} eintragen
+            		\end{itemize}
+            		\item Bei ÄA bestätigen auf \textit{Veröffentlichen} klicken
+            \end{itemize}
+		\end{enumerate} 
+	\end{enumerate}
+	
+	\subsection{Zwischenpause (\timePauseOne)}
+	\begin{itemize}
+		\item Reihenfolge ÄA festlegen (weitreichendste zuerst) [Ausschussteamer:innen]
+	\end{itemize}
+	
+	\subsection{Ausschusssitzung (\timeAuss)}
+	\begin{enumerate}
+		\item Präsentation: Ausschuss und Ablauf vorstellen \& erklären [5 min]
+        \item Vorstellen der ÄA [10 min] \newline
+        für jeden ÄA:
+        \begin{enumerate}
+            \item kurze Präsentation ÄA durch Ausschusssprecher:in
+			\item kurze Bedenkzeit, dann Reaktion der anderen Fraktionen (startend links von vorstellender Fraktion $\to$ Uhrzeigersinn)
+            \item mglw. Erwiderung einbringende Fraktion/weitere Diskussion \newline (Redezeitbegrenzung [bspw. 1 Min.] sinnvoll)
+        \end{enumerate}
+		\item Informelle Verhandlungen [40 min]
+		\begin{itemize}
+			\item Mehrheitsfindung/Koalitionen schmieden
+			\item Kompromissfindung $\to$ ÄA können noch abgeändert/zusammengelegt werden, um mehrheitsfähig zu sein
+		\end{itemize}
+		\item Abstimmung über ÄA [20 min]\newline
+		Für jeden ÄA:
+		\begin{itemize}
+			\item Abstimmung
+			\item Ergebnis eintragen in Antragsgrün \newline
+            $\to$ Kommentar verfassen mit \textit{Angenommen} oder \textit{Abgelehnt}
+            (Angenommen, wenn mehr JA als NEIN Stimmen \newline [Enthaltungen zählen nicht])
+		\end{itemize}
+	\end{enumerate}
+	
+	\subsection{Mittagspause (\timeMittag)}
+	\begin{itemize}
+		\item Schüler:innen zu Plenarsaal bringen
+	\end{itemize}
+	
+	\subsection{2. Fraktionssitzung (\timeFrakTwo)}
+	\begin{enumerate}
+		\item Bericht der Schüler:innen aus ihren Ausschüssen [10 min]
+		\item Finalen ÄA überlegen \& in Antragsgrün einbringen [10 min] \newline Bspw.:
+		\begin{itemize}
+			\item Zurückgewiesener ÄA in Ausschuss (mglw. abgeschwächt)
+			\item Rücknahme eines im Ausschuss beschlossenen ÄA
+			\item Überschüssige Idee aus 1. Sitzung \newline (eine Ausschussgruppe hatte mehr als eine ÄA-Idee)
+		\end{itemize}
+		\item Wahl Fraktionsvorsitz [5 min]
+		\begin{itemize}
+			\item Vorsitz: Abschlussrede (ca. 1 Min.)
+			\item Vize: Vorstellung (ca. 30 Sek.) und Reaktion (ca. 10 Sek.) \newline bei finalen ÄA 
+			\item Namen in Worddokument (Fraktionen/Fraktionsvorsitzende) \newline eintragen
+		\end{itemize}
+		\item Einteilung in Verhandlungsgruppen [5 min]
+		\begin{itemize}
+			\item Vier gleichgroße Gruppen (mehr oder weniger nach Ermessen der SuS)
+			\item Auf andere Fraktionen aufteilen: Letzte Kompromisse mit dieser aushandeln
+		\end{itemize}
+	\end{enumerate}
+	
+	\subsection{Finale Verhandlungsphase}
+	\begin{itemize}
+		\item Reihenfolge ÄA festlegen (weitreichendste zuerst) [\EP]
+		\item \stadtvertreter\ in Empfang nehmen [\KOM]
+		\item gegebenenfalls Fraktionsvorstand bei Rede unterstützen [Fraktionsteamer:innen]
+		\item Währenddessen finale Verhandlungen zwischen Fraktionen über Kompromisse \newline $\to$ ÄA-Anpassungen bis 5 Minuten vor Plenardebatte möglich
+	\end{itemize}
+	
+	\subsection{Plenarsitzung (\timePlenar)}
+	\begin{enumerate}
+		\item Grußwort \newline
+        [\stadtvertreter]
+		\item Plenardebatte [\EP]
+		\begin{enumerate}
+			\item Für jeden ÄA
+			\begin{itemize}
+				\item Vorstellung ÄA durch Fraktionsvize
+				\item Reaktion durch übrige Fraktionsvize (Uhrzeigersinn)
+				\item Abstimmung
+				\item Zählen und Eintragen in Dashboard \newline (Mehr JA als NEIN Stimmen)
+			\end{itemize}
+			\item Alle angenommenen ÄA \& fertigen Gesetzentwurf vorstellen
+			\item Abschlussrede durch Fraktionsvorsitz
+			\item Abstimmung Gesetzesentwurf
+			\item Zählen und Eintragen in Dashboard (Mehr JA als NEIN Stimmen)
+		\end{enumerate}
+		\item Vorstellung KV
+		\item Danksagung an
+		\begin{itemize}
+            \item \stadtvertreter\ (\stadtvertreterOffice)
+			\item \politiker\ (\politikerOffice)
+			\item \VERANSTALTUNGSORT
+			\item \FOERDERER
+		\end{itemize}
+	\end{enumerate}
+	
+	\subsection{Nachbereitung}
+	\begin{itemize}
+		\item Aufräumen
+		\item Gruppenfoto
+		\item Feedbackrunde
+		\item Bericht (Website) \& Insta-Post
+		\item Dankesmail an \stadtvertreter
+		\item Dankesmail an \politiker
+		\item Dankesmail an Lehrkräfte
+	\end{itemize}
+    \newpage
+    \section{Packliste}
+    \begin{itemize}
+        \item Armbänder Fotoaufnahmen
+        \item EU- \& JEF-Flaggen
+        \item Klebeband
+        \item Mappen
+        \begin{itemize}
+			\item Flyer
+			\item Fraktionspapiere
+			\item Gesetzesentwürfe
+			\item Länderpapiere
+        \end{itemize}
+        \item Merch
+        \item Namensschilder
+        \item Raumschilder
+        \item Schere
+        \item Stifte        
+        \item Teilnahmezertifikate
+    \end{itemize}
+\begin{comment}
+    \newpage
+    
+    \section{Zeitstrahl}
+    \begin{itemize}
+        \item Im Jahr davor: Finanzierung
+        \item Im Jahr davor: Ortfestlegung (Räumlichkeiten müssen stehen)
+        \item Je nach Finanzierung: Terminfestlegung
+        \item Direkt danach (mindestens halbes Jahr zuvor)
+        \begin{itemize}
+            \item Gastredner:innen anfragen
+            \item Teamer:innen anfragen
+            \item Schulklassen anfragen
+            \item Hotel anfragen (mglw. Outsourcen)
+        \end{itemize}
+        \item 2-3 Monate davor: fixe Zusage der Teamer:innen einholen
+        \item Direkt danach: Hotel buchen
+        \item 1 Monat davor:
+        \begin{itemize}
+            \item Reminder an Lehrkräfte
+            \item Catering abklären (mglw. Outsourcen)
+            \item Aktualisierung der Unterlagen abgeschlossen
+            \item mglw. Online-Schulung anbieten
+        \end{itemize}
+        \item 2 Wochen davor: 
+        \begin{itemize}
+            \item Restaurant reservieren (mglw. Outsourcen)
+            \item KV Vorstellung abklären
+        \end{itemize}
+        \item In der Woche davor:
+        \begin{itemize}
+            \item Unterlagen vorbereiten
+            \item Pressemitteilung rausschicken (mglw. Outsourcen)
+        \end{itemize}
+        \item Nach der SimEP: Nachbereitung
+    \end{itemize}
+\end{comment}
+\end{document}

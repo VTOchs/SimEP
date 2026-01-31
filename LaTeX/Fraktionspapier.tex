@@ -1,0 +1,581 @@
+\documentclass[11pt]{article}
+\usepackage{adjustbox}
+\usepackage[ngerman]{babel}
+\usepackage{caption}
+\usepackage{changepage}
+\usepackage{csvsimple}
+\usepackage{datatool}
+\usepackage{expl3} 
+\usepackage{etoolbox}
+\usepackage[utf8]{inputenc} % Use utf8 encoding for special characters
+\usepackage[margin=1in]{geometry} % Adjust margins as needed
+\usepackage{gensymb}
+\usepackage{graphicx}
+\usepackage{mailmerge}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usepackage{verbatim}
+\usepackage{xstring}
+\input{Meta/var.tex}
+\input{Meta/shinyin.tex}
+
+% -------------------------------------------------------------
+
+\DTLloaddb{caucus}{../Daten/caucus_data.csv}
+  
+\newcommand{\partyseats}[1]{%
+    \DTLforeach{caucus}{\party=party,\total=total}{%
+        \ifthenelse{\equal{#1}{\party}}{\total}{}%
+    }%
+}
+
+\newcommand{\partycountries}[1]{%
+    \DTLforeach{caucus}{\party=party,\countries=countries}{%
+        \ifthenelse{\equal{#1}{\party}}{\countries}{}%
+    }%
+}
+
+\newcommand{\partypres}[1]{%
+    \DTLforeach{caucus}{\party=party,\presidents=presidents}{%
+        \ifthenelse{\equal{#1}{\party}}{\presidents}{}%
+    }%
+} 
+ 
+\newcommand{\partyrank}[1]{%
+    \DTLforeach{caucus}{\party=party,\rank=rank}{%
+        \ifthenelse{\equal{#1}{\party}}{\rank}{}%
+    }%
+}   
+
+
+\newcommand{\constrainedlogo}[4][2cm]{%
+  \raisebox{#3}{\includegraphics[width=#2,height=#1,keepaspectratio]{#4}}%
+}
+
+\newcommand{\jeflogo}{\constrainedlogo[2.5cm]{5cm}{0pt}{Logos/jef.png}}
+\newcommand{\simeplogo}{\constrainedlogo[2.5cm]{5cm}{0pt}{Logos/simep.png}}
+\newcommand{\financelogo}{\constrainedlogo[1.5cm]{4cm}{0pt}{Logos/finance\_\city.png}}
+\newcommand{\citylogo}{\constrainedlogo[1.5cm]{4cm}{0pt}{Logos/\city.png}}
+\newcommand{\fraktionslogo}{\constrainedlogo[2.5cm]{5cm}{0pt}{Folien/Bilder/\Fraktion.png}}
+
+
+\IfEqCase{\Fraktion}{
+	{EVP}{
+		\newcommand{\Fraktionsname}{Europäische Volkspartei}
+    		\newcommand{\Fraktionskuerzel}{EVP}
+    		\newcommand{\Beschreibung}{Christdemokratische Parteien (Deutschland: CSU, CDU, Familienpartei \& ÖDP)}
+    		\newcommand{\numSeats}{\partyseats{EPP}}
+    		\newcommand{\numCountry}{\partycountries{EPP}}
+    		\newcommand{\groesse}{\partyrank{EPP}}
+    		\newcommand{\vorsitz}{\partypres{EPP}}
+    		\newcommand{\leitlinien}{
+        		Die Europäische Volkspartei (EVP) strebt ein gerechtes, offenes und humanes Europa an, basierend auf Freiheit, Verantwortung und wirtschaftlichem Wohlstand. Die Fraktion orientiert sich an einem jüdisch-christlichen Weltbild und den Menschenrechten. Gemeinsame Werte und Ziele sollen Europa vereinen, die kulturelle Vielfalt an Sprachen, Nationen und Regionen jedoch erhalten bleiben. Die EVP will ein bürgernahes, transparentes und demokratisches Europa, welches sich stets an den Bedürfnissen der Menschen orientiert. \newline
+
+        		Die EVP setzt auf technologische Innovationen für Fortschritt und Entwicklung, insbesondere durch private Unternehmen. Daher soll der freie Wettbewerb im europäischen Binnenmarkt, der wirtschaftlichen Wohlstand ohne Ausgrenzung ermöglicht, gefördert werden.\newline
+
+        		Auch die Interessen zukünftiger Generationen in Bezug auf Schuldenlast und Umweltschutz spielen eine große Rolle für die EVP. Ökologie und Ökonomie müssen daher zwingend in Einklang gebracht werden. Insgesamt steht die EVP für eine starke EU mit eigenständigen Mitgliedstaaten, einen handlungsfähigen Rechtsstaat \& ökonomischen Wohlstand.
+    		}
+    		\IfEqCase{\Thema}{
+    			{Green Deal}{
+    				\newcommand{\policyPosition}{
+            			Die EVP betont die dringende Umstellung auf erneuerbare Energiequellen, ohne Land- und Forstwirtschaft einzuschränken. Sie lehnt übermäßige Belastungen durch die Pestizidverordnung ab und setzt auf marktbasierte Anreize wie die Ausweitung des Emissionshandels. Die EVP befürwortet insbesondere neue Innovationen und Technologien im privaten Bereich, zu strenge Vorgaben und Einschränkungen für Unternehmen sind zu vermeiden. \newline
+
+	            		Durch eine diversere Energieversorgung soll die Abhängigkeit von politisch instabilen Regionen verringert werden. Die Förderung von Energieeffizienz und verschiedenen Energiequellen inklusive nuklearer Energie ist dabei zentral. Um die gesellschaftliche Akzeptanz des Green Deal zu bewahren, müssen Regionen, die besonders von der grünen Transformation betroffen sind, gesondert unterstützt werden. \newline
+
+            			Die Reduzierung fossiler Brennstoffe im Verkehrssektor wird als Mittel zur Emissionsminderung betrachtet, komplette Verbote sollen aber möglichst nicht erfolgen. Insgesamt setzt die Fraktion auf eine ganzheitliche Klimapolitik, die ökologische, wirtschaftliche und soziale Aspekte integriert und Europa als Vorreiter in Umweltschutzfragen etablieren möchte.
+        			}
+    			}%
+    			{Asyl}{
+    				\newcommand{\policyPosition}{
+                		Die EVP legt einen Fokus auf eine gemeinsame und solidarische Asylpolitik, um Migrationsbewegungen besser und einheitlicher zu steuern. Insbesondere eine gerechte Aufteilung der Lasten zwischen den Mitgliedstaaten durch einen Verteilungsmechanismus und einen Asyl- und Integrationsfonds ist für die EVP von Bedeutung. Ausgebildete Fachkräfte, die Zugang in den europäischen Arbeitsmarkt suchen, sollen unterstützt werden. \newline
+
+                		Zugleich soll der Missbrauch des Asylsystems stärker bekämpft werden. Hierzu gehört eine konsequentere Rückführung abgelehnter Asylbewerber:innen in ihre Herkunftsländer (bspw. durch Rückführungsabkommen) sowie die Bekämpfung von Fluchtursachen und Schlepper:innen in den Herkunftsländern. Wichtig hierfür sind Drittstaatenverfahren. Für in Europa angekommene Geflüchtete fordert die EVP einheitliche Standards zur Prüfung und Bearbeitung von Asylanträgen.
+                		
+            		}
+    			}%
+    			{Armee}{
+    				\newcommand{\policyPosition}{
+                		Die EVP verfolgt das Ziel einer starken, koordinierten europäischen Sicherheits- und Außenpolitik. Die Partei plädiert für eine effiziente Zusammenarbeit mit internationalen Organisationen wie den Vereinten Nationen. \newline
+
+                    Allgemein strebt die EVP die Schaffung einer gemeinsamen Europäischen Armee an. Darüber hinaus sollen aber auch die bestehenden militärischen und finanziellen Ressourcen durch engere Kooperation bei Beschaffung, Spezialisierung, Forschung und Entwicklung sowie Ausbildung effizienter genutzt werden. \newline
+
+                    Neben erhöhten Verteidigungsausgaben der Mitgliedstaaten auf 2\% des BIP soll ein großer Europäischer Verteidigungsfonds geschaffen werden. Aus diesem soll auch die europäische Rüstungsindustrie, insbesondere im Hinblick auf Forschung und Entwicklung gefördert werden.
+                }
+    			}%
+    		}
+	}%
+	{SD}{
+		\newcommand{\Fraktionsname}{Progressive Allianz der Sozialdemokraten}
+    		\newcommand{\Fraktionskuerzel}{S\&D}
+    		\newcommand{\Beschreibung}{Sozialdemokratische Parteien (Deutschland:~SPD)}
+    		\newcommand{\numSeats}{\partyseats{S&D}}
+    		\newcommand{\numCountry}{\partycountries{S&D}}
+    		\newcommand{\groesse}{\partyrank{S&D}}
+    		\newcommand{\vorsitz}{\partypres{S&D}}
+    		\newcommand{\leitlinien}{
+        		Die Progressive Allianz der Sozialdemokraten (S\&D) setzt sich für ein starkes und solidarisches Europa ein, das heißt, dass die EU allen Menschen die gleichen Chancen auf Wohlstand bieten soll. Deshalb muss die EU in allen Politikfeldern auf soziale Gerechtigkeit achten und die Lebens- und Arbeitsbedingungen ihrer Bürger:innen verbessern. Aber auch im Rest der Welt braucht es eine starke EU, die sich für Menschenrechte und Frieden einsetzt. \newline
+
+        		Angesichts der sozialen Verwerfungen durch Globalisierung und Klimawandel, plädiert die S\&D für starke Arbeitnehmerrechte und Sozialstandards, damit der wirtschaftliche Wohlstand allen Bürger:innen zu Gute kommt. Die wichtige ökologische Transformation soll daher immer soziale Ungleichheiten berücksichtigen. \newline
+
+        		Aber auch Ungleichheiten zwischen den Mitgliedstaaten sollen durch vertiefte europäische Kooperation verringert werden. Um dabei die Teilhabe der EU-Bürger:innen zu gewährleisten und ein europäisches Bewusstsein zu fördern, sollen diese in europäischen Fragen stärker einbezogen werden.
+    		}
+    		\IfEqCase{\Thema}{
+    			{Green Deal}{
+    				\newcommand{\policyPosition}{
+            			Das wichtigste Ziel der S\&D im Bezug auf EU-Klimapolitik ist das Erreichen der Pariser Klimaziele, insbesondere der Klimaneutralität bis 2050. Hierfür sind ehrgeizige Zwischenziele bis und 2040 (mindestens 90\% Reduktion) sowie erhebliche zusätzliche staatliche und private Investitionen in Erneuerbare Energien und Energieeffizienz nötig. Ein Teil dieser Finanzierung soll durch Gebühren für nicht-recyclebare Verpackungen sowie durch einen ausgeweiteten Emissionshandel stammen. \newline
+
+            			Durch diese Ausweitung sollen auch die Luftfahrt stärker dem Emissionshandel unterliegen. Allgemein sollen Transportwege möglichst auf die Schiene bzw. das Wasser verlegt werden. Auch in den Bereichen Landwirtschaft und Fischerei müssen die Regulierungen und Standards verschärft werden. Ziele zur Verringerung von Luft-, Boden und Wasserverschmutzung
+durch Pestizide und Chemikalien müssen beibehalten werden. \newline
+
+            			Um soziale Verwerfungen zu vermeiden, muss starker Klimaschutz durch die soziale Sicherung der betroffenen Gruppen sowie einen Ausbau der sozialen Rechte der EU-Bürger:innen begleitet werden. Dies umfasst beispielsweise verstärkte Bildungs- und Forschungsinvestitionen, Maßnahmen gegen Energiearmut und Wohnungsnot.
+        			}
+    			}%
+    			{Asyl}{
+    				\newcommand{\policyPosition}{
+                		Die S\&D fordert eine gemeinsame europäische und solidarische Asylpolitik, in der Rechte und Pflichten der Asylsuchenden und der EU-Länder eindeutig festgelegt werden. Um eine faire Lastenverteilung zu gewährleisten fordert die S\&D eine gerechte Verteilung der Asylsuchenden auf die Mitgliedstaaten und eine besondere Unterstützung der Staaten, die viele Geflüchtete aufnehmen. Hierzu soll ein Europäischer Asyl- und Integrationsfonds eingerichtet werden. \newline
+
+                		Zwar plädiert die S\&D für besser gesicherte EU-Außengrenzen, Migration auf legalem Wege muss allerdings möglich bleiben und Drittstaatenverfahren werden klar abgelehnt. Mitgliedstaaten und Asylsuchende werden durch eine ausgebaute Europäische Asylagentur EUAA bei Bearbeitung des Asylantrags und der Integration verstärkt unterstützt. \newline
+
+                		Um Menschenhandel und Fluchtursachen zu bekämpfen muss zudem ein Hilfsfonds für Krisenregionen aufgelegt werden. Die Kooperation mit Diktaturen zur Rückführung abgelehnter Geflüchteter muss jedoch eingeschränkt werden.
+            		}
+    			}%
+    			{Armee}{
+    				\newcommand{\policyPosition}{
+                		Die S\&D setzt sich für eine gemeinsame Außenpolitik der EU ein, die von Werten wie Menschenrechten und Rechtsstaatlichkeit bestimmt wird. Auch im Bereich von Sicherheit und Verteidigung ist eine engere Kooperation in Form einer europäischen Verteidigungsunion nötig. Diese soll in Zusammenarbeit mit der NATO umfassende Sicherheitsvorkehrungen, einschließlich des Schutzes vor hybriden Angriffen, gewährleisten. \newline
+
+                    Die europäische Verteidigungsindustrie soll gestärkt und Material vermehrt gemeinsam beschafft werden. Neben höheren Verteidigungsausgaben der Mitgliedstaaten sollen finanzielle Ressourcen durch die Kooperation vor allem effizienter eingesetzt werden. \newline
+
+                    Allgemein möchte die S\&D eine Verlagerung der nationalen militärischen Perspektive auf die europäische Ebene. Zudem muss die EU auch auf diplomatischem Gebiet eine Führungsrolle übernehmen. Eine Rolle spielt hierbei das verstärkte Engagement in Ländern des globalen Südens zur Förderung und Sicherung nachhaltigen Friedens.
+                }
+    			}%
+    		}	
+	}%
+	{RE}{
+		\newcommand{\Fraktionsname}{Renew Europe}
+    		\newcommand{\Fraktionskuerzel}{Renew}
+    		\newcommand{\Beschreibung}{Liberale \& zentristische Parteien (Deutschland:~FDP \& Freie Wähler)}
+    		\newcommand{\numSeats}{\partyseats{Renew}}
+    		\newcommand{\numCountry}{\partycountries{Renew}}
+    		\newcommand{\groesse}{\partyrank{Renew}}
+    		\newcommand{\vorsitz}{\partypres{Renew}}
+    		\newcommand{\leitlinien}{
+        		Im Zentrum des liberalen Weltbilds steht das Individuum, dessen Freiheit so wenig wie möglich beschränkt werden soll. Dies gilt sowohl für das Handeln im Privaten als auch in der Wirtschaft. So ist das Einschränken der Bürokratie ein wichtiges Anliegen, um den Bürger:innen möglichst viel Kreativität, Talent, Eigeninitiative und Entscheidungsfreiheit zu gewährleisten. Um dies zu ermöglichen, ist eine Wahrung der Rechtsstaatlichkeit und der Menschenrechte unumgänglich. \newline
+        
+        		Ein offener Europäischer Binnenmarkt (freier Waren-, Geld- \& Personenverkehr) und eine Begrenzung der Vorgaben für die Wirtschaft werden angestrebt, um die Dynamik der Europäischen Wirtschaft zu entfalten. Zudem soll auch der technologische Fortschritt, insbesondere die Digitalisierung intensiv vorangetrieben werden. Somit soll die Europäische Wettbewerbsfähigkeit - unter Berücksichtigung sozialer Belange - gestärkt und ein nachhaltiges Wirtschaftswachstum ermöglicht werden. \newline
+        
+        		Die EU soll als starker und eigenständiger Akteur auftreten, daher sollen in Bereichen, in denen dies sinnvoll ist, weitere Kompetenzen an die EU übertragen werden. Um kulturelle und historische Unterschiede zu berücksichtigen, sollen Entscheidungen dennoch weiterhin grundsätzlich auf der möglichst niedrigsten Ebene (Nationalstaat, Bundesländer, Gemeinden) getroffen werden.
+    		}
+    		\IfEqCase{\Thema}{
+    			{Green Deal}{
+    				\newcommand{\policyPosition}{
+            			Renew Europe setzt sich entschieden für eine ökologische Transformation ein, die zugleich Wirtschaftswachstum ermöglicht. Im Mittelpunkt ihrer Agenda stehen die Stärkung des Europäischen Emissionshandels und die Förderung nachhaltiger Technologien zur Festigung des europäischen Wirtschaftsstandorts. Die Leitlinien der Klimapolitik bilden internationale Klimaabkommen. \newline
+            
+            			Konkret sollen der Übergang zu emissionsfreier Mobilität und der Ausbau erneuerbarer Energien unterstützt werden, um bis spätestens 2050 eine klimaneutrale EU zu erreichen. Darüber hinaus spielt der technologische Fortschritt eine essenzielle Rolle, um effektive Klimaschutzpolitik zu ermöglichen. Ein wichtiges Beispiel hierfür sind Negativ-Emissionstechnologien, die Treibhausgase der Atmosphäre wieder entnehmen können. \newline
+
+            			Hinsichtlich der nachhaltigen Ressourcennutzung und Umweltschutz strebt die Renew-Fraktion die Förderung der Kreislaufwirtschaft, insbesondere durch Recycling, an. Ein zusätzliches Anliegen gilt der europäischen Souveränität und Unabhängigkeit in der Energiegewinnung.
+        			}
+    			}%
+    			{Asyl}{
+    				\newcommand{\policyPosition}{
+                		Renew Europe setzt sich für eine umfassende Neugestaltung der Asylpolitik ein, die auf klaren Prinzipien basiert. Wichtig sind hierbei eine rasche und menschenrechtskonforme Antragsbearbeitung sowie eine faire Lastenverteilung innerhalb der EU. Um dies zu gewährleisten soll ein fester, solidarischer Verteilungsschlüssel zwischen den EU-Mitgliedstaaten vereinbart werden. \newline
+                
+                		Zugleich sollen Fluchtursachen bekämpft sowie die EU-Außengrenzen strenger kontrolliert werden. Hierzu müssen Kapazitäten der Grenzschutzagentur FRONTEX ausgebaut und besser koordiniert werden. Auch Rücknahmeabkommen mit sicheren Drittstaaten in Afrika und dem Mittleren Osten sind wichtig, um eine schnellere Abwicklung von Asylanträgen und Rückführungen ermöglichen. Mit einem Europäischen Fonds für Asyl und Integration sollen Fluchtursachen vor Ort durch finanzielle Unterstützung bekämpft werden. \newline
+                
+                		Um dem Fachkräftemangel und dem demographischen Wandel zu begegnen, ist es jedoch gleichzeitig notwendig, die Zuwanderung qualifizierter Fachkräfte zu gewährleisten. Die Ausgestaltung dieser Regelungen soll jedoch weiterhin in den Händen der einzelnen EU-Mitgliedstaaten liegen.
+            		}
+    			}%
+    			{Armee}{
+    				\newcommand{\policyPosition}{
+                		Renew Europe setzt sich für eine stärkere Rolle der EU auf der internationalen Ebene, auch in militärischer Hinsicht ein. Gerade die Kooperation mit der NATO soll ausgebaut werden. \newline
+
+                    Durch verstärkte europäische Koordination und die Vermeidung von Doppelstrukturen sollen die bereits hohen Verteidigungsausgaben der Mitgliedstaaten effizienter genutzt werden. Ein Europäischer Verteidigungsfonds soll die europäische Rüstungsindustrie, insbesondere im Hinblick auf Forschung und Entwicklung fördern. \newline
+
+                    Renew Europe setzt sich für die schnellstmögliche Schaffung einer Europäischen schnellen Eingreiftruppe von ca. 5000 Personen ein, aus der langfristig eine europäische Armee erwachsen soll. Die Mitgliedstaaten sollen aber die Entscheidungsautorität über Einsätze von Soldat:innen ihrer Nationalitäten bleiben.
+                }
+    			}%
+    		}
+	}%
+	{Green}{
+		\newcommand{\Fraktionsname}{Die Grünen/Europäische Freie Allianz}
+    		\newcommand{\Fraktionskuerzel}{Grüne/EFA}
+    		\newcommand{\Beschreibung}{Grüne \& Regionalparteien (Deutschland:~Bündnis 90/Die Grünen \& Volt)}
+    		\newcommand{\numSeats}{\partyseats{Greens/EFA}}
+    		\newcommand{\numCountry}{\partycountries{Greens/EFA}}
+    		\newcommand{\groesse}{\partyrank{Greens/EFA}}
+    		\newcommand{\vorsitz}{\partypres{Greens/EFA}}
+    		\newcommand{\leitlinien}{
+        		Die Fraktion der Grünen/EFA betrachtet den Klima- und Umweltschutz als zentrales Ziel ihrer Politik. Ihr Fokus liegt auf dem Schutz der biologischen Vielfalt und der Erhaltung ökologischer Grundlagen für zukünftige Generationen. Um das Pariser Klimaabkommen einzuhalten, betrachten sie das Einschränken individueller Freiheiten als notwendiges Übel. \newline
+        
+       		Des Weiteren setzen sie sich für ein offenes und inklusives Europa ein, in dem jeder Mensch – unabhängig von Geschlecht, sexueller Orientierung, Herkunft oder Religion – ein würdiges und erfülltes Leben führen kann. Die Grünen/EFA Fraktion betrachtet sich selbst als Schützerin der Demokratie, Rechtsstaatlichkeit sowie der Grund- und Menschenrechte. \newline
+        
+        		Ein weiteres Anliegen ist die Bekämpfung sozialer Ungleichheit in der EU. Hierbei engagiert sich die Fraktion für mehr Steuergerechtigkeit und gerechte Löhne. Im Bereich der Wirtschaft lassen sie sich vom Grundsatz leiten: Die Wirtschaft soll den Menschen dienen, nicht umgekehrt.
+    		}
+    		\IfEqCase{\Thema}{
+    			{Green Deal}{
+    				\newcommand{\policyPosition}{
+            			Die Grüne/EFA Fraktion engagiert sich vehement für den vollen Beitrag der EU zur Umsetzung der Ziele des Pariser Klimaabkommens. Dies beinhaltet die Begrenzung der globalen Erwärmung auf unter 2 °C, idealerweise auf 1,5 °C im Vergleich zum vorindustriellen Niveau. Ihr Fokus liegt auf dem massiven Ausbau regenerativer Energien wie Solar- und Windkraftanlagen sowie dem Übergang zu einer nachhaltigen Wirtschaft. \newline
+            
+            			Um die Wirksamkeit und Transparenz dieser Maßnahmen sicherzustellen, setzt die Grüne/EFA Fraktion auf kontinuierliche und verbindliche Nachhaltigkeitsprüfungen. Diese sollen gewährleisten, dass eingesetzte Technologien und Wirtschaftspraktiken ökologischen und sozialen Standards entsprechen. Im Fokus der grünen Agenda stehen die Förderung umweltfreundlicher Technologien, Anreize für nachhaltiges Wirtschaften, der Ausbau erneuerbarer Energien und die Reduzierung von Treibhausgasemissionen. \newline
+            
+            		Die Grüne/EFA Fraktion fordert verstärkte internationale Zusammenarbeit zur Bewältigung globaler Umweltprobleme und betont die proaktive Rolle der EU im Kampf gegen den Klimawandel, unterstrichen durch die Wichtigkeit solidarischer Maßnahmen für eine nachhaltige Zukunft kommender Generationen.
+        			}
+    			}%
+    			{Asyl}{
+    				\newcommand{\policyPosition}{
+                		Die Grüne/EFA Fraktion setzt sich dafür ein, dass die Europäische Union ihre Asylpolitik von einer „Festung Europa” zu einem Kontinent der Zuflucht weiterentwickelt. Ihr Ziel ist es, Menschen unter würdigen und humanen Bedingungen aufzunehmen und jede:n als vollwertige:n Bürger:in zu behandeln. \newline
+                
+                		Die Forderungen der Fraktion konzentrieren sich auf Solidaritätsmechanismen für die Aufnahme von Asylsuchenden und Migrant:innen. Sie plädieren für das Konzept der freiwilligen Aufnahmekapazität und fordern finanzielle Unterstützung für die Kommunen und Regionen, die Asylsuchende aufnehmen. Das Geld hierzu soll von Staaten kommen, die sich nicht an der Aufnahme beteiligen.\newline
+
+                		In Bezug auf die EU-Außengrenzen legt die Grünen/EFA Fraktion insbesondere auf ausgebaute Seenotrettung und die Wahrung der Menschenrechte der Geflüchteten wert. Nach der Aufnahme sind starke Integrationshilfen nötig, wofür Unterstützung durch die EU gefordert wird.
+            		}
+    			}%
+    			{Armee}{
+    				\newcommand{\policyPosition}{
+                		Die Grüne/EFA Fraktion steht für eine enge Kooperation mit den internationalen, demokratischen Partnern der EU, um Menschenrechte und die internationale Ordnung zu sichern. Innerhalb der EU braucht es hierzu verstärkte militärische Kooperation, vor allem, gemeinsame Investitionen sowie eine eigenständige Europäische Sicherheitsstrategie. Waffenlieferungen an Diktaturen sollen zudem europaweit verboten werden. \newline
+
+                    Militärische Intervention befürwortet die Grüne/EFA Fraktion nur als letzte Möglichkeit und unter strenger parlamentarischer Kontrolle. Auf dieser Ebene sollte eine Europäische Verteidigungsunion entstehen. \newline
+                    
+                    Vor allem die europäischen diplomatischen Institutionen sollen ausgebaut und internationale Rüstungskontrolle vorangetrieben werden. Da auch Initiativen zu Umweltschutz und Entwicklungshilfe langfristig einen essenziellen Baustein für die globale Sicherheit bilden, sollen auch sie in gleichem Maße wie das Militär verstärkt gefördert werden.
+                }
+    			}%
+    		}
+	}%
+	{PfE}{
+		\newcommand{\Fraktionsname}{Patrioten für Europa}
+        \newcommand{\Fraktionskuerzel}{PfE}
+        \newcommand{\Beschreibung}{Nationalistische und rechtsextreme Parteien (Deutschland:~-)}
+        \newcommand{\numSeats}{\partyseats{PfE}}
+        \newcommand{\numCountry}{\partycountries{PfE}}
+        \newcommand{\groesse}{\partyrank{PfE}}
+        \newcommand{\vorsitz}{\partypres{PfE}}
+        \newcommand{\leitlinien}{
+        		Das politische Ziel der Fraktion „Patrioten für Europa“ ist eine Europäische Union mit starken Nationalstaaten. Die Fraktion lehnt Bestrebungen zur Schaffung eines europäischen Bundesstaates („Vereinigte Staaten von Europa“) ab. Außerdem möchte sie die EU weniger bürokratisch gestalten. \newline
+        
+        		Die politischen Parteien und Abgeordneten der PfE-Fraktion begründen ihr politisches Bündnis in der Wahrung der Identität der Völker und Nationen Europas. Der Einfluss der Europäischen Union auf die Mitgliedstaaten soll deutlich zurückgehen und die Kompetenzen wieder auf nationale Ebene zurückverlagert werden. Die Zusammenarbeit soll auf ein Minimum reduziert werden. \newline
+        
+        		Jegliche Europäische Kooperation soll sich vor allem auf die Schaffung von Arbeitsplätzen und Wachstum, erhöhte Sicherheit und Eindämmung illegaler Einwanderung beschränken. Der Schutz der EU-Außengrenzen ist daher für die Fraktion von großer Bedeutung. 
+        }
+        \IfEqCase{\Thema}{
+    			{Green Deal}{
+    				\newcommand{\policyPosition}{
+            			Das politische Ziel der PfE ist es, dass auch in der Klimapolitik die Entscheidungen auf der Ebene der Nationalstaaten und nicht EU-weit beschlossen werden. Dadurch können Nationalstaaten voneinander lernen und nationale Besonderheiten berücksichtigt werden. \newline
+            
+            			Die PfE kritisiert, dass die Maßnahmen gegen den Klimawandel zu teuer sind und darüber hinaus das wirtschaftliche Wachstum bestimmter Wirtschaftszweige (zum Beispiel der Automobilindustrie) sowie Arbeitsplätze gefährden. Die entstehenden Kosten für Bürgerinnen und Bürger sowie Gemeinden sieht die Fraktion kritisch. Der Green Deal wird abgelehnt, stattdessen fordert die Fraktion: Abbau von staatlichen Subventionen, Rechtssicherheit, gute wirtschaftliche Rahmenbedingungen und Technologieoffenheit. \newline
+            
+            			Die PfE-Fraktion ist gegen das Ende des Verbrennermotors, da dies Arbeitsplätze in der Automobilindustrie gefährdet. Außerdem lehnt die Fraktion einen Fokus auf erneuerbare Energien ab. Für sie ist eine dauerhafte Stromversorgung nur möglich, wenn auf Atomenergie zurückgegriffen wird.
+        			}
+    			}%
+    			{Asyl}{
+    				\newcommand{\policyPosition}{
+                		Die PfE vertritt die Position, dass Entscheidungen zur Asylpolitik grundsätzlich von den Nationalstaaten selbst getroffen werden sollen. Sie fordert den Ausbau und den effektiven Schutz der EU-Außengrenzen („Festung Europa“), um illegale Migration zu verhindern. Somit wird einer "Islamisierung" vorgebeugt und die innere Sicherheit der Europäischen Union und ihrer Mitgliedstaaten gewährleistet. \newline
+                
+                		Die Forderungen der PfE umfassen, dass Einwanderung erschwert und der Missbrauch des Asylsystems unterbunden werden müssen. Verpflichtende Verteilungsmechanismen zwischen den Mitgliedstaaten werden strikt abgelehnt. \newline
+                
+                		Wenn es illegale Einwanderer bis in die Europäische Union schaffen, sollen diese schnell in ihre Heimatländer zurückgeführt werden. Nur diejenigen, die wirklich Hilfe benötigen, sollen vorübergehend aufgenommen werden. Hilfe soll möglichst in den Heimatländern geleistet werden.
+            		}
+    			}%
+    			{Armee}{
+    				\newcommand{\policyPosition}{
+                		Die PfE-Fraktion lehnt eine stärkere Einbindung der EU in Außen- und Sicherheitsfragen entschieden ab. Stattdessen befürwortet sie eine Politik, welche die Interessen der einzelnen Mitgliedstaaten priorisiert. Dabei spielen diplomatische Bemühungen zum Durchsetzen der nationalen Interessen eine große Rolle. \newline 
+                    
+                    Darüber hinaus sollen die militärischen Fähigkeiten der Mitgliedstaaten durch eine gemeinsame Beschaffung und Entwicklung gestärkt werden, Eingriffe in die militärische Souveränität der Mitgliedstaaten, wie beispielsweise die Schaffung einer europäischen Armee, sollen aber unterbunden werden. \newline
+
+                    Wie auch in anderen Bereichen wehrt sich die PfE gegen höhere gemeinsame Ausgaben und erweiterte Entscheidungskompetenzen auf europäischer Ebene. Vielmehr legt sie Wert auf zwischenstaatliche Abstimmung, um die Interessen der einzelnen Länder zu berücksichtigen und gemeinsame Lösungen zu finden.
+                }
+    			}%
+    		}
+	}%
+}
+    
+    
+\IfEqCase{\Thema}{
+	{Green Deal}{
+		\newcommand{\policy}{Umwelt- und Klimaschutzpolitik}
+		\newcommand{\themeOne}{Verhältnis \newline Ökonomie \& Ökologie}
+	    	\newcommand{\themeTwo}{Vermeidung von Treibhausgasen}
+    		\newcommand{\themeThree}{Nachhaltige Landwirtschaft}
+    		
+	    	\newcommand{\evpOne}{\small Wohlstandsicherung durch grüne, marktwirtschaftliche Transformation}
+    		\newcommand{\evpTwo}{\small $CO_2$-arme Technologien fördern}
+	    	\newcommand{\evpThree}{\small Stärkere Unterstützung von Landwirten}
+    		
+    		\newcommand{\sdOne}{\small Starker Klimaschutz mit sozialer Absicherung}
+	    	\newcommand{\sdTwo}{\small Kombination aus Investitionen, Emissionshandel \& Regulierung}
+    		\newcommand{\sdThree}{\small Strengere Auflagen, aber Ausgleich für Betroffene}
+    	
+	    	\newcommand{\reOne}{\small Wohlstandsicherung durch grüne Transformation}
+    		\newcommand{\reTwo}{\small Technologieoffenheit, Emissionshandel ausbauen \& $CO_2$-arme Technologien fördern}
+	    	\newcommand{\reThree}{\small Neue Geschäftsmöglichkeiten für Landwirte schaffen}
+    		
+    		\newcommand{\greenOne}{\small Wirtschaft muss Menschen \& Umwelt dienen}
+	    	\newcommand{\greenTwo}{\small Massiver Ausbau erneuerbarer Energien \& Förderung umweltfreundlicher Technologien}
+    		\newcommand{\greenThree}{\small Starke Förderung nachhaltiger Landwirtschaft}
+    		
+	    	\newcommand{\idOne}{\small Klimaschutz behindert wirtschaftliches Wachstum}
+    		\newcommand{\idTwo}{\small Technologieoffenheit, bspw. bei nuklearer Energie}
+	    	\newcommand{\idThree}{\small Keine staatliche Lenkung der Wirtschaft durch Subventionen oder Verbote}
+    		\newcommand{\glossar}{
+        			\item \textbf{Emissionshandel:} 2005 in EU eingeführtes System, bei dem Unternehmen $CO_2$-Zertifikate kaufen \& handeln müssen, um diese ausstoßen zu dürfen.
+        			\item \textbf{GAP:} Sehr großes EU-Programm, mit dem  die Landwirtschaft in der EU gefördert und ökologisch transformiert wird.
+	        		\item \textbf{Pariser Klimaabkommen:} Wichtigstes internationales Klimaschutzabkommen, welches die Erderwärmung bis 2100 auf 1,5 \degree C verglichen mit dem Durchschnitt von 1850-1900 begrenzen soll.
+        }
+	}%
+	{Asyl}{
+		\newcommand{\policy}{Asylpolitik}
+        \newcommand{\themeOne}{Lastenverteilung \newline in der EU}
+        \newcommand{\themeTwo}{Ausmaß der Kontrolle der EU-Außengrenzen}
+        \newcommand{\themeThree}{Strenge bezüglich Asylanträge \& Rückführungen}
+
+        \newcommand{\evpOne}{\small Fester Verteilungsmechanismus \& Asyl- und Integrationsfonds}
+        \newcommand{\evpTwo}{\small Stärkere Kontrolle \& Drittstaatenverfahren}
+        \newcommand{\evpThree}{\small Schnellere Rückführungen \& einheitliche Aufnahmebedingungen}
+        
+        \newcommand{\sdOne}{\small Fester Verteilungsmechanismus, Asyl- und Integrationsfonds \& Unterstützung belastete Staaten}
+        \newcommand{\sdTwo}{\small Gesicherte Grenzen, aber keine Drittstaatenverfahren}
+        \newcommand{\sdThree}{\small Unterstützung bei Antrag \& Integration durch EUAA}
+        
+        \newcommand{\reOne}{\small Fester Verteilungsmechanismus \& Asyl- und Integrationsfonds}
+        \newcommand{\reTwo}{\small Stärkere Kontrolle \& Drittstaatenverfahren}
+        \newcommand{\reThree}{\small Schnellere Rückführungen \& einheitliche Aufnahmebedingungen}
+
+        \newcommand{\greenOne}{\small Fester Verteilungsmechanismus, Asyl- und Integrationsfonds \& Unterstützung belastete Staaten}
+        \newcommand{\greenTwo}{\small Ausbau der Seenotrettung \& Verhinderung von Drittstaatenverfahren}
+        \newcommand{\greenThree}{\small Humane Aufnahme von Schutzsuchenden \& Wahrung der Menschenrechte bei Rückführungen}
+        
+        \newcommand{\idOne}{\small Keinerlei Verpflichtung der Mitgliedstaaten}
+        \newcommand{\idTwo}{\small Verhinderung illegaler Migration durch Abschottung}
+        \newcommand{\idThree}{\small Schnelle Rückführungen, maximal temporäre Aufnahme}
+
+        \newcommand{\glossar}{
+        		\item \textbf{Dublin-Verordnung:} Legt fest, dass der EU-Mitgliedstaat für Asylverfahren zuständig ist, der zuerst von Asylsuchendem betreten wurde.
+        		\item \textbf{Solidaritätsmechanismus:} Jeder EU-Mitgliedstaat muss einen bestimmten Anteil der Asylsuchenden aufnehmen.
+        		\item \textbf{Drittstaatenverfahren:} Schutzsuchende sollen in Nicht-EU-Staaten gebracht und deren Asylantrag dort bearbeitet werden (bspw. in Albanien).
+        }
+	}%
+	{Armee}{
+		\newcommand{\policy}{Außen- und Sicherheitspolitik}
+        \newcommand{\themeOne}{Internationale \newline Kooperation}
+        \newcommand{\themeTwo}{Militärische vs. zivile Interventionen}
+        \newcommand{\themeThree}{Erhöhung von Verteidigungsausgaben}
+        
+        \newcommand{\evpOne}{\small Ergänzung mit NATO \& keine Parallelstrukturen}
+        \newcommand{\evpTwo}{\small EU muss Truppen in Krisensituationen schicken können}
+        \newcommand{\evpThree}{\small Sowohl auf europäischer als auch nationaler Ebene}
+        
+        \newcommand{\sdOne}{\small Ergänzung mit NATO \& keine Parallelstrukturen}
+        \newcommand{\sdTwo}{\small Auch Diplomatie \& Friedenssicherung vorantreiben}
+        \newcommand{\sdThree}{\small Sowohl auf europäischer als auch nationaler Ebene, aber v.a. effizientere Ausgaben}
+
+        \newcommand{\reOne}{\small Ergänzung mit NATO, aber selbstständige EU}
+        \newcommand{\reTwo}{\small Militärische Verteidigung der EU \& Unterstützung Verbündeter essenziell}
+        \newcommand{\reThree}{\small Sowohl auf europäischer als auch nationaler Ebene, aber v.a. effizientere Ausgaben}
+
+        \newcommand{\greenOne}{\small Enge Zusammenarbeit mit Demokratien, keine Waffen an Diktaturen}
+        \newcommand{\greenTwo}{\small Auch Diplomatie, Umweltschutz \& Entwicklungshilfe für langfristige Sicherheit}
+        \newcommand{\greenThree}{\small Eher verstärkte EU-Kooperation, um Ausgaben effizienter zu nutzen}
+        
+        \newcommand{\idOne}{\small NATO nur als Verteidigungsbündnis \& eigenständige nationale Diplomatie}
+        \newcommand{\idTwo}{\small Militärische Landesverteidigung \& friedliche Zusammenarbeit}
+        \newcommand{\idThree}{\small Nationale Entscheidung über Verteidigungsausgaben}
+
+        \newcommand{\glossar}{
+            \item \textbf{Europäische Verteidigungs-\newline agentur:} Unterstützt EU-\newline Mitgliedstaaten bei der Entwicklung ihrer militärischen Ressourcen 
+            \item \textbf{Hoher Vertreter für Außen- und Sicherheitspolitik:} Vizepräsident der EU-Kommission, der als "EU-Außenminister" agiert
+            \item \textbf{Rüstungskontrolle:} Internationale Vereinbarungen zur Verringerung/zum Verbot bestimmter Waffen
+            \item \textbf{Verteidigungsfonds:} Geldreserve der EU, aus der Rüstungsprojekte der Mitgliedstaaten gefördert werden
+     	}
+	}%
+}
+
+
+
+\begin{document}
+\vspace*{1cm}
+
+\noindent \textbf{\huge Fraktionspapier}\\
+\newline
+\textbf{\huge \Fraktionsname}
+\newline
+
+\vspace{1cm}
+\noindent
+\begin{minipage}[t]{0.45\textwidth}
+    \textbf{\Large Einführung}\\
+    \newline
+    Du bist Abgeordnete:r im Europäischen Parlament und gehörst der Fraktion \Fraktionsname\ (\Fraktionskuerzel) an. Dein Ziel ist es, die Interessen und Standpunkte der \Fraktionskuerzel -Fraktion durchzusetzen. Zugleich kommst du aus einem der 27 EU-Mitgliedstaaten und hast somit eine besondere Perspektive auf die \policy. In deinen Entscheidungen bist du aber allein deinem Gewissen und deinen Wähler:innen verpflichtet. \newline
+    
+    \vspace*{0.4cm}
+    
+    \textbf{\Large Begriffsdefinitionen}\\
+    \raggedright
+    \vspace{-0.5cm}
+    \begin{itemize}
+        \item \textbf{BIP:} Wert aller produzierten Waren \& Dienstleistungen $\to$ Wohlstandsmaß
+        \glossar
+    \end{itemize}
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.45\textwidth}
+    \textbf{\Large Fraktionsdaten}\\
+    \begin{itemize}
+        \item Größe: Die \Fraktionskuerzel -Fraktion ist mit \numSeats\ von 720 Abgeordneten die \groesse\ Fraktion im Europäischen Parlament.
+        \item Vorsitz: \vorsitz
+        \item Zusammensetzung: \Beschreibung\ aus \numCountry\ Mitgliedstaaten arbeiten in der \Fraktionskuerzel -Fraktion zusammen.
+    \end{itemize}
+    \vspace*{0.4cm}
+    
+    \textbf{\Large Ablauf}\\
+    \raggedright
+    \vspace{-0.5cm}
+    \begin{itemize}
+        \item \timeEinf: Einführung
+        \item \timeFrakOne: 1. Fraktionssitzung
+        \item \timeAuss: Ausschusssitzung
+        \item \timeMittag: Mittagspause
+        \item \timeFrakTwo: 2. Fraktionssitzung
+        \item \timeFinVerh: Finale Verhandlungsphase
+        \item \timePlenar: Plenarsitzung
+        \item \timeDebr: Debriefing \& Feedback
+    \end{itemize}
+\end{minipage}
+
+\begin{tikzpicture}[remember picture, overlay]
+        % Top left corner
+        \node at ([xshift=10mm, yshift=-8mm] current page.north west) [anchor=north west, inner sep=0pt] {
+            {\jeflogo}
+        };
+        
+        % Top right corner
+        \node at ([xshift=-7.5mm, yshift=-6mm] current page.north east) [anchor=north east, inner sep=0pt] {
+            {\simeplogo}
+        };
+        
+        \node at ([xshift=-12mm, yshift=-35mm] current page.north east) [anchor=north east, inner sep=0pt] {
+			{\fraktionslogo}        		
+        	};
+        
+        % Bottom left corner
+        \node[anchor=south west, inner sep=0pt, text width=4.5cm, align=left] at ([xshift=10mm, yshift=12mm] current page.south west) {
+            \small Kofinanziert durch:\\[3mm]
+            \financelogo
+        };
+        
+    
+        % Bottom right corner
+        \node[anchor=south east, inner sep=0pt, text width=4.5cm, align=right] at ([xshift=-10mm, yshift=10mm] current page.south east) {
+            \small Unterstützt durch:\\[3mm]
+            \citylogo
+        };
+    
+
+    \end{tikzpicture}
+
+\newpage
+
+\vspace*{1cm}
+
+\noindent\textbf{\Large Leitlinien}
+\newline
+
+\leitlinien
+
+\vspace*{1cm}
+
+\noindent\textbf{\Large Ansichten zur \policy}
+\newline
+
+\policyPosition
+
+\begin{tikzpicture}[remember picture, overlay]
+        % Top left corner
+        \node at ([xshift=10mm, yshift=-8mm] current page.north west) [anchor=north west, inner sep=0pt] {
+            {\jeflogo}
+        };
+        
+        % Top right corner
+        \node at ([xshift=-7.5mm, yshift=-6mm] current page.north east) [anchor=north east, inner sep=0pt] {
+            {\simeplogo}
+        }; 
+
+\end{tikzpicture}
+
+\newpage
+
+\begin{tikzpicture}[remember picture, overlay]
+        % Top left corner
+        \node at ([xshift=10mm, yshift=-8mm] current page.north west) [anchor=north west, inner sep=0pt] {
+            {\jeflogo}
+        };
+        
+        % Top right corner
+        \node at ([xshift=-7.5mm, yshift=-6mm] current page.north east) [anchor=north east, inner sep=0pt] {
+            {\simeplogo}
+        }; 
+
+\end{tikzpicture}
+
+\vspace*{1cm}
+
+\begin{minipage}[t]{0.45\textwidth}
+    \textbf{\Large Reichweite der EU-Kompetenzen}
+    \raggedright
+    \begin{itemize}
+        \item \textbf{EVP}: {\small Ausbau EU-Kompetenzen, aber Eigenständigkeit erhalten}
+        \item \textbf{S\&D}: {\small Deutlicher Ausbau EU-Kompetenzen}
+        \item \textbf{Renew}: {\small Deutlicher Ausbau EU-Kompetenzen in Schlüsselbereichen}
+        \item \textbf{Grüne}: {\small Deutlicher Ausbau EU-Kompetenzen}
+        \item \textbf{PfE}: {\small Deutliche Verringerung EU-Kompetenzen}
+    \end{itemize}
+    \textbf{\Large Werte}
+    \raggedright
+    \begin{itemize}
+        \item \textbf{EVP}: {\small Jüdisch-christliche Werte, Grundrechte \& Rechtsstaatlichkeit}
+        \item \textbf{S\&D}: {\small Soziale Gerechtigkeit, Vielfalt \& Solidarität}
+        \item \textbf{Renew}: {\small Wohlstand, persönliche Freiheit \& technologischer Fortschritt}
+        \item \textbf{Grüne}: {\small Soziale Gerechtigkeit, Nachhaltigkeit \& Bekämpfung von Diskriminierung}
+        \item \textbf{PfE}: {\small Wohlstand, Sicherheit \& nationale Identität}
+    \end{itemize}
+    \textbf{\Large Thematische Schwerpunkte}
+    \raggedright
+    \begin{itemize}
+        \item \textbf{EVP}: {\small Wirtschaftswachstum, Begrenzung Migration \& Sicherheitspolitik}
+        \item \textbf{S\&D}: {\small Arbeitslosigkeit, Sozialstandards \& Chancengleichheit}
+        \item \textbf{Renew}: {\small Wirtschaftswachstum, Bürgerrechte \& digitale Transformation}
+        \item \textbf{Grüne}: {\small Generationengerechtigkeit, grünes Wachstum \& Menschenrechte}
+        \item \textbf{PfE}: {\small Wirtschaftswachstum, Minimierung Migration \& Beschränkung EU-Kompetenzen}
+    \end{itemize}
+    
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.45\textwidth}
+    \textbf{\Large \themeOne}
+    \raggedright
+    \begin{itemize}
+        \item \textbf{EVP}: \evpOne
+        \item \textbf{S\&D}: \sdOne
+        \item \textbf{Renew}: \reOne
+        \item \textbf{Grüne}: \greenOne
+        \item \textbf{PfE}: \idOne
+    \end{itemize}
+    \textbf{\Large \themeTwo}
+    \raggedright
+    \begin{itemize}
+        \item \textbf{EVP}: \evpTwo
+        \item \textbf{S\&D}: \sdTwo
+        \item \textbf{Renew}: \reTwo
+        \item \textbf{Grüne}: \greenTwo
+        \item \textbf{PfE}: \idTwo
+    \end{itemize}
+    \textbf{\Large \themeThree}
+    \raggedright
+    \begin{itemize}
+        \item \textbf{EVP}: \evpThree
+        \item \textbf{S\&D}: \sdThree
+        \item \textbf{Renew}: \reThree
+        \item \textbf{Grüne}: \greenThree
+        \item \textbf{PfE}: \idThree
+    \end{itemize}
+\end{minipage}
+
+
+\end{document}

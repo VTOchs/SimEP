@@ -1,0 +1,591 @@
+\documentclass{beamer}
+\usepackage{JEFtheme}
+\usepackage{caption}
+\usepackage{datatool}
+\usepackage{expl3} 
+\usepackage{etoolbox}
+\usepackage{media9}
+\usepackage{tikz}
+\usepackage{xstring}
+\usepackage[german]{babel}
+\usetikzlibrary{calc}
+\input{../Meta/var.tex}
+\input{../Meta/shinyin.tex}
+
+% -------------------------------------------------------------
+
+% Load the CSV file
+\DTLloaddb{caucus}{../../Daten/caucus_data.csv}
+% Define the custom command to print seats for a given party
+\newcommand{\partyseats}[1]{%
+    \DTLforeach{caucus}{\party=party,\total=total}{%
+        \ifthenelse{\equal{#1}{\party}}{\total}{}%
+    }%
+}
+
+\newcommand{\partycountries}[1]{%
+    \DTLforeach{caucus}{\party=party,\countries=countries}{%
+        \ifthenelse{\equal{#1}{\party}}{\countries}{}%
+    }%
+}
+
+\newcommand{\partypres}[1]{%
+    \DTLforeach{caucus}{\party=party,\presidents=presidents}{%
+        \ifthenelse{\equal{#1}{\party}}{\presidents}{}%
+    }%
+}
+
+\IfEqCase{\Fraktion}{%
+	{EVP}{
+		\newcommand{\Fraktionsname}{Europäische Volkspartei}
+		\newcommand{\Fraktionskuerzel}{EVP}
+    		\newcommand{\Beschreibung}{Christdemokratische Parteien (Deutschland: CSU, CDU, Familienpartei \& ÖDP)}
+		\newcommand{\numSeats}{\partyseats{EPP}}
+    		\newcommand{\numCountry}{\partycountries{EPP}}
+	    \newcommand{\vorsitz}{\partypres{EPP}}
+    		\newcommand{\firstRepFirst}{Manfred}
+	    \newcommand{\firstRepLast}{Weber}
+    		\newcommand{\secondRepFirst}{Christian}
+	    \newcommand{\secondRepLast}{Doleschal}
+    		\newcommand{\thirdRepFirst}{Angelika}
+	    \newcommand{\thirdRepLast}{Niebler}
+	    \newcommand{\bayRep}{Christian Doleschal, Markus Ferber, Monika Hohlmeier, Stefan Köhler, Angelika Niebler, Manfred Weber (alle CSU)}
+	    \newcommand{\ytLink}{https://www.youtube.com/watch?v=NYn4GiWgKnY}
+    		\newcommand{\mentiLink}{https://www.mentimeter.com/app/presentation/alrsevtupz9jujejctc454nb6sr66n4e}
+%    		\newcommand{\mentiLink}{https://www.mentimeter.com/app/presentation/aljaii61wqsr9584kueahncffv2fztg2/yrfokq5ttbh7/edit}
+    		\newcommand{\ideology}{
+        		\begin{itemize}
+            		\item \textbf{Einstellung zur Reichweite der EU-Kompetenzen:} \newline
+	            Ausbau EU-Kompetenzen, aber Eigenständigkeit erhalten
+        		    \item \textbf{Werte:} \newline
+            		Jüdisch-christliche Werte, Grundrechte \& Rechtsstaatlichkeit
+	            \item \textbf{Thematische Schwerpunkte:} \newline
+    		        Wirtschaftswachstum, Begrenzung Migration \& Sicherheitspolitik
+        		\end{itemize}
+    		}
+    		\IfEqCase{\Thema}{%
+    			{Green Deal}{
+				\newcommand{\goals}{
+		            \begin{itemize}
+        			        \item \textbf{Verhältnis Ökonomie \& Ökologie:} \newline
+                			Wohlstandsicherung durch grüne, marktwirtschaftliche Transformation
+		                \item \textbf{Vermeidung von Treibhausgasen:} \newline
+            			    $CO_2$-arme Technologien fördern
+		                \item \textbf{Nachhaltige Landwirtschaft:} \newline
+        			        Stärkere Unterstützung von Landwirten
+		            \end{itemize}
+        			}
+    			}%
+    			{Asyl}{
+				\newcommand{\goals}{
+                    \begin{itemize}
+                        \item \textbf{Lastenverteilung in der EU:} \newline
+                        Fester Verteilungsmechanismus \& Asyl- und Integrationsfonds
+                        \item \textbf{Ausmaß der Kontrolle der EU-Außengrenzen:} \newline
+                        Stärkere Kontrolle \& Drittstaatenverfahren
+                        \item \textbf{Strenge bezüglich Asylanträge \& Rückführungen:} \newline
+                        Schnellere Rückführungen \& einheitliche Aufnahmebedingungen
+                    \end{itemize}
+		            }    			
+    			}%    			
+    			{Armee}{
+    				\newcommand{\goals}{
+                    \begin{itemize}
+                        \item \textbf{Internationale Kooperation:} \newline 
+                        Ergänzung mit NATO \& keine Parallelstrukturen
+                        \item \textbf{Militärische vs. zivile Interventionen:} \newline 
+                        EU muss Truppen in Krisensituationen schicken können
+                        \item \textbf{Erhöhung von Verteidigungsausgaben:} \newline 
+                        Sowohl auf europäischer als auch nationaler Ebene
+                    \end{itemize}
+                	}
+    			}%
+    		}
+	}%
+	{SD}{
+		\newcommand{\Fraktionsname}{Progressive Allianz der Sozialdemokraten}
+        \newcommand{\Fraktionskuerzel}{S\&D}
+        \newcommand{\Beschreibung}{Sozialdemokratische Parteien (Deutschland: SPD)}
+		\newcommand{\numSeats}{\partyseats{S&D}}
+	    \newcommand{\numCountry}{\partycountries{S&D}}
+    		\newcommand{\vorsitz}{\partypres{S&D}}
+        \newcommand{\firstRepFirst}{Iratxe}
+        \newcommand{\firstRepLast}{García Pérez}
+        \newcommand{\secondRepFirst}{Maria}
+        \newcommand{\secondRepLast}{Noichl}
+        \newcommand{\thirdRepFirst}{Katarina}
+        \newcommand{\thirdRepLast}{Barley}
+        \newcommand{\bayRep}{Maria Noichl (SPD)}
+        \newcommand{\ytLink}{https://www.youtube.com/watch?v=yQvvrR9Kytk}
+        \newcommand{\mentiLink}{https://www.mentimeter.com/app/presentation/almi4qxwc2gdc3sgkhuahrsoxocfaone}
+%        \newcommand{\mentiLink}{https://www.mentimeter.com/app/presentation/al7wxshhd36d3nkpzbrqnohk8qb5fpxk/rfnjby4xxvqc/edit}
+        \newcommand{\ideology}{
+            \begin{itemize}
+                \item \textbf{Einstellung zur Reichweite der EU-Kompetenzen:} \newline
+                Deutlicher Ausbau EU-Kompetenzen
+                \item \textbf{Werte:} \newline
+                Soziale Gerechtigkeit, Vielfalt \& Solidarität
+                \item \textbf{Thematische Schwerpunkte:} \newline
+                Arbeitslosigkeit, Sozialstandards \& Chancengleichheit
+            \end{itemize}
+        }
+        \IfEqCase{\Thema}{%
+    			{Green Deal}{
+				\newcommand{\goals}{
+                \begin{itemize}
+                    \item \textbf{Verhältnis Ökonomie \& Ökologie:} \newline
+                    Starker Klimaschutz mit sozialer Absicherung
+                    \item \textbf{Vermeidung von Treibhausgasen:} \newline
+                    Kombination aus Investitionen, Emissionshandel \& Regulierung
+                    \item \textbf{Nachhaltige Landwirtschaft:} \newline
+                    Strengere Auflagen, aber Ausgleich für Betroffene
+                \end{itemize}
+            		}    			
+    			}%
+    			{Asyl}{
+				\newcommand{\goals}{
+                        \begin{itemize}
+                            \item \textbf{Lastenverteilung in der EU:} \newline
+                            Fester Verteilungsmechanismus, Asyl- und Integrationsfonds \& Unterstützung belastete Staaten
+                            \item \textbf{Ausmaß der Kontrolle der EU-Außengrenzen:} \newline
+                            Gesicherte Grenzen, aber keine Drittstaatenverfahren
+                            \item \textbf{Strenge bezüglich Asylanträge \& Rückführungen:} \newline
+                            Unterstützung bei Antrag \& Integration durch EUAA
+                        \end{itemize}
+                	}    			
+    			}%    			
+    			{Armee}{
+    				\newcommand{\goals}{
+                        \begin{itemize}
+                            \item \textbf{Internationale Kooperation:} \newline 
+                            Ergänzung mit NATO \& keine Parallelstrukturen
+                            \item \textbf{Militärische vs. zivile Interventionen:} \newline 
+                            Auch Diplomatie \& Friedenssicherung vorantreiben
+                            \item \textbf{Erhöhung von Verteidigungsausgaben:} \newline 
+                            Sowohl auf europäischer als auch nationaler Ebene, \newline aber v.a. effizientere Ausgaben
+                        \end{itemize}
+                	}
+    			}%
+    		}
+	}%
+	{RE}{%
+		\newcommand{\Fraktionsname}{Renew Europe}
+        \newcommand{\Fraktionskuerzel}{Renew}
+        \newcommand{\Beschreibung}{Liberale \& zentristische Parteien (Deutschland: FDP \& Freie Wähler)}
+		\newcommand{\numSeats}{\partyseats{Renew}}
+		\newcommand{\numCountry}{\partycountries{Renew}}
+		\newcommand{\vorsitz}{\partypres{Renew}}
+        \newcommand{\firstRepFirst}{Valérie}
+        \newcommand{\firstRepLast}{Hayer}
+        \newcommand{\secondRepFirst}{Christine}
+        \newcommand{\secondRepLast}{Singer}
+        \newcommand{\thirdRepFirst}{Marie-Agnes}
+        \newcommand{\thirdRepLast}{Strack-Zimmermann}
+        \newcommand{\bayRep}{Christine Singer (FW)}
+        \newcommand{\ytLink}{https://www.youtube.com/watch?v=UAZCWktgnHk}
+        \newcommand{\mentiLink}{https://www.mentimeter.com/app/presentation/al5goqpf2o7tjv96wjjrb1s5wq3gb6ea}
+%        \newcommand{\mentiLink}{https://www.mentimeter.com/app/presentation/alnhpraecewuehsj59fvvbwmr5rr4qv5/9tgubiaigyvq/edit}
+        \newcommand{\ideology}{
+    		    \begin{itemize}
+ 	            \item \textbf{Einstellung zur Reichweite der EU-Kompetenzen:} \newline
+            		Deutlicher Ausbau EU-Kompetenzen in Schlüsselbereichen
+  				\item \textbf{Werte:} \newline
+        		    Wohlstand, persönliche Freiheit \& technologischer Fortschritt
+      	        \item \textbf{Thematische Schwerpunkte:} \newline
+      	        Wirtschaftswachstum, Bürgerrechte \& digitale Transformation
+   	        \end{itemize}
+     	}
+     	\IfEqCase{\Thema}{%
+    			{Green Deal}{
+				\newcommand{\goals}{
+                    \begin{itemize}
+                        \item \textbf{Verhältnis Ökonomie \& Ökologie:} \newline
+                        Wohlstandsicherung durch grüne Transformation
+                        \item \textbf{Vermeidung von Treibhausgasen:} \newline
+                        Technologieoffenheit, Emissionshandel ausbauen \& $CO_2$-arme Technologien fördern
+                        \item \textbf{Nachhaltige Landwirtschaft:} \newline
+                        Neue Geschäftsmöglichkeiten für Landwirte schaffen
+                    \end{itemize}
+                	}   			
+    			}%
+    			{Asyl}{
+				\newcommand{\goals}{
+       				\begin{itemize}
+		               	\item \textbf{Lastenverteilung in der EU:} \newline
+        			    Fester Verteilungsmechanismus \& Asyl- und Integrationsfonds
+			            \item \textbf{Ausmaß der Kontrolle der EU-Außengrenzen:} \newline
+			            Stärkere Kontrolle \& Drittstaatenverfahren
+            			\item \textbf{Strenge bezüglich Asylanträge \& Rückführungen:} \newline
+		                Schnellere Rückführungen \& einheitliche Aufnahmebedingungen
+                    \end{itemize}
+                	} 		
+    			}%    			
+    			{Armee}{
+    				\newcommand{\goals}{
+                 	\begin{itemize}
+				         \item \textbf{Internationale Kooperation:} \newline 
+        				     Ergänzung mit NATO, aber selbstständige EU
+                     	 \item \textbf{Militärische vs. zivile Interventionen:} \newline 
+		                 Militärische Verteidigung der EU \& Unterstützung Verbündeter essenziell
+        		            \item \textbf{Erhöhung von Verteidigungsausgaben:} \newline 
+            		        Sowohl auf europäischer als auch nationaler Ebene,\newline aber v.a. effizientere Ausgaben
+                    \end{itemize}
+                	}
+    			}%
+    		}
+	}%
+	{Green}{%
+		\newcommand{\Fraktionsname}{Die Grünen/Europäische Freie Allianz}
+		\newcommand{\Fraktionskuerzel}{Grüne/EFA}
+		\newcommand{\Beschreibung}{Grüne \& Regionalparteien (Deutschland: Bündnis 90/Die Grünen \& 	Volt)}
+		\newcommand{\numSeats}{\partyseats{Greens/EFA}}
+		\newcommand{\numCountry}{\partycountries{Greens/EFA}}
+		\newcommand{\vorsitz}{\partypres{Greens/EFA}}
+		\newcommand{\firstRepFirst}{Terry}
+		\newcommand{\firstRepLast}{Reintke}
+		\newcommand{\secondRepFirst}{Bas}
+		\newcommand{\secondRepLast}{Eickhout}
+		\newcommand{\thirdRepFirst}{Damian}
+		\newcommand{\thirdRepLast}{Boeselager}
+		\newcommand{\bayRep}{keine}
+		\newcommand{\ytLink}{https://www.youtube.com/watch?v=jvEYYq81ayc}
+		\newcommand{\mentiLink}{https://www.mentimeter.com/app/presentation/al3u56bobyjj3szevfrpkuf1s77kfz8y}
+%		\newcommand{\mentiLink}{https://www.mentimeter.com/app/presentation/al1i5xcgps6ebgkjkkaynpenbymqghof/581xj431nfms/edit}
+		\newcommand{\ideology}{
+     		\begin{itemize}
+				\item \textbf{Einstellung zur Reichweite der EU-Kompetenzen:} \newline
+				Deutlicher Ausbau EU-Kompetenzen
+				\item \textbf{Werte:} \newline
+				Soziale Gerechtigkeit, Nachhaltigkeit \& Bekämpfung von Diskriminierung 
+				\item \textbf{Thematische Schwerpunkte:} \newline
+				Generationengerechtigkeit, grünes Wachstum \& Menschenrechte
+			\end{itemize}
+   		}
+   		\IfEqCase{\Thema}{%
+    			{Green Deal}{
+				\newcommand{\goals}{
+                    \begin{itemize}
+                      	\item \textbf{Verhältnis Ökonomie \& Ökologie:} \newline
+                      	Wirtschaft muss Menschen \& Umwelt dienen   
+                     	\item \textbf{Vermeidung von Treibhausgasen:} \newline
+                      	Massiver Ausbau erneuerbarer Energien \& Förderung umweltfreundlicher Technologien
+                       	\item \textbf{Nachhaltige Landwirtschaft:} \newline
+                		Starke Förderung nachhaltiger Landwirtschaft
+                		\end{itemize}
+                	}   		
+    			}%
+    			{Asyl}{
+				\newcommand{\goals}{
+                 	\begin{itemize}
+                       	\item \textbf{Lastenverteilung in der EU:} \newline
+                      	Fester Verteilungsmechanismus, Asyl- und Integrationsfonds \& Unterstützung belastete Staaten
+                    	\item \textbf{Ausmaß der Kontrolle der EU-Außengrenzen:} \newline
+                    	Ausbau der Seenotrettung \& Verhinderung von Drittstaatenverfahren
+                     	\item \textbf{Strenge bezüglich Asylanträge \& Rückführungen:} \newline
+                       	Humane Aufnahme von Schutzsuchenden \& Wahrung der Menschenrechte bei Rückführungen
+                		\end{itemize}
+             		} 			
+    			}%    			
+    			{Armee}{
+    				\newcommand{\goals}{
+               		\begin{itemize}
+                   		\item \textbf{Internationale Kooperation:} \newline 
+						Enge Zusammenarbeit mit Demokratien, keine Waffen an Diktaturen
+                      	\item \textbf{Militärische vs. zivile Interventionen:} \newline 
+                        Auch Diplomatie, Umweltschutz \& Entwicklungshilfe für langfristige Sicherheit
+                        \item \textbf{Erhöhung von Verteidigungsausgaben:} \newline
+                        Eher verstärkte EU-Kooperation, \newline um Ausgaben effizienter zu nutzen
+              		\end{itemize}
+                	}
+    			}%
+    		}
+	}%
+	{PfE}{%
+		\newcommand{\Fraktionsname}{Patrioten für Europa}
+		\newcommand{\Fraktionskuerzel}{PfE}
+		\newcommand{\Beschreibung}{Nationalistische und rechtspopulistische Parteien (Deutschland: keine)}
+		\newcommand{\numSeats}{\partyseats{PfE}}
+		\newcommand{\numCountry}{\partycountries{PfE}}
+		\newcommand{\vorsitz}{\partypres{PfE}}
+		\newcommand{\firstRepFirst}{Jordan}
+		\newcommand{\firstRepLast}{Bardella}
+		\newcommand{\secondRepFirst}{Harald}
+		\newcommand{\secondRepLast}{Vilimsky}
+		\newcommand{\thirdRepFirst}{Klara}
+		\newcommand{\thirdRepLast}{Dostalova}
+		\newcommand{\bayRep}{keine}
+		\newcommand{\ytLink}{https://www.youtube.com/watch?v=r_7K1lTyj0g}
+		\newcommand{\mentiLink}{https://www.mentimeter.com/app/presentation/alx4cz657ubzeu6zfdufp1v63wkiepqo}
+%		\newcommand{\mentiLink}{https://www.mentimeter.com/app/presentation/al9ug9c4rq7uagt38oriz58i79aubhuq/5rbzys1z2x7u/edit}
+		\newcommand{\ideology}{
+  			\begin{itemize}
+            		\item \textbf{Einstellung zur Reichweite der EU-Kompetenzen:} \newline
+                	Deutliche Verringerung EU-Kompetenzen
+               	\item \textbf{Werte:} \newline
+     			Wohlstand, Sicherheit \& nationale Identität
+               	\item \textbf{Thematische Schwerpunkte:} \newline
+                	Wirtschaftswachstum, Minimierung Migration \& Beschränkung EU-Kompetenzen
+        		\end{itemize}
+       	}
+       	\IfEqCase{\Thema}{%
+    			{Green Deal}{
+				\newcommand{\goals}{
+                    \begin{itemize}
+                      	\item \textbf{Verhältnis Ökonomie \& Ökologie:} \newline
+                   		Klimaschutz behindert wirtschaftliches Wachstum
+                    	\item \textbf{Vermeidung von Treibhausgasen:} \newline
+                       	Technologieoffenheit, bspw. bei nuklearer Energie
+       					\item \textbf{Nachhaltige Landwirtschaft:} \newline
+						Keine staatliche Lenkung der Wirtschaft durch Subventionen oder Verbote
+	               	\end{itemize}
+                	}   			
+    			}%
+    			{Asyl}{
+				\newcommand{\goals}{
+                 	\begin{itemize}
+                        \item \textbf{Lastenverteilung in der EU:} \newline
+                     	Keinerlei Verpflichtung der Mitgliedstaaten
+                       	\item \textbf{Ausmaß der Kontrolle der EU-Außengrenzen:} \newline
+                       	Verhinderung illegaler Migration durch Abschottung
+                      	\item \textbf{Strenge bezüglich Asylanträge \& Rückführungen:} \newline
+                   		Schnelle Rückführungen, maximal temporäre Aufnahme
+              		\end{itemize}
+             		} 			
+    			}%    			
+    			{Armee}{
+    				\newcommand{\goals}{
+               		\begin{itemize}
+                        \item \textbf{Internationale Kooperation:} \newline
+                        NATO nur als Verteidigungsbündnis \& eigenständige nationale Diplomatie
+                        \item \textbf{Militärische vs. zivile Interventionen:} \newline
+                        Militärische Landesverteidigung \& friedliche Zusammenarbeit
+                        \item \textbf{Erhöhung von Verteidigungsausgaben:} \newline
+                 		Nationale Entscheidung über Verteidigungsausgaben
+             		\end{itemize}
+                	}
+    			}%
+    		}
+	}%			
+}
+
+
+
+
+\IfEqCase{\Thema}{%
+	{Green Deal}{%
+		\newcommand{\ausschuesse}{
+   		     \begin{enumerate}
+        		    \item Haushaltsausschuss (BUDG)
+            		\item Ausschuss für Industrie, Forschung und Energie (ITRE)
+    	    		    \item Ausschuss für Verkehr und Tourismus (TRAN)
+    		        \item Ausschuss für Landwirtschaft und ländliche Entwicklung (AGRI)
+	        \end{enumerate}
+		}        
+        \newcommand{\ausschussgruppen}{
+        			\item Art. 3 - \textit{Haushaltsausschuss (BUDG)}
+       		    \item Art. 4 - \textit{Ausschuss für Industrie, Forschung und Energie (ITRE)}
+      		    \item Art. 5 - \textit{Ausschuss für Verkehr und Tourismus (TRAN)}
+      		    \item Art. 6 - \textit{Ausschuss für Landwirtschaft und ländliche Entwicklung (AGRI)}
+	    }
+	    \newcommand{\entwurf}{Gesetzesentwurf}
+    		\newcommand{\policy}{Umwelt- und Klimaschutzpolitik}
+	}%
+	{Asyl}{%
+		\newcommand{\ausschuesse}{
+            \begin{enumerate}
+                \item Haushaltsausschuss (BUDG)
+				\item Ausschuss für Beschäftigung und soziale Angelegenheiten (EMPL)
+                \item Unterausschuss für Menschenrechte (DROI)
+				\item Ausschuss für bürgerliche Freiheiten, Justiz und Inneres (LIBE)
+            \end{enumerate}
+    		}
+    		\newcommand{\ausschussgruppen}{
+                	\item Art. 3 - \textit{Haushaltsausschuss (BUDG)}
+				\item Art. 4 - \textit{Ausschuss für Beschäftigung und soziale Angelegenheiten (EMPL)}
+                	\item Art. 5 - \textit{Unterausschuss für Menschenrechte (DROI)}
+				\item Art. 6 - \textit{Ausschuss für bürgerliche Freiheiten, Justiz und Inneres (LIBE)}
+    		}
+	    \newcommand{\entwurf}{Gesetzesentwurf}
+	    \newcommand{\policy}{Asylpolitik}
+	}%
+	{Armee}{
+		\newcommand{\ausschuesse}{
+            \begin{enumerate}
+                \item Haushaltsausschuss (BUDG)
+                \item Ausschuss für bürgerliche Freiheiten, Justiz und Inneres (LIBE)
+                \item Ausschuss für Sicherheit und Verteidigung (SEDE)
+            \end{enumerate}
+    		}
+    		\newcommand{\ausschussgruppen}{
+            		\item Finanzierung - \newline \textit{Haushaltsausschuss (BUDG)}
+	            	\item Dienstrecht - \newline \textit{Ausschuss für bürgerliche Freiheiten, Justiz und Inneres (LIBE)}
+    		        \item Gegenstand und Ziele - \textit{Ausschuss für Sicherheit und Verteidigung (SEDE)}
+	    	}
+	    \newcommand{\entwurf}{Entschließungsentwurf}
+	    \newcommand{\policy}{Außen- und Sicherheitspolitik}
+	}%
+}
+
+
+
+
+
+
+
+
+%Information to be included in the title page:
+\title{\Fraktionsname\ (\Fraktionskuerzel)}
+\subtitle{1. Fraktionssitzung}
+\date{\datum}
+
+\begin{document}
+\frame{\titlepage}
+
+\begin{frame}{Ablauf}
+\vspace{-1.5cm}
+\begin{itemize}
+    \item Einstieg
+    \item Vorstellung und Besprechung des \entwurf s
+    \item Vorstellung \Fraktionsname
+    \item Rollenaufnahme
+    \item Formulierung eines Änderungsantrags je Ausschuss\newline (in Arbeitsgruppen)
+    \ausschuesse
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Bildkarten}
+\vspace{-1cm}
+\begin{itemize}
+    \item Nehmt euch eine der Bildkarten, die euch anspricht
+    \item Überlegt kurz, was euch mit dem Abgebildeten verbindet
+    \item Nennt kurz reihum euren Namen und eure Klasse
+    \item Teilt dann eure Gedanken mit der Gruppe
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Unterlagenmappen}
+\vspace{-1cm}
+\begin{enumerate}
+    \item Fraktionspapier
+    \item \entwurf
+    \item Länderpapier
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{\entwurf\ zur \policy}
+\vspace{-1cm}
+\begin{itemize}
+	\item Der \entwurf\ ist in verschiedene Abschnitte aufgeteilt:
+	\begin{enumerate}
+		\item Einführung \& Begründung
+		\ausschussgruppen	
+	\end{enumerate}
+	\item Besprechung der einzelnen Abschnitte
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Fraktionen}
+\vspace{-0.5cm}
+\begin{center}
+    Abgeordnete schließen sich gemäß ihrer politischen Vorstellungen und nicht ihrem Herkunftsland zu Fraktionen zusammen:
+\end{center}
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=5.5cm]{Bilder/EP_seats.jpg}
+\end{figure}
+\end{frame}
+
+%\begin{frame}{\Fraktionsname}
+%\vspace{-1.5cm}
+%    \begin{itemize}
+%        \item \href{\mentiLink}{Mentimeter}
+%        \item \href{\ytLink}{Introfilm}
+%    \end{itemize}
+%\end{frame}
+
+\begin{frame}{\Fraktionsname} % allgemeine Infos
+\vspace{-0.5cm}
+\begin{itemize}
+    \item \Beschreibung
+    \item \numSeats\ Abgeordnete aus \numCountry\ Mitgliedstaaten
+    \item Fraktionsvorsitz: \vorsitz
+    \item Bayerische Abgeordnete: \bayRep
+\end{itemize}
+\begin{figure}[!htb]
+\minipage{0.32\textwidth}
+    \centering
+    \includegraphics[height=2cm]{Bilder/rep1_\Fraktion.jpg}
+  \caption*{\centering \firstRepFirst\ \firstRepLast}
+\endminipage\hfill
+\minipage{0.32\textwidth}
+    \centering
+    \includegraphics[height=2cm]{Bilder/rep2_\Fraktion.jpg}
+    \caption*{\centering \secondRepFirst\ \secondRepLast}
+\endminipage\hfill
+\minipage{0.32\textwidth}
+    \centering
+    \includegraphics[height=2cm]{Bilder/rep3_\Fraktion.jpg}
+    \caption*{\centering \thirdRepFirst\ \thirdRepLast}
+\endminipage
+\end{figure}
+\end{frame}
+
+\begin{frame}{\Fraktionsname\ - Leitlinien}
+\vspace{-1.5cm}
+\ideology
+\end{frame}
+
+\begin{frame}{\Fraktionsname\ - \Thema}
+\vspace{-1.5cm}
+\goals
+\end{frame}
+
+\begin{frame}{Zwischenprüfung}
+\vspace{-1.5cm}
+\begin{itemize}
+	\item Kahoot zu \entwurf\ \& \Fraktion
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Rolleneinteilung}
+\vspace{-1.5cm}
+\begin{itemize}
+	\item Ihr werdet nun einer der \anzahlcomm\ Ausschüsse zugeteilt
+	\item Das Namensschild repräsentiert die Rolle, die ihr bis heute Nachmittag spielen werdet
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ausschussgruppen}
+\vspace{-1cm}
+\begin{itemize}
+    \item Trefft euch in den folgenden Ausschüssen:
+	\begin{enumerate}
+		\ausschussgruppen
+	\end{enumerate}	    
+    \item Besprecht den Gesetzesentwurf (insbesondere den Abschnitt eures Ausschusses) und an welchen Punkten es aus der Sicht der \Fraktionskuerzel -Fraktion noch Änderungsbedarf gibt.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Ausschussgruppen}
+\vspace{-1.5cm}
+\begin{itemize}
+    \item Legt euch auf einen (!) Änderungsantrag je Ausschussgruppe fest
+    \item Bestimmt eine:n Ausschusssprecher:in, der:die eure Position und euren Änderungsantrag in der Ausschusssitzung kurz präsentiert
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{So geht's weiter}
+\vspace{-1.5cm}
+\begin{itemize}
+    \item \timeAuss: Ausschusssitzung \newline (Beratung der Änderungsanträge)
+    \item \timeMittag: Mittagspause
+    \item \timeFrakTwo: 2. Fraktionssitzung (Besprechung Ausschusssitzung \& finaler Änderungsantrag)
+    \item \timeFinVerh: Finale Verhandlungsphase
+    \item \timePlenar: Plenarsitzung \newline (Abschlussdebatte \& -abstimmung)
+    \item \timeDebr: Debriefing \& Feedback
+\end{itemize}
+\end{frame}
+
+\end{document}

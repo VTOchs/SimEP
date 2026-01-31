@@ -1,0 +1,93 @@
+\documentclass{beamer}
+\usepackage{JEFtheme}
+\usepackage{caption}
+\usepackage{csvsimple}
+\usepackage{expl3} 
+\usepackage{etoolbox}
+\usepackage{xstring}
+\usepackage[german]{babel}
+\input{../Meta/var.tex}
+\input{../Meta/shinyin.tex}
+
+% -------------------------------------------------------------
+
+\IfEqCase{\Fraktion}{%
+	{EVP}{
+		\newcommand{\Fraktionsname}{Europäische Volkspartei}
+	    \newcommand{\Fraktionskuerzel}{EVP}
+	}%
+	{SD}{
+		\newcommand{\Fraktionsname}{Progressive Allianz der Sozialdemokraten}
+        \newcommand{\Fraktionskuerzel}{S\&D}
+	}%
+	{RE}{
+		\newcommand{\Fraktionsname}{Renew Europe}
+		\newcommand{\Fraktionskuerzel}{Renew}
+	}%
+	{Green}{
+		\newcommand{\Fraktionsname}{Die Grünen/Europäische Freie Allianz}
+		\newcommand{\Fraktionskuerzel}{Grüne/EFA}
+	}%
+	{PfE}{
+		\newcommand{\Fraktionsname}{Patrioten für Europa}
+		\newcommand{\Fraktionskuerzel}{PfE}
+	}%
+}
+
+
+%Information to be included in the title page:
+\title{\Fraktionsname\ (\Fraktionskuerzel)}
+\subtitle{2. Fraktionssitzung}
+\date{\datum}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}{Ausschusssitzungen} % Besprechung Ausschusssitzungen
+\vspace{-1.5cm}
+Berichtet aus jedem Ausschuss:
+\newline
+\begin{itemize}
+    \item Habt ihr euren Änderungsantrag durchbekommen?
+    \item Welche anderen Fraktionen haben ihre Änderungsanträge durchbekommen?
+    \item Wer hat mit wem zusammengearbeitet?
+    \item Ist der Gesetzesentwurf nun mehr in unserem Sinne oder weniger?
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Finaler Änderungsantrag} % Festlegung finaler ÄA
+\vspace{-0.5cm}
+In der Plenarsitzung können wir als Fraktion noch einen (!) finalen Änderungsantrag stellen. Beispielsweise: \newline
+\begin{itemize}
+    \item Alter Änderungsantrag, der im Ausschuss abgelehnt wurde
+    \item Verworfene Idee aus erster Fraktionssitzung
+    \item Rückgängigmachen von Änderungsantrag, der uns überhaupt nicht passt
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Wahl des Fraktionsvorstands}
+\vspace{-1.5cm}
+\begin{itemize}
+    \item Fraktionsvorsitzende:r hält Abschlussrede (ca. 1 Min.)
+    \item Vize begründet finalen Änderungsantrag (ca. 30 Sek.) \& nimmt Stellung zu den ÄA der anderen Fraktionen \newline (jeweils ca. 10 Sek.)
+\end{itemize} 
+\end{frame}
+
+\begin{frame}{Einteilung Verhandlungsgruppen}
+%\vspace{-1.5cm}
+\begin{itemize}
+    \item Der Rest teilt sich einer der anderen Fraktionen zu, sodass sich vier gleich große Gruppen ergeben.
+    \item Eure Aufgabe ist es mit den Verhandlungsgruppen der Fraktion, der ihr zugeordnet seid, über letzte Kompromisse zu diskutieren.
+    \item Geht dabei ähnlich zur Ausschusssitzung vor, endgültige Änderungen an euren Änderungsanträgen (bspw. Kompromissformulierungen oder Zusammenlegungen von Anträgen) müsst ihr dem Parlamentspräsidium bis XXX melden.
+\end{itemize} 
+\end{frame}
+
+
+\begin{frame}{Rede Fraktionsvorsitzende}
+\vspace{-1.5cm}
+Falls die beiden Fraktionsvorsitzenden noch nicht wissen, was sie sagen sollen, helfen wir euch gerne!
+\end{frame}
+
+
+\end{document}

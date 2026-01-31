@@ -1,0 +1,44 @@
+\documentclass{beamer}
+\usepackage{JEFtheme}
+\usepackage{caption}
+\usepackage{expl3} 
+\usepackage{etoolbox}
+\usepackage{tikz}
+\usepackage{verbatim}
+\usepackage{xstring}
+\usepackage[german]{babel}
+\usetikzlibrary{calc}
+\input{../Meta/var.tex}
+\input{../Meta/shinyin.tex}
+
+%Information to be included in the title page:
+\title{Simulation des Europäischen Parlaments}
+\subtitle{Plenarsitzung}
+\date{\datum}
+
+\begin{document}
+\frame{\titlepage}
+
+\begin{frame}{Grußwort \stadtvertreter\ (\stadtvertreterOffice)}
+\vspace{-1.5cm}
+    \begin{center}
+        \includegraphics[height=4cm]{Bilder/Stadt\_\city.png}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Agenda Plenarsitzung}
+\vspace{-1.5cm}
+    \begin{enumerate}
+        \item Finale Änderungsanträge
+        \begin{itemize}
+            \item Fraktionsvize der entsprechenden Fraktion begründet diesen kurz (ca. 30 Sek.)
+            \item Fraktionsvize der anderen Fraktionen nehmen im Uhrzeigersinn kurz Stellung (ca. 10 Sek.)
+            \item Abstimmung über den Änderungsantrag
+        \end{itemize}
+        \item Abschlussreden der Fraktionsvorsitzenden (ca. 1 Min.)
+        \item Abstimmung über gesamten Gesetzesentwurf
+    \end{enumerate}
+\end{frame}
+
+
+\end{document}

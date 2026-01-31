@@ -1,0 +1,154 @@
+\documentclass{beamer}
+\usepackage{JEFtheme}
+\usepackage{caption}
+\usepackage{datatool}
+\usepackage{expl3} 
+\usepackage{etoolbox}
+\usepackage{xstring}
+\usepackage[german]{babel}
+\input{../Meta/var.tex}
+\input{../Meta/shinyin.tex}
+
+% -------------------------------------------------------------
+
+\DTLloaddb{committees}{../../Daten/committee_data.csv}
+\newcommand{\comPres}[1]{%
+    \DTLforeach{committees}{\name=name,\pres=pres}{%
+        \ifthenelse{\equal{#1}{\name}}{\pres}{}%
+    }%
+}
+
+\newcommand{\comMember}[1]{%
+    \DTLforeach{committees}{\name=name,\meps=meps}{%
+        \ifthenelse{\equal{#1}{\name}}{\meps}{}%
+    }%
+}
+
+% Folien:
+\IfEqCase{\Committee}{
+	{AFET}{
+		\newcommand{\Auschussname}{Ausschuss für Auswärtige Angelegenheiten}
+    		\newcommand{\auschussThemen}{
+    		\begin{itemize}
+        		\item Gemeinsame Außen- und Sicherheitspolitik (GASP)
+			\item Beziehung zu anderen EU-Organen und internationalen Organisationen
+        		\item Stärkung der politischen Beziehungen zu Drittländern
+        		\item Fragen im Zusammenhang mit der Demokratie, der Rechtsstaatlichkeit, den Menschenrechten
+    		\end{itemize}
+    		}
+	}%
+	{AGRI}{
+		\newcommand{\Auschussname}{Ausschuss für Landwirtschaft und ländliche Entwicklung}
+        \newcommand{\auschussThemen}{
+	        \begin{itemize}
+    	        		\item Gemeinsame Agrarpolitik
+             	\item Ländliche Entwicklung
+               	\item Tier- und Pflanzenschutz
+               	\item Qualität von landwirtschaftlichen Produkten
+             \end{itemize}
+         }
+	}%
+	{BUDG}{
+		\newcommand{\Auschussname}{Haushaltsausschuss}
+       	\newcommand{\auschussThemen}{Planung \& Überwachung EU-Haushalt}
+	}%
+	{DROI}{
+		\newcommand{\Auschussname}{Unterausschuss für Menschenrechte}
+       	\newcommand{\auschussThemen}{
+        		\begin{itemize}
+            		\item Menschenrechte
+                	\item Demokratie
+                	\item Minderheitenschutz
+            	\end{itemize}
+      	}
+	}%
+	{EMPL}{
+		\newcommand{\Auschussname}{Ausschuss für Beschäftigung und soziale Angelegenheiten}
+       	\newcommand{\auschussThemen}{
+        		\begin{itemize}
+            		\item Beschäftigungspolitik und Arbeitsrecht
+                	\item Arbeitsbedingungen und Gesundheitsschutz am Arbeitsplatz
+                	\item Berufsbildung und Freizügigkeit der Arbeitnehmer:innen
+            	\end{itemize}
+      	}
+	}%
+	{ITRE}{
+		\newcommand{\Auschussname}{Ausschuss für Industrie, Forschung und Energie}
+       	\newcommand{\auschussThemen}{
+        		\begin{itemize}
+            		\item Industriepolitik der EU (Förderung von neuen Technologien und KMUs)
+                	\item Forschungspolitik
+                	\item Energiepolitik
+                	\item Informationstechnologie
+            	\end{itemize}
+    		}
+	}%
+	{LIBE}{
+		\newcommand{\Auschussname}{Ausschuss für bürgerliche Freiheiten, Justiz und Inneres}
+        	\newcommand{\auschussThemen}{
+        		\begin{itemize}
+            		\item Schutz von Menschenrechten \& Minderheiten
+                	\item Bekämpfung von Diskriminierung
+               	\item Datenschutz
+                	\item Asyl- und Migrationspolitik
+                	\item Justiz- \& Polizeikooperation
+          	\end{itemize}
+                        }
+	}%
+	{SEDE}{
+		\newcommand{\Auschussname}{Ausschuss für Sicherheit und Verteidigung}
+      	\newcommand{\auschussThemen}{            
+        		\begin{itemize}
+            		\item Sicherheit- und Verteidigungspolitik
+                	\item Beziehungen zu strategischen Partnern
+           	\end{itemize}}
+	}%
+	{TRAN}{
+		\newcommand{\Auschussname}{Ausschuss für Verkehr und Tourismus}
+		\newcommand{\auschussThemen}{
+        		\begin{itemize}
+            		\item Eisenbahn- und Straßenverkehr
+            		\item Binnen- und Seeschifffahrt und Luftfahrt
+               	\item Tourismus
+       		\end{itemize}}
+	}%
+}
+
+       
+            
+                    
+       
+                            
+%Information to be included in the title page:
+\title{\Auschussname\ (\Committee)}
+\date{\datum}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}{\Auschussname} % spezieller Ausschuss
+    \vspace{-1cm}
+    \begin{itemize}
+        \item Hauptsächliche inhaltliche Arbeit passiert in den Ausschüssen
+        \item \Auschussname:
+        \begin{itemize}
+            \item Anzahl der Mitglieder: \comMember{\Committee}
+            \item Vorsitz: \comPres{\Committee}
+            \item Themengebiete: \auschussThemen
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Ausschusssitzung} % Vorstellung ÄA
+    \vspace{-1cm}
+    \begin{enumerate}
+        \item Stellt euren Änderungsantrag kurz vor
+        \item Verhandelt informell mit den anderen Fraktionen, um eurem Antrag eine Mehrheit zu sichern
+        \item Änderungsanträge können noch angepasst oder mit dem Antrag einer anderen Fraktion zusammengelegt werden
+        \item Formelle Abstimmung: Mehr JA- als NEIN-Stimmen zur Annahme nötig
+    \end{enumerate}
+\end{frame}
+
+
+\end{document}
