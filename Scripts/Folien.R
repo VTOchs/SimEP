@@ -208,6 +208,7 @@ write_csv(df_caucus, "Daten/caucus_data.csv", quote = "none")
 
 # Committees --------------------------------------------------------------
 
+
 df_com_paste <- data.frame()
 com_list <- c("afet", "agri", "budg", "droi", "empl", "itre", "libe", "sede", "tran")
 
@@ -217,10 +218,9 @@ for (committee in com_list) {
                 read_html() |>
                 as_xml_document()
   
-  list_name <- xml_find_all(xml_com, "//*[@id='docMembersList']//*[@class='erpl_title-h4 t-item']") |> 
-    xml_text() |> 
-    lapply(capitalize_first_letter) |> 
-    unlist()
+  list_name <- xml_com |>
+    html_elements("img[src*='mepphoto']") |>
+    html_attr("alt")
   
   list_misc <- xml_find_all(xml_com, "//*[@id='docMembersList']//*[@class='sln-additional-info']") |> 
     xml_text() |> 

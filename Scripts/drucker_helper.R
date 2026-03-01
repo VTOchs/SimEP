@@ -12,11 +12,19 @@ countries <-  c("AUT", "BEL", "BGR", "HRV",
                 "POL", "PRT", "ROU", "SVK",
                 "SVN", "ESP", "SWE")
 
+
+
 # für die LaTeX-Dokumente
 translation_data_latex <- data.frame(
   en = c("EPP", "S&D", "Renew", "G / EFA", "PfE", "ECR", "The Left", "ESN", "Verts/ALE", "PPE", "Greens/EFA"),
   de = c("EVP", "SD", "RE", "Green", "PfE", "EKR", "Die Linke", "ESN", "Green", "EVP", "Green")
 )
+
+get_slido_link <- function(city, group){
+  slido_link <- read_excel("Daten/data_slido.xlsx") |> 
+    filter(Stadt == city) |> 
+    pull(group)
+}
 
 translate_latex <- function(group){
   translation_data_latex[translation_data_latex$en == group, "de"]

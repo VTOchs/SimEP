@@ -62,11 +62,11 @@ body <- dashboardBody(
                       selected = "Armee"),
           selectInput("city", "Stadt:",
                       choices = c("Coburg", "München", "Nürnberg", "Passau", "Ulm"),
-                      selected = "Nürnberg"),
+                      selected = "Ulm"),
           dateInput("date", "Datum:", format = "dd.mm.yyyy", language = "de", weekstart = 1),
           selectInput("resPath", "Zielordner:",
                       choices = c("Coburg", "München", "Nürnberg", "Passau", "Ulm"),
-                      selected = "Nürnberg")
+                      selected = "Ulm")
         )
       )
     ),
@@ -76,8 +76,11 @@ body <- dashboardBody(
       fluidRow(
         box(
           width = 12,
-          textInput("localSup", "Lokale Unterstützung:", "das Europe Direct Nürnberg"),
-          textInput("sponsor", "Sponsor:", "die Stadt Nürnberg"),
+          selectInput("localSup", "Lokale Unterstützung:",
+                      choices = c("das Europe Direct Coburg", "das Europe Direct München", "das Europe Direct Nürnberg",
+                                  "die Universität Passau", "das Europe Direct Ulm"),
+                      selected = "Ulm"),
+          textInput("sponsor", "Sponsor:", "die Europäische Kommission"),
           textInput("jefvorsitz", "Vorsitz JEF Bayern:", value = "Farras Fathi"),
           selectInput("gender", "Geschlecht Vorsitz JEF Bayern", choices = c("M", "W"), selected = "M")
         )
@@ -108,13 +111,19 @@ body <- dashboardBody(
       fluidRow(
         box(
           width = 4,
-          textInput("pol", "Politiker:", value = "Maria Noichl"),
-          textInput("pol_office", "Politiker (Amt):", value = "Mitglied des Europäischen Parlaments"),
+          selectInput("pol", "Politiker:",
+                      choices = c("Karl Freller", "Johannes Schätzl", "Maria Noichl"),
+                      selected = "Maria Noichl"),
+          selectInput("pol_office", "Politiker (Amt):",
+                      choices = c("Mitglied des Europäischen Parlaments", "Mitglied des Bundestags",
+                                  "Mitglied des Landtags"),
+                      selected = "Mitglied des Europäischen Parlaments"),
           textInput("stadtvert", "Stadtvertreter:", value = "TBD"),
           textInput("stadtvert_office", "Stadtvertreter (Amt):", value = "TBD"),
           selectInput("location", "Veranstaltungsort:",
-                      choices = c("im Münchner Rathaus", "im Nürnberger Rathaus", "im Ulmer Rathaus"),
-                      selected = "im Nürnberger Rathaus")
+                      choices = c("in den Räumlichkeiten des Coburger Stadtjugendrings", "im Münchner Rathaus",
+                                  "im Nürnberger Rathaus", "in der Universität Passau", "im Ulmer Rathaus"),
+                      selected = "im Ulmer Rathaus")
         ),
         box(
           width = 4,
@@ -169,7 +178,8 @@ server <- function(input, output, session) {
        } else if (input$topic == "Armee") {
          committees <- c("BUDG", "LIBE", "SEDE")
        }
-               
+         
+
         # Fix LaTex-Variables into tex-File
         sink("LaTeX/Meta/shinyin.tex")
         cat(paste0("\\newcommand\\Thema{", input$topic, "}\n"))
@@ -242,6 +252,7 @@ server <- function(input, output, session) {
       for (group in groupsEP) {
         {sink("LaTeX/Meta/var.tex")
         paste0("\\newcommand\\Fraktion{", group, "}\n") |> cat()
+        paste0("\\newcommand\\slidolink{", get_slido_link(input$city, group), "}\n") |> cat()
         sink()}
         
         tools::texi2pdf("LaTeX/Folien/1. Fraktionssitzung.tex", clean = T)
