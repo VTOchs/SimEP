@@ -281,9 +281,47 @@ durch Pestizide und Chemikalien müssen beibehalten werden. \newline
                     Darüber hinaus sollen die militärischen Fähigkeiten der Mitgliedstaaten durch eine gemeinsame Beschaffung und Entwicklung gestärkt werden, Eingriffe in die militärische Souveränität der Mitgliedstaaten, wie beispielsweise die Schaffung einer europäischen Armee, sollen aber unterbunden werden. \newline
 
                     Wie auch in anderen Bereichen wehrt sich die PfE gegen höhere gemeinsame Ausgaben und erweiterte Entscheidungskompetenzen auf europäischer Ebene. Vielmehr legt sie Wert auf zwischenstaatliche Abstimmung, um die Interessen der einzelnen Länder zu berücksichtigen und gemeinsame Lösungen zu finden.
-                }
+               	}
+    		}%
+    	}
+	}%
+	{Left}{
+		\newcommand{\Fraktionsname}{Die Linke}
+        \newcommand{\Fraktionskuerzel}{GUE/NGL}
+        \newcommand{\Beschreibung}{Linke, sozialistische \& kommunistische Parteien (Deutschland:~Die Linke \& Tierschutzpartei)}
+        \newcommand{\numSeats}{\partyseats{The Left}}
+        \newcommand{\numCountry}{\partycountries{The Left}}
+        \newcommand{\groesse}{\partyrank{The Left}}
+        \newcommand{\vorsitz}{\partypres{The Left}}
+        \newcommand{\leitlinien}{
+				Die Fraktion die Linke (GUE/NGL) verfolgt das Ziel eines sozial gerechten, demokratischen und solidarischen Europas. Im Mittelpunkt ihrer Politik steht die Überzeugung, dass wirtschaftliche Entwicklung den Menschen dienen muss und nicht den Interessen großer Unternehmen. Ein zentraler Schwerpunkt liegt auf der Bekämpfung sozialer Ungleichheit innerhalb der Europäischen Union, zum Beispiel durch höhere Löhne.
+
+Darüber hinaus engagiert sich die Fraktion für den ökologischen Umbau der Wirtschaft. Der Kampf gegen den Klimawandel wird mit sozialen Maßnahmen verbunden, damit die Kosten nicht vor allem von einkommensschwachen Bevölkerungsgruppen getragen werden müssen.
+
+Die Linksfraktion legt außerdem großen Wert auf Demokratie, Bürgerrechte und Transparenz in der Europäischen Union. Sie kritisiert wirtschaftliche Machtkonzentrationen und fordert eine stärkere demokratische Kontrolle über wirtschaftliche und politische Entscheidungen auf europäischer Ebene.
+        
+        }
+        \IfEqCase{\Thema}{
+    			{Green Deal}{
+    				\newcommand{\policyPosition}{
+            			-
+        			}
     			}%
-    		}
+    			{Asyl}{
+    				\newcommand{\policyPosition}{
+						-
+            		}
+    			}%
+    			{Armee}{
+    				\newcommand{\policyPosition}{
+                		Die Linksfraktion verfolgt einen stark friedensorientierten Ansatz. Sie setzt auf Diplomatie, internationale Zusammenarbeit und Konfliktprävention anstelle militärischer Aufrüstung. Sie beklagt eine immer stärkere Tendenz, außenpolitische Ziele mit militärischen Mitteln durchzusetzen und lehnt militärische Maßnahmen daher grundsätzlich ab. 
+
+	Deshalb kritisiert sie auch Initiativen innerhalb der EU, die zu einer verstärkten militärischen Integration oder höheren Rüstungsausgaben führen könnten. Programme wie der europäische Verteidigungsfonds werden häufig skeptisch bewertet, da sie aus Sicht der Fraktion militärische Projekte fördern, statt friedenspolitische Maßnahmen zu stärken. Zudem kritisieren die Linken, dass durch höhere Militärausgaben weniger Geld für zentrale soziale Anliegen wie etwa Wohnungsbau und Klimaschutz zur Verfügung steht. 
+
+	Stattdessen fordert die Fraktion eine aktive Rolle der EU bei internationaler Rüstungskontrolle, Abrüstung und Friedenspolitik. Auch globale Gerechtigkeit, Entwicklungszusammenarbeit und Klimaschutz werden als wichtige Faktoren für langfristige Sicherheit und Stabilität betrachtet.
+               	}
+    		}%
+    	}
 	}%
 }
     
@@ -303,17 +341,22 @@ durch Pestizide und Chemikalien müssen beibehalten werden. \newline
 	    	\newcommand{\sdTwo}{\small Kombination aus Investitionen, Emissionshandel \& Regulierung}
     		\newcommand{\sdThree}{\small Strengere Auflagen, aber Ausgleich für Betroffene}
     	
+	    	\newcommand{\pfeOne}{\small Klimaschutz behindert wirtschaftliches Wachstum}
+    		\newcommand{\pfeTwo}{\small Technologieoffenheit, bspw. bei nuklearer Energie}
+	    	\newcommand{\pfeThree}{\small Keine staatliche Lenkung der Wirtschaft durch Subventionen oder Verbote}
+	    	    	
 	    	\newcommand{\reOne}{\small Wohlstandsicherung durch grüne Transformation}
     		\newcommand{\reTwo}{\small Technologieoffenheit, Emissionshandel ausbauen \& $CO_2$-arme Technologien fördern}
 	    	\newcommand{\reThree}{\small Neue Geschäftsmöglichkeiten für Landwirte schaffen}
     		
-    		\newcommand{\greenOne}{\small Wirtschaft muss Menschen \& Umwelt dienen}
-	    	\newcommand{\greenTwo}{\small Massiver Ausbau erneuerbarer Energien \& Förderung umweltfreundlicher Technologien}
-    		\newcommand{\greenThree}{\small Starke Förderung nachhaltiger Landwirtschaft}
+    		\newcommand{\fifthOne}{\small Wirtschaft muss Menschen \& Umwelt dienen}
+	    	\newcommand{\fifthTwo}{\small Massiver Ausbau erneuerbarer Energien \& Förderung umweltfreundlicher Technologien}
+    		\newcommand{\fifthThree}{\small Starke Förderung nachhaltiger Landwirtschaft}
     		
-	    	\newcommand{\idOne}{\small Klimaschutz behindert wirtschaftliches Wachstum}
-    		\newcommand{\idTwo}{\small Technologieoffenheit, bspw. bei nuklearer Energie}
-	    	\newcommand{\idThree}{\small Keine staatliche Lenkung der Wirtschaft durch Subventionen oder Verbote}
+    		\newcommand{\fifthGenOne}{\small Deutlicher Ausbau EU-Kompetenzen}
+    		\newcommand{\fifthGenTwo}{\small Soziale Gerechtigkeit, Nachhaltigkeit \& Bekämpfung von Diskriminierung}
+    		\newcommand{\fifthGenThree}{\small Generationengerechtigkeit, grünes Wachstum \& Menschenrechte}
+	    
     		\newcommand{\glossar}{
         			\item \textbf{Emissionshandel:} 2005 in EU eingeführtes System, bei dem Unternehmen $CO_2$-Zertifikate kaufen \& handeln müssen, um diese ausstoßen zu dürfen.
         			\item \textbf{GAP:} Sehr großes EU-Programm, mit dem  die Landwirtschaft in der EU gefördert und ökologisch transformiert wird.
@@ -334,17 +377,21 @@ durch Pestizide und Chemikalien müssen beibehalten werden. \newline
         \newcommand{\sdTwo}{\small Gesicherte Grenzen, aber keine Drittstaatenverfahren}
         \newcommand{\sdThree}{\small Unterstützung bei Antrag \& Integration durch EUAA}
         
+        \newcommand{\pfeOne}{\small Keinerlei Verpflichtung der Mitgliedstaaten}
+        \newcommand{\pfeTwo}{\small Verhinderung illegaler Migration durch Abschottung}
+        \newcommand{\pfeThree}{\small Schnelle Rückführungen, maximal temporäre Aufnahme}
+                
         \newcommand{\reOne}{\small Fester Verteilungsmechanismus \& Asyl- und Integrationsfonds}
         \newcommand{\reTwo}{\small Stärkere Kontrolle \& Drittstaatenverfahren}
         \newcommand{\reThree}{\small Schnellere Rückführungen \& einheitliche Aufnahmebedingungen}
 
-        \newcommand{\greenOne}{\small Fester Verteilungsmechanismus, Asyl- und Integrationsfonds \& Unterstützung belastete Staaten}
-        \newcommand{\greenTwo}{\small Ausbau der Seenotrettung \& Verhinderung von Drittstaatenverfahren}
-        \newcommand{\greenThree}{\small Humane Aufnahme von Schutzsuchenden \& Wahrung der Menschenrechte bei Rückführungen}
+        \newcommand{\fifthOne}{\small Fester Verteilungsmechanismus, Asyl- und Integrationsfonds \& Unterstützung belastete Staaten}
+        \newcommand{\fifthTwo}{\small Ausbau der Seenotrettung \& Verhinderung von Drittstaatenverfahren}
+        \newcommand{\fifthThree}{\small Humane Aufnahme von Schutzsuchenden \& Wahrung der Menschenrechte bei Rückführungen}
         
-        \newcommand{\idOne}{\small Keinerlei Verpflichtung der Mitgliedstaaten}
-        \newcommand{\idTwo}{\small Verhinderung illegaler Migration durch Abschottung}
-        \newcommand{\idThree}{\small Schnelle Rückführungen, maximal temporäre Aufnahme}
+   		\newcommand{\fifthGenOne}{\small Deutlicher Ausbau EU-Kompetenzen}
+  		\newcommand{\fifthGenTwo}{\small Soziale Gerechtigkeit, Nachhaltigkeit \& Bekämpfung von Diskriminierung}
+  		\newcommand{\fifthGenThree}{\small Generationengerechtigkeit, grünes Wachstum \& Menschenrechte}
 
         \newcommand{\glossar}{
         		\item \textbf{Dublin-Verordnung:} Legt fest, dass der EU-Mitgliedstaat für Asylverfahren zuständig ist, der zuerst von Asylsuchendem betreten wurde.
@@ -365,18 +412,35 @@ durch Pestizide und Chemikalien müssen beibehalten werden. \newline
         \newcommand{\sdOne}{\small Ergänzung mit NATO \& keine Parallelstrukturen}
         \newcommand{\sdTwo}{\small Auch Diplomatie \& Friedenssicherung vorantreiben}
         \newcommand{\sdThree}{\small Sowohl auf europäischer als auch nationaler Ebene, aber v.a. effizientere Ausgaben}
-
+        
+        \newcommand{\pfeOne}{\small NATO nur als Verteidigungsbündnis \& eigenständige nationale Diplomatie}
+        \newcommand{\pfeTwo}{\small Militärische Landesverteidigung \& friedliche Zusammenarbeit}
+        \newcommand{\pfeThree}{\small Nationale Entscheidung über Verteidigungsausgaben}
+        
         \newcommand{\reOne}{\small Ergänzung mit NATO, aber selbstständige EU}
         \newcommand{\reTwo}{\small Militärische Verteidigung der EU \& Unterstützung Verbündeter essenziell}
         \newcommand{\reThree}{\small Sowohl auf europäischer als auch nationaler Ebene, aber v.a. effizientere Ausgaben}
-
-        \newcommand{\greenOne}{\small Enge Zusammenarbeit mit Demokratien, keine Waffen an Diktaturen}
-        \newcommand{\greenTwo}{\small Auch Diplomatie, Umweltschutz \& Entwicklungshilfe für langfristige Sicherheit}
-        \newcommand{\greenThree}{\small Eher verstärkte EU-Kooperation, um Ausgaben effizienter zu nutzen}
         
-        \newcommand{\idOne}{\small NATO nur als Verteidigungsbündnis \& eigenständige nationale Diplomatie}
-        \newcommand{\idTwo}{\small Militärische Landesverteidigung \& friedliche Zusammenarbeit}
-        \newcommand{\idThree}{\small Nationale Entscheidung über Verteidigungsausgaben}
+        \IfEqCase{\fifthGroup}{
+			{Grüne}{
+		        \newcommand{\fifthOne}{\small Enge Zusammenarbeit mit Demokratien, keine Waffen an Diktaturen}
+	        	\newcommand{\fifthTwo}{\small Auch Diplomatie, Umweltschutz \& Entwicklungshilfe für langfristige Sicherheit}
+        		\newcommand{\fifthThree}{\small Eher verstärkte EU-Kooperation, um Ausgaben effizienter zu nutzen}	
+        		
+   		   		\newcommand{\fifthGenOne}{\small Deutlicher Ausbau EU-Kompetenzen}
+  				\newcommand{\fifthGenTwo}{\small Soziale Gerechtigkeit, Nachhaltigkeit \& Bekämpfung von Diskriminierung}
+		  		\newcommand{\fifthGenThree}{\small Generationengerechtigkeit, grünes Wachstum \& Menschenrechte}			
+			}%
+			{Linke}{
+		    	\newcommand{\fifthOne}{\small Kritische Haltung gegenüber der NATO}
+		    	\newcommand{\fifthTwo}{\small Fokus auf Diplomatie \& Entwicklungszusammenarbeit, keine Militärinterventionen}
+	    		\newcommand{\fifthThree}{\small Ablehnung jeglicher Erhöhung}
+	    		
+  		   		\newcommand{\fifthGenOne}{\small Stärkere Kompetenzen Sozialpolitik, mehr demokratische Kontrolle}
+  				\newcommand{\fifthGenTwo}{\small Soziale Gerechtigkeit, Frieden \& Gleichberechtigung}
+		  		\newcommand{\fifthGenThree}{\small Sozialstaat, Klimagerechtigkeit \& Demokratisierung}
+			}%
+		}
 
         \newcommand{\glossar}{
             \item \textbf{Europäische Verteidigungs-\newline agentur:} Unterstützt EU-\newline Mitgliedstaaten bei der Entwicklung ihrer militärischen Ressourcen 
@@ -516,33 +580,34 @@ durch Pestizide und Chemikalien müssen beibehalten werden. \newline
 
 \vspace*{1cm}
 
+
 \begin{minipage}[t]{0.45\textwidth}
     \textbf{\Large Reichweite der EU-Kompetenzen}
     \raggedright
     \begin{itemize}
         \item \textbf{EVP}: {\small Ausbau EU-Kompetenzen, aber Eigenständigkeit erhalten}
         \item \textbf{S\&D}: {\small Deutlicher Ausbau EU-Kompetenzen}
-        \item \textbf{Renew}: {\small Deutlicher Ausbau EU-Kompetenzen in Schlüsselbereichen}
-        \item \textbf{Grüne}: {\small Deutlicher Ausbau EU-Kompetenzen}
         \item \textbf{PfE}: {\small Deutliche Verringerung EU-Kompetenzen}
+        \item \textbf{Renew}: {\small Deutlicher Ausbau EU-Kompetenzen in Schlüsselbereichen}
+        \item \textbf{\fifthGroup}: \fifthGenOne
     \end{itemize}
     \textbf{\Large Werte}
     \raggedright
     \begin{itemize}
         \item \textbf{EVP}: {\small Jüdisch-christliche Werte, Grundrechte \& Rechtsstaatlichkeit}
         \item \textbf{S\&D}: {\small Soziale Gerechtigkeit, Vielfalt \& Solidarität}
-        \item \textbf{Renew}: {\small Wohlstand, persönliche Freiheit \& technologischer Fortschritt}
-        \item \textbf{Grüne}: {\small Soziale Gerechtigkeit, Nachhaltigkeit \& Bekämpfung von Diskriminierung}
         \item \textbf{PfE}: {\small Wohlstand, Sicherheit \& nationale Identität}
+        \item \textbf{Renew}: {\small Wohlstand, persönliche Freiheit \& technologischer Fortschritt}
+        \item \textbf{\fifthGroup}: \fifthGenTwo
     \end{itemize}
     \textbf{\Large Thematische Schwerpunkte}
     \raggedright
     \begin{itemize}
         \item \textbf{EVP}: {\small Wirtschaftswachstum, Begrenzung Migration \& Sicherheitspolitik}
         \item \textbf{S\&D}: {\small Arbeitslosigkeit, Sozialstandards \& Chancengleichheit}
-        \item \textbf{Renew}: {\small Wirtschaftswachstum, Bürgerrechte \& digitale Transformation}
-        \item \textbf{Grüne}: {\small Generationengerechtigkeit, grünes Wachstum \& Menschenrechte}
         \item \textbf{PfE}: {\small Wirtschaftswachstum, Minimierung Migration \& Beschränkung EU-Kompetenzen}
+        \item \textbf{Renew}: {\small Wirtschaftswachstum, Bürgerrechte \& digitale Transformation}
+        \item \textbf{\fifthGroup}: \fifthGenThree
     \end{itemize}
     
 \end{minipage}%
@@ -553,27 +618,27 @@ durch Pestizide und Chemikalien müssen beibehalten werden. \newline
     \begin{itemize}
         \item \textbf{EVP}: \evpOne
         \item \textbf{S\&D}: \sdOne
+        \item \textbf{PfE}: \pfeOne
         \item \textbf{Renew}: \reOne
-        \item \textbf{Grüne}: \greenOne
-        \item \textbf{PfE}: \idOne
+        \item \textbf{\fifthGroup}: \fifthOne
     \end{itemize}
     \textbf{\Large \themeTwo}
     \raggedright
     \begin{itemize}
         \item \textbf{EVP}: \evpTwo
         \item \textbf{S\&D}: \sdTwo
+        \item \textbf{PfE}: \pfeTwo
         \item \textbf{Renew}: \reTwo
-        \item \textbf{Grüne}: \greenTwo
-        \item \textbf{PfE}: \idTwo
+        \item \textbf{\fifthGroup}: \fifthTwo
     \end{itemize}
     \textbf{\Large \themeThree}
     \raggedright
     \begin{itemize}
         \item \textbf{EVP}: \evpThree
         \item \textbf{S\&D}: \sdThree
+        \item \textbf{PfE}: \pfeThree
         \item \textbf{Renew}: \reThree
-        \item \textbf{Grüne}: \greenThree
-        \item \textbf{PfE}: \idThree
+        \item \textbf{\fifthGroup}: \fifthThree
     \end{itemize}
 \end{minipage}
 

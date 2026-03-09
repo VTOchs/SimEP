@@ -133,7 +133,7 @@ caucus_ranks <- rank(-caucus_seats)
 
 
 df_seats <-  df_all |>
-              select(EPP, 'S&D', Renew, 'Greens/EFA', PfE)
+              select(EPP, 'S&D', Renew, 'Greens/EFA', PfE, 'The Left')
               # select(EVP, 'S&D', Renew, 'Grüne/EFA', PfE)
 
 

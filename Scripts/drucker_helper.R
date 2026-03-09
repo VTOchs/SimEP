@@ -2,7 +2,7 @@ library(tidyverse)
 
 # Funktionen --------------------------------------------------------------
 
-groupsEP <- c("EVP", "SD", "RE", "Green", "PfE")
+groupsEP4 <- c("EVP", "SD", "RE", "PfE")
 
 countries <-  c("AUT", "BEL", "BGR", "HRV",
                 "CYP", "CZE", "DNK", "EST",

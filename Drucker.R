@@ -79,7 +79,7 @@ body <- dashboardBody(
           selectInput("localSup", "Lokale Unterstützung:",
                       choices = c("das Europe Direct Coburg", "das Europe Direct München", "das Europe Direct Nürnberg",
                                   "die Universität Passau", "das Europe Direct Ulm"),
-                      selected = "Ulm"),
+                      selected = "das Europe Direct Ulm"),
           textInput("sponsor", "Sponsor:", "die Europäische Kommission"),
           textInput("jefvorsitz", "Vorsitz JEF Bayern:", value = "Farras Fathi"),
           selectInput("gender", "Geschlecht Vorsitz JEF Bayern", choices = c("M", "W"), selected = "M")
@@ -92,6 +92,9 @@ body <- dashboardBody(
       fluidRow(
         box(
           width = 12,
+          selectInput("fifthGroup", "Fünfte Fraktion:",
+                      choices = c("Grüne", "Linke"),
+                      selected = "Linke"),
           textInput("timeVorb", "Uhrzeit Vorbereitung:", value = "07:45-09:00"),
           textInput("timeEinf", "Uhrzeit Briefing:", value = "09:00-09:45"),
           textInput("timeFrakOne", "Uhrzeit 1. Fraktionssitzung:", value = "09:45-11:15"),
@@ -215,6 +218,7 @@ server <- function(input, output, session) {
         cat(paste0("\\newcommand\\pfeRoom{", input$room_pfe, "}\n"))
         cat(paste0("\\newcommand\\numSuS{", input$numSuS, "}\n"))
         cat(paste0("\\newcommand\\location{", input$location, "}\n"))
+        cat(paste0("\\newcommand\\fifthGroup{", input$fifthGroup, "}\n"))
         cat(paste0("\\newcommand\\anzahlcomm{", length(committees), "}\n"))
         sink()}
       ) 
@@ -222,6 +226,8 @@ server <- function(input, output, session) {
   observeEvent(input$print, 
     
     if (input$docs == "Repository") {
+      
+      groupsEP <- append(groupsEP4, ifelse(input$fifthGroup == "Grüne", "Green", "Left"))
       
       if (input$topic == "Green Deal") {
         committees <- c("AGRI", "BUDG", "ITRE", "TRAN")
@@ -330,6 +336,8 @@ server <- function(input, output, session) {
       print(paste0("Repo-Druck (", input$city, ") fertig!"))
       
     } else if (input$docs == "Unterlagen SuS (min. 27)") {
+      
+      groupsEP <- append(groupsEP4, ifelse(input$fifthGroup == "Grüne", "Green", "Left"))
       
       dir.create(file.path(input$resPath), showWarnings = F)
       dir.create(file.path(input$resPath, "Einzeldokumente"), showWarnings = F)
