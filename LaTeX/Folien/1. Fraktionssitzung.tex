@@ -351,7 +351,70 @@
                 	}
     			}%
     		}
-	}%			
+	}%
+	{Left}{%
+		\newcommand{\Fraktionsname}{Die Linke}
+		\newcommand{\Fraktionskuerzel}{GUE/NGL}
+		\newcommand{\Beschreibung}{Linke, sozialistische \& kommunistische Parteien (Deutschland:~Die Linke \& Tierschutzpartei)}
+		\newcommand{\numSeats}{\partyseats{The Left}}
+		\newcommand{\numCountry}{\partycountries{The Left}}
+		\newcommand{\vorsitz}{\partypres{The Left}}
+		\newcommand{\firstRepFirst}{Martin}
+		\newcommand{\firstRepLast}{Schirdewan}
+		\newcommand{\secondRepFirst}{Manon}
+		\newcommand{\secondRepLast}{Aubry}
+		\newcommand{\thirdRepFirst}{Sebastian}
+		\newcommand{\thirdRepLast}{Everding}
+		\newcommand{\bayRep}{keine}
+		\newcommand{\ideology}{
+  			\begin{itemize}
+            		\item \textbf{Einstellung zur Reichweite der EU-Kompetenzen:} \newline
+                	Stärkere Kompetenzen Sozialpolitik, mehr demokratische Kontrolle
+               	\item \textbf{Werte:} \newline
+     			Soziale Gerechtigkeit, Frieden \& Gleichberechtigung
+               	\item \textbf{Thematische Schwerpunkte:} \newline
+                	Sozialstaat, Umverteilung \& Klimagerechtigkeit
+        		\end{itemize}
+       	}
+       	\IfEqCase{\Thema}{%
+    			{Green Deal}{
+				\newcommand{\goals}{
+                    \begin{itemize}
+                      	\item \textbf{Verhältnis Ökonomie \& Ökologie:} \newline
+                      	-
+	                    	\item \textbf{Vermeidung von Treibhausgasen:} \newline
+                       	-
+       					\item \textbf{Nachhaltige Landwirtschaft:} \newline
+						-
+	               	\end{itemize}
+                	}   			
+    			}%
+    			{Asyl}{
+				\newcommand{\goals}{
+                 	\begin{itemize}
+                        \item \textbf{Lastenverteilung in der EU:} \newline
+                     	-
+                       	\item \textbf{Ausmaß der Kontrolle der EU-Außengrenzen:} \newline
+                       	-
+                      	\item \textbf{Strenge bezüglich Asylanträge \& Rückführungen:} \newline
+                   		-
+              		\end{itemize}
+             		} 			
+    			}%			
+    			{Armee}{
+    				\newcommand{\goals}{
+               		\begin{itemize}
+                        \item \textbf{Internationale Kooperation:} \newline
+                        Kritische Haltung gegenüber der NATO
+                        \item \textbf{Militärische vs. zivile Interventionen:} \newline
+                        Fokus auf Diplomatie \& Entwicklungszusammenarbeit, keine Militärinterventionen
+                        \item \textbf{Erhöhung von Verteidigungsausgaben:} \newline
+                 		Ablehnung jeglicher Erhöhung
+             		\end{itemize}
+                	}
+    			}%
+    		}
+	}%	
 }
 
 
@@ -522,7 +585,7 @@
 \begin{frame}{Zwischenprüfung}
 \vspace{-1.5cm}
 \begin{itemize}
-	\item \href{\slidolink}{Slido zum \entwurf\ \& \Fraktion}
+	\item \href{\slidolink}{Slido zum \entwurf\ \& \Fraktionskuerzel}
 \end{itemize}
 \end{frame}
 
