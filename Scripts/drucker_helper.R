@@ -17,7 +17,7 @@ countries <-  c("AUT", "BEL", "BGR", "HRV",
 # für die LaTeX-Dokumente
 translation_data_latex <- data.frame(
   en = c("EPP", "S&D", "Renew", "G / EFA", "PfE", "ECR", "The Left", "ESN", "Verts/ALE", "PPE", "Greens/EFA"),
-  de = c("EVP", "SD", "RE", "Green", "PfE", "EKR", "Die Linke", "ESN", "Green", "EVP", "Green")
+  de = c("EVP", "SD", "RE", "Green", "PfE", "EKR", "Left", "ESN", "Green", "EVP", "Green")
 )
 
 get_slido_link <- function(city, group){
@@ -59,11 +59,18 @@ dhondt <- function (parties, votes, n_seats){
 }
 
 
-get_sus_dist <- function(numSuS, landDist = T){
+
+
+
+
+
+
+
+get_sus_dist <- function(numSuS, groupsEP, landDist = T){
   if (landDist) {
     listTC <- readRDS("Daten/country_party.rds")
     attributes(listTC)$names <- sapply(attributes(listTC)$names, translate_latex) |> unlist()
-    dfCG <- get_sus_dist(numSuS = numSuS, landDist = F) 
+    dfCG <- get_sus_dist(numSuS = numSuS, groupsEP, landDist = F) 
     listDist <- list()
     for (group in groupsEP) {
       numDep <- dfCG |> filter(Fraktion == group) |> select(SuS)
@@ -73,6 +80,7 @@ get_sus_dist <- function(numSuS, landDist = T){
   } else {
     df_caucus <- read.csv("Daten/caucus_data.csv")
     df_caucus$party <- df_caucus$party |> sapply(translate_latex)
+    df_caucus <- df_caucus |> filter(party %in% groupsEP)
     
     partyDist <- dhondt(parties = df_caucus$party,
                         votes = df_caucus$total,

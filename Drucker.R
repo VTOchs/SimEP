@@ -39,6 +39,9 @@ body <- dashboardBody(
                         choices = c("Repository", "Unterlagen SuS (min. 27)", "TN-Zertifikate", "SuS-Verteilung"),
                         selected = "SuS-Verteilung"),
             numericInput("numSuS", "Anzahl SuS:", 27),
+            selectInput("fifthGroup", "Fünfte Fraktion:",
+                        choices = c("Grüne", "Linke"),
+                        selected = "Linke"),
             actionButton("reload", "Daten aktualisieren"),
             actionButton("print", "Drucken")
           )
@@ -92,9 +95,6 @@ body <- dashboardBody(
       fluidRow(
         box(
           width = 12,
-          selectInput("fifthGroup", "Fünfte Fraktion:",
-                      choices = c("Grüne", "Linke"),
-                      selected = "Linke"),
           textInput("timeVorb", "Uhrzeit Vorbereitung:", value = "07:45-09:00"),
           textInput("timeEinf", "Uhrzeit Briefing:", value = "09:00-09:45"),
           textInput("timeFrakOne", "Uhrzeit 1. Fraktionssitzung:", value = "09:45-11:15"),
@@ -115,8 +115,8 @@ body <- dashboardBody(
         box(
           width = 4,
           selectInput("pol", "Politiker:",
-                      choices = c("Karl Freller", "Johannes Schätzl", "Maria Noichl"),
-                      selected = "Maria Noichl"),
+                      choices = c("Andrea Wechsler", "Karl Freller", "Johannes Schätzl", "Maria Noichl"),
+                      selected = "Andrea Wechsler"),
           selectInput("pol_office", "Politiker (Amt):",
                       choices = c("Mitglied des Europäischen Parlaments", "Mitglied des Bundestags",
                                   "Mitglied des Landtags"),
@@ -305,8 +305,8 @@ server <- function(input, output, session) {
       
       file.copy(paste0("LaTeX/Gesetzesentwürfe/Entwurf_", input$topic, ".pdf"), paste0(input$resPath, "/Sonstiges/Entwurf_", input$topic, ".pdf"))
       
-      pdf_order <- append(pdf_order, "LaTeX/Sonstiges/Namen Leitung.pdf")
-      pdf_order <- append(pdf_order, "LaTeX/Sonstiges/Namen Vorstand.pdf")
+      pdf_order <- append(pdf_order, paste0("LaTeX/Sonstiges/Namen Leitung (", input$fifthGroup ,").pdf"))
+      pdf_order <- append(pdf_order, paste0("LaTeX/Sonstiges/Namen Vorstand (", input$fifthGroup ,").pdf"))
       
       pdf_combine(input = pdf_order,
                   output = paste0(input$resPath, "/Sonstiges/Schilder.pdf"))
@@ -484,7 +484,8 @@ server <- function(input, output, session) {
       print("Zertifikate-Druck fertig!")
       
     } else if (input$docs == "SuS-Verteilung") {
-      resSuS <- get_sus_dist(input$numSuS, landDist = F)
+      groupsEP <- append(groupsEP4, ifelse(input$fifthGroup == "Grüne", "Green", "Left"))
+      resSuS <- get_sus_dist(input$numSuS, groupsEP, landDist = F)
       output$susVert <- renderTable({resSuS})
     }
   )
