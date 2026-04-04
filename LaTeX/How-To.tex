@@ -10,7 +10,7 @@
 
 \newcommand{\KOM}{Vincent}
 \newcommand{\EP}{Svea}
-\date{April 2025}
+\date{April 2026}
 
 
 \IfEqCase{\Thema}{%
@@ -19,19 +19,18 @@
 	{Armee}{\newcommand{\THEMA}{zu einer Europäischen Armee}}
 }
 
-\IfEqCase{\city}{%
-	{Nürnberg}{
-		\newcommand{\VERANSTALTUNGSORT}{Rathaus Nürnberg}%
-        \newcommand{\FOERDERER}{Europe Direct Nürnberg, Stadt Nürnberg \& Rudolf und Eberhard Bauer Stiftung}%
-	}%
-	{München}{
-        \newcommand{\VERANSTALTUNGSORT}{Landtag Bayern}%
-        \newcommand{\FOERDERER}{Europe Direct München, Stadt München \& Landtag Bayern}%
-	}%
-}
- 
- 
- 
+\ExplSyntaxOn
+\cs_new:Npn \jef_strip_prefix:n #1
+	{
+		\tl_set:Ne \l_tmpa_tl {#1}
+		\regex_replace_once:nnN
+			{\A\s*(?:(?:im|am)\s+|(?:in|an)\s+(?:der|dem|den)\s+|(?:der|die|das|den|dem|ein|eine|einen|einem|einer)\s+)}
+			{}
+			\l_tmpa_tl
+		\tl_use:N \l_tmpa_tl
+	}
+\NewDocumentCommand{\stripPrefix}{m}{\jef_strip_prefix:n{#1}}
+\ExplSyntaxOff
  
  
 
@@ -192,8 +191,8 @@
 		\begin{itemize}
             \item \stadtvertreter\ (\stadtvertreterOffice)
 			\item \politiker\ (\politikerOffice)
-			\item \VERANSTALTUNGSORT
-			\item \FOERDERER
+			\item \stripPrefix{\location}
+			\item \stripPrefix{\sponsor} \& \stripPrefix{\localSupport}
 		\end{itemize}
 	\end{enumerate}
 	
