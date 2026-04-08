@@ -115,14 +115,14 @@ body <- dashboardBody(
         box(
           width = 4,
           selectInput("pol", "Politiker:",
-                      choices = c("Andrea Wechsler", "Karl Freller", "Johannes Schätzl", "Maria Noichl"),
+                      choices = c("Andrea Wechsler", "Karl Freller", "Johannes Wagner", "Johannes Schätzl", "Maria Noichl"),
                       selected = "Andrea Wechsler"),
           selectInput("pol_office", "Politiker (Amt):",
                       choices = c("Mitglied des Europäischen Parlaments", "Mitglied des Bundestags",
                                   "Mitglied des Landtags"),
                       selected = "Mitglied des Europäischen Parlaments"),
-          textInput("stadtvert", "Stadtvertreter:", value = "TBD"),
-          textInput("stadtvert_office", "Stadtvertreter (Amt):", value = "TBD"),
+          textInput("stadtvert", "Stadtvertreter:", value = "Nalan Schmidt"),
+          textInput("stadtvert_office", "Stadtvertreter (Amt):", value = "Bürgerdialog und Open Government"),
           selectInput("location", "Veranstaltungsort:",
                       choices = c("in den Räumlichkeiten des Coburger Stadtjugendrings", "im Münchner Rathaus",
                                   "im Nürnberger Rathaus", "in der Universität Passau", "im Ulmer Rathaus"),
@@ -165,6 +165,20 @@ ui <- dashboardPage(skin = "green", header, sidebar, body)
 
 server <- function(input, output, session) {
 
+  get_committee_summary <- function() {
+    if (file.exists("Daten/committee_data.csv")) {
+      committee_df <- read.csv("Daten/committee_data.csv")
+      committee_df$meps <- as.numeric(committee_df$meps)
+      return(list(
+        totcoms = nrow(committee_df),
+        minmems = min(committee_df$meps, na.rm = TRUE),
+        maxmems = max(committee_df$meps, na.rm = TRUE)
+      ))
+    }
+
+    list(totcoms = 0, minmems = 0, maxmems = 0)
+  }
+
   observeEvent(input$reload,
                 {source("Scripts/Länderpapiere.R")
                 source("Scripts/Folien.R")
@@ -184,6 +198,8 @@ server <- function(input, output, session) {
          
 
         # Fix LaTex-Variables into tex-File
+          committee_summary <- get_committee_summary()
+
         sink("LaTeX/Meta/shinyin.tex")
         cat(paste0("\\newcommand\\Thema{", input$topic, "}\n"))
         cat(paste0("\\newcommand\\city{", input$city, "}\n"))
@@ -220,6 +236,9 @@ server <- function(input, output, session) {
         cat(paste0("\\newcommand\\location{", input$location, "}\n"))
         cat(paste0("\\newcommand\\fifthGroup{", input$fifthGroup, "}\n"))
         cat(paste0("\\newcommand\\anzahlcomm{", length(committees), "}\n"))
+        cat(paste0("\\newcommand\\totcoms{", committee_summary$totcoms, "}\n"))
+        cat(paste0("\\newcommand\\minmems{", committee_summary$minmems, "}\n"))
+        cat(paste0("\\newcommand\\maxmems{", committee_summary$maxmems, "}\n"))
         sink()}
       ) 
 
@@ -368,7 +387,7 @@ server <- function(input, output, session) {
         }
       }
       
-      susFrakLand <- get_sus_dist(input$numSuS)
+      susFrakLand <- get_sus_dist(input$numSuS, groupsEP)
       
       # Process PDF combinations in batches to avoid "Too many open files" error
       batch_size <- 10  # Process 10 students at a time

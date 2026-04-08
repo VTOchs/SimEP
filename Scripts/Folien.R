@@ -78,6 +78,10 @@ capitalize_first_letter <- function(text) {
 }
 
 # Seats -------------------------------------------------------------------
+# Rough flow:
+# 1) Scrape EP seats table.
+# 2) Build valid country-party combinations and save as RDS.
+# 3) Compute caucus totals and rank basis.
 
 
 url_seats <- "https://www.europarl.europa.eu/meps/de/search/table"
@@ -137,59 +141,82 @@ df_seats <-  df_all |>
               # select(EVP, 'S&D', Renew, 'Grüne/EFA', PfE)
 
 
-{url_pres <- "https://www.europarl.europa.eu/meps/en/download/advanced/xml?name=&euPoliticalGroupBodyRefNum=&countryCode=&bodyType=OTH&bodyReferenceNum=6631"
-xml_data <- read_xml(url_pres)
-meps <- xml_find_all(xml_data, ".//mep")
-full_names <- c()
-countries <- c()
-political_groups <- c()
-# Loop through each MEP node and extract the desired information
-for (mep in meps) {
-  full_names <- c(full_names, xml_text(xml_find_first(mep, ".//fullName")))
-  countries <- c(countries, xml_text(xml_find_first(mep, ".//country")))
-  political_groups <- c(political_groups, xml_text(xml_find_first(mep, ".//politicalGroup")))
-}
-# Create a data frame to store the extracted information
-df_pres <- data.frame(
-  fullName = lapply(full_names, capitalize_first_letter) |> unlist(),
-  country = countries,
-  politicalGroup = political_groups,
-  stringsAsFactors = FALSE
-)
+# Caucus ------------------------------------------------------------------
+# Rough flow:
+# 1) Load EP leadership XML and normalize political-group labels.
+# 2) Build one presidents-string per caucus.
+# 3) Merge with seats and rank text, then write caucus_data.csv.
 
-df_pres <- df_pres |> 
-              filter(fullName != pres_of_EP) |>
-              mutate(politicalGroup = case_when(politicalGroup == "Group of the European People's Party (Christian Democrats)" ~ "EPP",
-                                                 politicalGroup == "Group of the Progressive Alliance of Socialists and Democrats in the European Parliament" ~ "S&D",
-                                                 politicalGroup == "Patriots for Europe Group" ~ "PfE",
-                                                 politicalGroup == "European Conservatives and Reformists Group" ~ "ECR",
-                                                 politicalGroup == "Renew Europe Group" ~ "Renew",
-                                                 politicalGroup == "Group of the Greens/European Free Alliance" ~ "Greens/EFA",
-                                                 politicalGroup == "The Left group in the European Parliament - GUE/NGL" ~ "The Left",
-                                                 politicalGroup == "Europe of Sovereign Nations Group" ~ "ESN"))
-
-df_pres$country <- lapply(df_pres$country, translate_country) |> unlist()
+map_political_group <- function(group) {
+  case_when(
+    group == "Group of the European People's Party (Christian Democrats)" ~ "EPP",
+    group == "Group of the Progressive Alliance of Socialists and Democrats in the European Parliament" ~ "S&D",
+    group == "Patriots for Europe Group" ~ "PfE",
+    group == "European Conservatives and Reformists Group" ~ "ECR",
+    group == "Renew Europe Group" ~ "Renew",
+    group == "Group of the Greens/European Free Alliance" ~ "Greens/EFA",
+    group == "The Left group in the European Parliament - GUE/NGL" ~ "The Left",
+    group == "Europe of Sovereign Nations Group" ~ "ESN",
+    TRUE ~ NA_character_
+  )
 }
+
+fetch_group_presidents <- function() {
+  url_pres <- "https://www.europarl.europa.eu/meps/en/download/advanced/xml?name=&euPoliticalGroupBodyRefNum=&countryCode=&bodyType=OTH&bodyReferenceNum=6631"
+  xml_data <- read_xml(url_pres)
+  meps <- xml_find_all(xml_data, ".//mep")
+
+  full_names <- c()
+  countries <- c()
+  political_groups <- c()
+
+  for (mep in meps) {
+    full_names <- c(full_names, xml_text(xml_find_first(mep, ".//fullName")))
+    countries <- c(countries, xml_text(xml_find_first(mep, ".//country")))
+    political_groups <- c(political_groups, xml_text(xml_find_first(mep, ".//politicalGroup")))
+  }
+
+  data.frame(
+    fullName = lapply(full_names, capitalize_first_letter) |> unlist(),
+    country = countries,
+    politicalGroup = political_groups,
+    stringsAsFactors = FALSE
+  ) |>
+    filter(fullName != pres_of_EP) |>
+    mutate(
+      politicalGroup = map_political_group(politicalGroup),
+      country = lapply(country, translate_country) |> unlist()
+    )
+}
+
+build_caucus_presidents <- function(df_pres, caucus_names) {
+  out <- data.frame()
+
+  for (caucus in caucus_names) {
+    name_caucus <- df_pres |>
+      filter(politicalGroup == caucus) |>
+      pull(fullName) |>
+      paste(collapse = "/")
+
+    country_caucus <- df_pres |>
+      filter(politicalGroup == caucus) |>
+      pull(country) |>
+      paste(collapse = "/")
+
+    out <- rbind(out, c(caucus, paste0(name_caucus, " (", country_caucus, ")")))
+  }
+
+  names(out) <- c("party", "presidents")
+  out
+}
+
+
+df_pres <- fetch_group_presidents()
 
 df_caucus <- data.frame(total = c(df_seats[nrow(df_seats),]) |> unlist(),
                         countries = 27 - df_seats |> sapply(function(x) sum(is.na(x))))
 
-df_pres_paste <- data.frame()
-for (caucus in df_caucus |> rownames()) {
-  name_caucus <- df_pres |> 
-    filter(politicalGroup == caucus) |> 
-    pull(fullName) |>
-    paste(collapse = "/")
-  
-  country_caucus <- df_pres |> 
-    filter(politicalGroup == caucus) |> 
-    pull(country) |>
-    paste(collapse = "/")
-  
-  df_pres_paste <- rbind(df_pres_paste, c(caucus, paste0(name_caucus, " (",  country_caucus, ")")))
-  
-}
-names(df_pres_paste) <- c("party", "presidents")
+df_pres_paste <- build_caucus_presidents(df_pres, rownames(df_caucus))
 
 df_caucus <- merge(df_pres_paste, df_caucus, by.x = "party", by.y = "row.names")
 
@@ -207,38 +234,106 @@ write_csv(df_caucus, "Daten/caucus_data.csv", quote = "none")
 
 
 # Committees --------------------------------------------------------------
+# Rough flow:
+# 1) Fetch committee slugs from EP list-of-committees page.
+# 2) Parse members page per committee.
+# 3) Keep only Chair for president field and count non-substitutes.
+# 4) Write committee_data.csv.
 
 
-df_com_paste <- data.frame()
-com_list <- c("afet", "agri", "budg", "droi", "empl", "itre", "libe", "sede", "tran")
+safe_translate <- function(value, translator) {
+  clean_value <- str_trim(value)
+  translated <- translator(clean_value)
 
-for (committee in com_list) {
-  
-  xml_com <- paste0("https://www.europarl.europa.eu/committees/en/", committee, "/home/members") |> 
-                read_html() |>
-                as_xml_document()
-  
-  list_name <- xml_com |>
-    html_elements("img[src*='mepphoto']") |>
-    html_attr("alt")
-  
-  list_misc <- xml_find_all(xml_com, "//*[@id='docMembersList']//*[@class='sln-additional-info']") |> 
-    xml_text() |> 
-    lapply(function(x) x[[1]]) |> unlist()
-  
-  df_com <- data.frame(name = list_name,
-                        status = list_misc[seq(1, length(list_misc)-2, 3)],
-                        party = list_misc[seq(2, length(list_misc)-1, 3)],
-                        country = list_misc[seq(3, length(list_misc), 3)])
-  num_com <- df_com |> 
-              filter(status != "Substitute") |> 
-              nrow()
-  
-  chair <- df_com |> 
-            filter(status == "Chair")
-  
-  df_com_paste <- rbind(df_com_paste, c(toupper(committee), paste0(chair$name, " (", translate_group(chair$party), "/", translate_country(chair$country), ")"), num_com))
+  if (length(translated) == 0 || is.na(translated) || translated == "") {
+    clean_value
+  } else {
+    translated
+  }
 }
-names(df_com_paste) <- c("name", "pres", "meps")
+
+get_committee_slugs <- function() {
+  committee_url <- "https://www.europarl.europa.eu/committees/en/about/list-of-committees"
+
+  com_list <- committee_url |>
+    read_html() |>
+    html_elements("a[href*='/committees/en/']") |>
+    html_attr("href") |>
+    str_extract("(?<=/committees/en/)[a-z0-9-]+(?=$|/)") |>
+    discard(is.na) |>
+    keep(~ str_detect(.x, "^[a-z]{4}$")) |>
+    unique() |>
+    sort()
+
+  if (length(com_list) == 0) {
+    stop("No EP committee slugs found on https://www.europarl.europa.eu/committees/en/about/list-of-committees")
+  }
+
+  com_list
+}
+
+parse_member_card <- function(card) {
+  infos <- card |>
+    html_elements(".sln-additional-info") |>
+    html_text2() |>
+    str_trim()
+
+  data.frame(
+    name = card |> html_element(".es_title-h4") |> html_text2() |> str_trim(),
+    status = ifelse(length(infos) >= 1, infos[1], NA),
+    party = ifelse(length(infos) >= 2, infos[2], NA),
+    country = ifelse(length(infos) >= 3, infos[3], NA)
+  )
+}
+
+build_chair_label <- function(df_com) {
+  chair <- df_com |>
+    filter(str_to_lower(str_trim(status)) == "chair")
+
+  if (nrow(chair) == 0) {
+    return("N/A")
+  }
+
+  chair_party <- sapply(chair$party, safe_translate, translator = translate_group) |>
+    unlist()
+  chair_country <- sapply(chair$country, safe_translate, translator = translate_country) |>
+    unlist()
+
+  paste0(chair$name, " (", chair_party, "/", chair_country, ")") |>
+    paste(collapse = "/")
+}
+
+fetch_committee_row <- function(committee) {
+  tryCatch({
+    xml_com <- paste0("https://www.europarl.europa.eu/committees/en/", committee, "/home/members") |>
+      read_html() |>
+      as_xml_document()
+
+    df_com <- xml_com |>
+      html_elements(".es_member-list-item") |>
+      purrr::map_dfr(parse_member_card)
+
+    num_com <- df_com |>
+      filter(status != "Substitute") |>
+      nrow()
+
+    data.frame(
+      name = toupper(committee),
+      pres = build_chair_label(df_com),
+      meps = num_com
+    )
+  }, error = function(e) {
+    NULL
+  })
+}
+
+com_list <- get_committee_slugs()
+
+df_com_paste <- com_list |>
+  purrr::map(fetch_committee_row) |>
+  purrr::compact() |>
+  bind_rows()
+
+df_com_paste$meps <- as.integer(df_com_paste$meps)
 
 write_csv(df_com_paste, "Daten/committee_data.csv", quote = "none")
