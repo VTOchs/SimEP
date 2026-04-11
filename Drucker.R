@@ -36,7 +36,7 @@ body <- dashboardBody(
           box(
             width = 12,
             selectInput("docs", "Dokumente:",
-                        choices = c("Repository", "Unterlagen SuS (min. 27)", "TN-Zertifikate", "SuS-Verteilung"),
+                        choices = c("Repository", "Unterlagen SuS (min. 27)", "TN-Zertifikate", "SuS-Verteilung", "Aufräumen"),
                         selected = "SuS-Verteilung"),
             numericInput("numSuS", "Anzahl SuS:", 27),
             selectInput("fifthGroup", "Fünfte Fraktion:",
@@ -268,6 +268,8 @@ server <- function(input, output, session) {
       dir.create(file.path(input$resPath, "Ausschüsse"), showWarnings = F)
       ## Sonstiges
       dir.create(file.path(input$resPath, "Sonstiges"), showWarnings = F)
+      ### Vorab
+      dir.create(file.path(input$resPath, "Sonstiges", "Vorab"), showWarnings = F)
       ### TN-Zertifikate
       dir.create(file.path(input$resPath, "Sonstiges", "TN-Zertifikate"), showWarnings = F)
 
@@ -317,10 +319,16 @@ server <- function(input, output, session) {
       file.rename("How-To.pdf", paste0(input$resPath, "/Sonstiges/How-To.pdf"))
       
       tools::texi2pdf("LaTeX/PM.tex", clean = T)
-      file.rename("PM.pdf", paste0(input$resPath, "/Sonstiges/Pressemitteilung.pdf"))
+      file.rename("PM.pdf", paste0(input$resPath, "/Sonstiges/Vorab/Pressemitteilung.pdf"))
       
       tools::texi2pdf("LaTeX/Datenschutzvereinbarung.tex", clean = T)
-      file.rename("Datenschutzvereinbarung.pdf", paste0(input$resPath, "/Sonstiges/Datenschutzvereinbarung.pdf"))
+      file.rename("Datenschutzvereinbarung.pdf", paste0(input$resPath, "/Sonstiges/Vorab/Datenschutzvereinbarung.pdf"))
+
+      tools::texi2pdf("LaTeX/Teamer_Anwesenheitsliste.tex", clean = T)
+      file.rename("Teamer_Anwesenheitsliste.pdf", paste0(input$resPath, "/Sonstiges/Vorab/Teamer_Anwesenheitsliste.pdf"))
+
+      tools::texi2pdf("LaTeX/TN_Anwesenheitsliste.tex", clean = T)
+      file.rename("TN_Anwesenheitsliste.pdf", paste0(input$resPath, "/Sonstiges/Vorab/TN_Anwesenheitsliste.pdf"))
       
       file.copy(paste0("LaTeX/Gesetzesentwürfe/Entwurf_", input$topic, ".pdf"), paste0(input$resPath, "/Sonstiges/Entwurf_", input$topic, ".pdf"))
       
@@ -502,6 +510,20 @@ server <- function(input, output, session) {
       
       print("Zertifikate-Druck fertig!")
       
+    } else if (input$docs == "Aufräumen") {
+
+      repo_dirs <- list.dirs(path = ".", recursive = TRUE, full.names = FALSE)
+      repo_dirs <- repo_dirs[!grepl("(^|/)(\\.git|temp)($|/)", repo_dirs)]
+      repo_dirs <- unique(c(".", repo_dirs))
+
+      for (suffix in c("aux", "log", "out", "nav", "toc", "gz", "snm")) {
+        for (source_dir in repo_dirs) {
+          move_temp_files(target_dir = "temp", file_ext = suffix, source_dir = source_dir)
+        }
+      }
+
+      print("Aufräumen fertig!")
+
     } else if (input$docs == "SuS-Verteilung") {
       groupsEP <- append(groupsEP4, ifelse(input$fifthGroup == "Grüne", "Green", "Left"))
       resSuS <- get_sus_dist(input$numSuS, groupsEP, landDist = F)

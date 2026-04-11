@@ -1,9 +1,16 @@
 \documentclass{article}
-\usepackage{verbatim}
-\usepackage{etoolbox}
+
+\usepackage{caption}
 \usepackage{datatool}
+\usepackage{etoolbox}
+\usepackage{expl3} 
+\usepackage[colorlinks=true, urlcolor=blue, linkcolor=blue]{hyperref}
 \usepackage{xstring}
+\usepackage{verbatim}
+
 \input{Meta/shinyin.tex}
+
+
 
 \title{SimEP How-To Guide}
 \author{Svea \& Vincent}
@@ -36,6 +43,44 @@
 
 \begin{document}
 
+	\section{Allgemeines}
+	
+	\begin{itemize}
+	\item Bitte wenn möglich mit dem Deutschlandticket fahren, falls vorhanden, es gelten die Erstattungsregeln der JEF Bayern
+	\item Weitere Informationen zu eurer Vorbereitung findet ihr \href{https://drive.google.com/drive/folders/1zBLLjXlWXjD55VzzwxbWSNNgrS0o0mv4}{hier}
+	\end{itemize}
+	
+	\subsection{Grober Teamer-Zeitplan}	
+	
+	\begin{itemize}
+	\item Vorabend der SimEP: gemeinsames Abendessen und letzte Absprachen (ist natürlich nicht verpflichtend, aber halt kostenlos)
+	\item Tag der SimEP: 07.30 Uhr-16.00 Uhr SimEP; danach kurze Nachbesprechung
+	\item Abreise am besten ab 17.30/18.00 Uhr
+	\end{itemize}
+	
+	\subsection{Teamer:innen-Rollen}
+	
+	\begin{itemize}
+	\item Foto-Beauftrage:r
+	\item Social-Media-Beauftragte:r + Berichterstattung
+	\item Fraktionsleitung + Assistenz
+	\item Ausschussleitung + Assistenz
+
+	\end{itemize}
+	
+	\subsection{Zugangsdaten}
+	
+	\centering
+	\begin{tabular}{c|c|c}
+		Website & Benutzername & Passwort \\
+        \hline
+        Antragsgrün	& semerak@jef-bayern.de	& XXXXXX \\
+        Slido 		& simep@jef-bayern.de	& Metsola24! \\
+	\end{tabular}		
+	
+	\newpage	
+	
+	
 	\section{Ablauf}
 	\subsection{Vorbereitung (\timeVorb)}
 	\begin{itemize}
@@ -165,7 +210,12 @@
 		\item Reihenfolge ÄA festlegen (weitreichendste zuerst) [\EP]
 		\item \stadtvertreter\ in Empfang nehmen [\KOM]
 		\item gegebenenfalls Fraktionsvorstand bei Rede unterstützen [Fraktionsteamer:innen]
-		\item Währenddessen finale Verhandlungen zwischen Fraktionen über Kompromisse \newline $\to$ ÄA-Anpassungen bis 5 Minuten vor Plenardebatte möglich
+		\item Währenddessen finale Verhandlungen zwischen Fraktionen über Kompromisse
+		\begin{itemize}
+			\item SuS in Plenarsaal bringen
+			\item SuS unterstützen bei Kompromissformulierungen
+			\item ÄA-Anpassungen bis 14.05 Uhr möglich
+		\end{itemize}
 	\end{itemize}
 	
 	\subsection{Plenarsitzung (\timePlenar)}
@@ -186,6 +236,8 @@
 			\item Abstimmung Gesetzesentwurf
 			\item Zählen und Eintragen in Dashboard (Mehr JA als NEIN Stimmen)
 		\end{enumerate}
+		\item Debriefing via Slido
+		\item Feedback über Jotform
 		\item Vorstellung KV
 		\item Danksagung an
 		\begin{itemize}
