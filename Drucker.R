@@ -179,6 +179,29 @@ server <- function(input, output, session) {
     list(totcoms = 0, minmems = 0, maxmems = 0)
   }
 
+  generate_draft_pdf <- function(topic) {
+    tex_path <- file.path("LaTeX", "Gesetzesentwürfe", paste0("Entwurf_", topic, ".tex"))
+    pdf_name <- paste0("Entwurf_", topic, ".pdf")
+    pdf_path <- file.path("LaTeX", "Gesetzesentwürfe", pdf_name)
+
+    if (!file.exists(tex_path)) {
+      stop(paste("Gesetzesentwurf nicht gefunden:", tex_path))
+    }
+
+    tools::texi2pdf(tex_path, clean = T)
+
+    if (file.exists(pdf_name)) {
+      file.copy(pdf_name, pdf_path, overwrite = TRUE)
+      file.remove(pdf_name)
+    }
+
+    if (!file.exists(pdf_path)) {
+      stop(paste("PDF konnte nicht erzeugt werden:", pdf_path))
+    }
+
+    pdf_path
+  }
+
   observeEvent(input$reload,
                 {source("Scripts/Länderpapiere.R")
                 source("Scripts/Folien.R")
@@ -255,6 +278,8 @@ server <- function(input, output, session) {
       } else if (input$topic == "Armee") {
         committees <- c("BUDG", "LIBE", "SEDE")
       }
+
+      entwurf_pdf <- generate_draft_pdf(input$topic)
       
       # Zielordner erstellen, falls nötig
       dir.create(file.path(input$resPath), showWarnings = F)
@@ -330,7 +355,7 @@ server <- function(input, output, session) {
       tools::texi2pdf("LaTeX/TN_Anwesenheitsliste.tex", clean = T)
       file.rename("TN_Anwesenheitsliste.pdf", paste0(input$resPath, "/Sonstiges/Vorab/TN_Anwesenheitsliste.pdf"))
       
-      file.copy(paste0("LaTeX/Gesetzesentwürfe/Entwurf_", input$topic, ".pdf"), paste0(input$resPath, "/Sonstiges/Entwurf_", input$topic, ".pdf"))
+      file.copy(entwurf_pdf, paste0(input$resPath, "/Sonstiges/", basename(entwurf_pdf)), overwrite = TRUE)
       
       pdf_order <- append(pdf_order, paste0("LaTeX/Sonstiges/Namen Leitung (", input$fifthGroup ,").pdf"))
       pdf_order <- append(pdf_order, paste0("LaTeX/Sonstiges/Namen Vorstand (", input$fifthGroup ,").pdf"))
@@ -365,6 +390,7 @@ server <- function(input, output, session) {
     } else if (input$docs == "Unterlagen SuS (min. 27)") {
       
       groupsEP <- append(groupsEP4, ifelse(input$fifthGroup == "Grüne", "Green", "Left"))
+      entwurf_pdf <- generate_draft_pdf(input$topic)
       
       dir.create(file.path(input$resPath), showWarnings = F)
       dir.create(file.path(input$resPath, "Einzeldokumente"), showWarnings = F)
@@ -406,7 +432,6 @@ server <- function(input, output, session) {
         for (member in susFrakLand[[group]]) {
           # Define file paths
           frak_pdf <- paste0(input$resPath, "/Einzeldokumente/Fraktionspapier_", group, ".pdf")
-          entwurf_pdf <- paste0("LaTeX/Gesetzesentwürfe/Entwurf_", input$topic, ".pdf")
           land_pdf <- paste0(input$resPath, "/Einzeldokumente/Länderpapier_", member, ".pdf")
           # Count pages in each PDF
           n_frak <- pdf_length(frak_pdf)
@@ -473,7 +498,7 @@ server <- function(input, output, session) {
       for (group in susFrakLand |> names()) {
         for (member in susFrakLand[[group]]) {
           pdf_order <- append(pdf_order, paste0(input$resPath, "/Einzeldokumente/Fraktionspapier_", group,".pdf"))
-          pdf_order <- append(pdf_order, paste0("LaTeX/Gesetzesentwürfe/Entwurf_", input$topic, ".pdf"))
+          pdf_order <- append(pdf_order, entwurf_pdf)
           pdf_order <- append(pdf_order, paste0(input$resPath, "/Einzeldokumente/Länderpapier_", member,".pdf"))
         }
       }
