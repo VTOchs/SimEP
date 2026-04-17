@@ -108,3 +108,55 @@ move_temp_files <- function(target_dir, file_ext, source_dir = "."){
     file.rename(from = paste0(source_dir, "/", file_name), to = file.path(target_dir, file_name))
   }  
 }
+
+compile_tex_checked <- function(tex_path, clean = TRUE, max_runs = 3) {
+  if (!file.exists(tex_path)) {
+    stop(paste("TeX-Datei nicht gefunden:", tex_path))
+  }
+
+  tex_file <- basename(tex_path)
+  pdf_name <- sub("\\.tex$", ".pdf", tex_file)
+  log_name <- sub("\\.tex$", ".log", tex_file)
+
+  find_artifact <- function(file_name) {
+    candidates <- unique(c(
+      file.path(getwd(), file_name),
+      file.path(dirname(tex_path), file_name)
+    ))
+
+    existing <- candidates[file.exists(candidates)]
+    if (length(existing) == 0) {
+      return(NA_character_)
+    }
+
+    existing[[1]]
+  }
+
+  for (run_idx in seq_len(max_runs)) {
+    tryCatch(
+      tools::texi2pdf(tex_path, clean = clean),
+      error = function(error) {
+        stop(paste("LaTeX-Kompilierung fehlgeschlagen:", tex_path, "\n", conditionMessage(error)))
+      }
+    )
+
+    pdf_path <- find_artifact(pdf_name)
+    if (is.na(pdf_path) || !file.exists(pdf_path)) {
+      stop(paste("PDF konnte nicht erzeugt werden:", pdf_path))
+    }
+
+    log_path <- find_artifact(log_name)
+    if (is.na(log_path)) {
+      return(pdf_path)
+    }
+
+    log_lines <- readLines(log_path, warn = FALSE)
+    rerun_needed <- any(grepl("Rerun to get cross-references right|Label\\(s\\) may have changed|Rerun filecheck", log_lines))
+
+    if (!rerun_needed) {
+      return(pdf_path)
+    }
+  }
+
+  stop(paste("LaTeX-Build wurde nach", max_runs, "Durchläufen nicht stabil:", tex_path))
+}

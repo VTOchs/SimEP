@@ -122,7 +122,7 @@ body <- dashboardBody(
                                   "Mitglied des Landtags"),
                       selected = "Mitglied des Europäischen Parlaments"),
           textInput("stadtvert", "Stadtvertreter:", value = "Nalan Schmidt"),
-          textInput("stadtvert_office", "Stadtvertreter (Amt):", value = "Bürgerdialog und Open Government"),
+          textInput("stadtvert_office", "Stadtvertreter (Amt):", value = "Anlauf- und Koordinierungsstelle Bürgerdialog (Open Government) der Stadt Ulm"),
           selectInput("location", "Veranstaltungsort:",
                       choices = c("in den Räumlichkeiten des Coburger Stadtjugendrings", "im Münchner Rathaus",
                                   "im Nürnberger Rathaus", "in der Universität Passau", "im Ulmer Rathaus"),
@@ -188,7 +188,7 @@ server <- function(input, output, session) {
       stop(paste("Gesetzesentwurf nicht gefunden:", tex_path))
     }
 
-    tools::texi2pdf(tex_path, clean = T)
+    compile_tex_checked(tex_path, clean = T)
 
     if (file.exists(pdf_name)) {
       file.copy(pdf_name, pdf_path, overwrite = TRUE)
@@ -269,7 +269,8 @@ server <- function(input, output, session) {
     
     if (input$docs == "Repository") {
       
-      groupsEP <- append(groupsEP4, ifelse(input$fifthGroup == "Grüne", "Green", "Left"))
+      selected_fifth_group <- ifelse(input$fifthGroup == "Grüne", "Green", "Left")
+      groupsEP <- append(groupsEP4, selected_fifth_group)
       
       if (input$topic == "Green Deal") {
         committees <- c("AGRI", "BUDG", "ITRE", "TRAN")
@@ -307,13 +308,13 @@ server <- function(input, output, session) {
         paste0("\\newcommand\\slidolink{", get_slido_link(input$city, group), "}\n") |> cat()
         sink()}
         
-        tools::texi2pdf("LaTeX/Folien/1. Fraktionssitzung.tex", clean = T)
+        compile_tex_checked("LaTeX/Folien/1. Fraktionssitzung.tex", clean = T)
         file.rename("1. Fraktionssitzung.pdf", paste0(input$resPath, "/Fraktionen/", group, "/1. Fraktionssitzung_", group, ".pdf"))
         
-        tools::texi2pdf("LaTeX/Folien/2. Fraktionssitzung.tex", clean = T)
+        compile_tex_checked("LaTeX/Folien/2. Fraktionssitzung.tex", clean = T)
         file.rename("2. Fraktionssitzung.pdf", paste0(input$resPath, "/Fraktionen/", group, "/2. Fraktionssitzung_", group, ".pdf"))
         
-        tools::texi2pdf("LaTeX/Fraktionspapier.tex", clean = T)
+        compile_tex_checked("LaTeX/Fraktionspapier.tex", clean = T)
         file.rename("Fraktionspapier.pdf", paste0(input$resPath, "/Fraktionen/", group, "/Fraktionspapier_", group, ".pdf"))
         
         pdf_order <- append(pdf_order, paste0("LaTeX/Sonstiges/Raum ", group, ".pdf"))
@@ -325,34 +326,44 @@ server <- function(input, output, session) {
         paste0("\\newcommand\\Committee{", committee, "}\n") |> cat()
         paste0("\\newcommand\\Fraktion{LEER}\n") |> cat()
         sink()}
-        tools::texi2pdf("LaTeX/Folien/Ausschusssitzung.tex", clean = T)
+        compile_tex_checked("LaTeX/Folien/Ausschusssitzung.tex", clean = T)
         file.rename("Ausschusssitzung.pdf", paste0(input$resPath, "/Ausschüsse/", committee, ".pdf"))
-        pdf_order <- append(pdf_order, paste0("LaTeX/Sonstiges/", committee, "_Schilder/", list.files(paste0("LaTeX/Sonstiges/", committee, "_Schilder"))))
+
+        committee_sign_dir <- paste0("LaTeX/Sonstiges/", committee, "_Schilder")
+        committee_sign_files <- list.files(committee_sign_dir)
+
+        # Keep only one fifth-caucus label set (Green or Left), but retain all other signs.
+        committee_sign_files <- committee_sign_files[
+          !grepl("^Namen (Green|Left) ", committee_sign_files) |
+            grepl(paste0("^Namen ", selected_fifth_group, " "), committee_sign_files)
+        ]
+
+        pdf_order <- append(pdf_order, paste0(committee_sign_dir, "/", committee_sign_files))
       }
       
       # print("Ausschüsse fertig!")
       
       ## Sonstiges
       
-      tools::texi2pdf("LaTeX/Folien/Plenarsitzung.tex", clean = T)
+      compile_tex_checked("LaTeX/Folien/Plenarsitzung.tex", clean = T)
       file.rename("Plenarsitzung.pdf", paste0(input$resPath, "/Sonstiges/Plenarsitzung.pdf"))
       
-      tools::texi2pdf("LaTeX/Folien/Briefing.tex", clean = T)
+      compile_tex_checked("LaTeX/Folien/Briefing.tex", clean = T)
       file.rename("Briefing.pdf", paste0(input$resPath, "/Sonstiges/Briefing.pdf"))
       
-      tools::texi2pdf("LaTeX/How-To.tex", clean = T)
+      compile_tex_checked("LaTeX/How-To.tex", clean = T)
       file.rename("How-To.pdf", paste0(input$resPath, "/Sonstiges/How-To.pdf"))
       
-      tools::texi2pdf("LaTeX/PM.tex", clean = T)
+      compile_tex_checked("LaTeX/PM.tex", clean = T)
       file.rename("PM.pdf", paste0(input$resPath, "/Sonstiges/Vorab/Pressemitteilung.pdf"))
       
-      tools::texi2pdf("LaTeX/Datenschutzvereinbarung.tex", clean = T)
+      compile_tex_checked("LaTeX/Datenschutzvereinbarung.tex", clean = T)
       file.rename("Datenschutzvereinbarung.pdf", paste0(input$resPath, "/Sonstiges/Vorab/Datenschutzvereinbarung.pdf"))
 
-      tools::texi2pdf("LaTeX/Teamer_Anwesenheitsliste.tex", clean = T)
+      compile_tex_checked("LaTeX/Teamer_Anwesenheitsliste.tex", clean = T)
       file.rename("Teamer_Anwesenheitsliste.pdf", paste0(input$resPath, "/Sonstiges/Vorab/Teamer_Anwesenheitsliste.pdf"))
 
-      tools::texi2pdf("LaTeX/TN_Anwesenheitsliste.tex", clean = T)
+      compile_tex_checked("LaTeX/TN_Anwesenheitsliste.tex", clean = T)
       file.rename("TN_Anwesenheitsliste.pdf", paste0(input$resPath, "/Sonstiges/Vorab/TN_Anwesenheitsliste.pdf"))
       
       file.copy(entwurf_pdf, paste0(input$resPath, "/Sonstiges/", basename(entwurf_pdf)), overwrite = TRUE)
@@ -374,7 +385,7 @@ server <- function(input, output, session) {
           {sink("LaTeX/Meta/var.tex")
             paste0("\\newcommand\\klasse{", sheet, "}\n") |> cat()
             sink()}
-          tools::texi2pdf("LaTeX/TN-Zertifikat.tex", clean = T)
+          compile_tex_checked("LaTeX/TN-Zertifikat.tex", clean = T)
           file.rename("TN-Zertifikat.pdf", paste0(input$resPath, "/Sonstiges/TN-Zertifikate/", sheet, ".pdf"))
         }
       }
@@ -403,7 +414,7 @@ server <- function(input, output, session) {
           paste0("\\newcommand\\Fraktion{", group, "}\n") |> cat()
           sink()}
           
-          tools::texi2pdf("LaTeX/Fraktionspapier.tex", clean = T)
+          compile_tex_checked("LaTeX/Fraktionspapier.tex", clean = T)
           file.rename("Fraktionspapier.pdf", paste0(input$resPath, "/Einzeldokumente/Fraktionspapier_", group,".pdf"))
         }
       }
@@ -416,95 +427,71 @@ server <- function(input, output, session) {
           paste0("\\newcommand\\kurzel{", member, "}\n") |> cat()
           sink()}
           
-          tools::texi2pdf("LaTeX/Länderpapier.tex", clean = T)
+          compile_tex_checked("LaTeX/Länderpapier.tex", clean = T)
           file.rename("Länderpapier.pdf", paste0(input$resPath, "/Einzeldokumente/Länderpapier_", member,".pdf"))
         }
       }
       
       susFrakLand <- get_sus_dist(input$numSuS, groupsEP)
       
-      # Process PDF combinations in batches to avoid "Too many open files" error
-      batch_size <- 10  # Process 10 students at a time
-      all_students <- list()
-      
-      # Create list of all student combinations
+      # Process PDF combinations in batches to avoid "Too many open files" error.
+      batch_size <- 10
+      batch_pdf_order <- c()
+      batch_files <- c()
+      student_count <- 0
+      batch_num <- 1
+
       for (group in susFrakLand |> names()) {
         for (member in susFrakLand[[group]]) {
-          # Define file paths
           frak_pdf <- paste0(input$resPath, "/Einzeldokumente/Fraktionspapier_", group, ".pdf")
           land_pdf <- paste0(input$resPath, "/Einzeldokumente/Länderpapier_", member, ".pdf")
-          # Count pages in each PDF
+
           n_frak <- pdf_length(frak_pdf)
           n_entwurf <- pdf_length(entwurf_pdf)
           n_land <- pdf_length(land_pdf)
           total_pages <- n_frak + n_entwurf + n_land
-          # Prepare list of PDFs to combine
+
           pdfs_to_combine <- c(frak_pdf, entwurf_pdf, land_pdf)
           if (total_pages %% 2 == 1) {
-            # Insert blank page if total is odd
             blank_pdf <- "white.pdf"
             if (!file.exists(blank_pdf)) {
-              # Create a blank PDF if it doesn't exist
               pdf(blank_pdf, width=8.27, height=11.69) # A4 size in inches
               plot.new()
               dev.off()
             }
             pdfs_to_combine <- c(pdfs_to_combine, blank_pdf)
           }
-          all_students <- append(all_students, list(pdfs_to_combine))
+          batch_pdf_order <- c(batch_pdf_order, pdfs_to_combine)
+          student_count <- student_count + 1
+
+          if (student_count %% batch_size == 0) {
+            batch_output <- paste0(input$resPath, "/Schülerunterlagen_SimEP_Batch_", batch_num, ".pdf")
+            pdf_combine(input = batch_pdf_order, output = batch_output)
+            batch_files <- c(batch_files, batch_output)
+            batch_pdf_order <- c()
+            batch_num <- batch_num + 1
+            gc()
+          }
         }
       }
       
-      # Process in batches
-      total_students <- length(all_students)
-      num_batches <- ceiling(total_students / batch_size)
-      
-      for (batch_num in 1:num_batches) {
-        start_idx <- (batch_num - 1) * batch_size + 1
-        end_idx <- min(batch_num * batch_size, total_students)
-        
-        # Create batch PDF order
-        batch_pdf_order <- c()
-        for (i in start_idx:end_idx) {
-          batch_pdf_order <- append(batch_pdf_order, all_students[[i]])
-        }
-        
-        # Combine batch
+      if (length(batch_pdf_order) > 0) {
         batch_output <- paste0(input$resPath, "/Schülerunterlagen_SimEP_Batch_", batch_num, ".pdf")
         pdf_combine(input = batch_pdf_order, output = batch_output)
-        
-        # Clean up batch file handles
-        gc()
+        batch_files <- c(batch_files, batch_output)
       }
-      
-      # If only one batch, rename to final name
-      if (num_batches == 1) {
-        file.rename(paste0(input$resPath, "/Schülerunterlagen_SimEP_Batch_1.pdf"), 
-                   paste0(input$resPath, "/Schülerunterlagen_SimEP.pdf"))
+
+      if (length(batch_files) == 1) {
+        file.rename(batch_files[[1]], paste0(input$resPath, "/Schülerunterlagen_SimEP.pdf"))
       } else {
-        # Combine all batches into final file
-        batch_files <- paste0(input$resPath, "/Schülerunterlagen_SimEP_Batch_", 1:num_batches, ".pdf")
         pdf_combine(input = batch_files, output = paste0(input$resPath, "/Schülerunterlagen_SimEP.pdf"))
-        
-        # Clean up batch files
+
         for (batch_file in batch_files) {
           if (file.exists(batch_file)) {
             file.remove(batch_file)
           }
         }
       }
-      pdf_order <- c()
-      
-      for (group in susFrakLand |> names()) {
-        for (member in susFrakLand[[group]]) {
-          pdf_order <- append(pdf_order, paste0(input$resPath, "/Einzeldokumente/Fraktionspapier_", group,".pdf"))
-          pdf_order <- append(pdf_order, entwurf_pdf)
-          pdf_order <- append(pdf_order, paste0(input$resPath, "/Einzeldokumente/Länderpapier_", member,".pdf"))
-        }
-      }
-      
-      pdf_combine(input = pdf_order,
-                  output = paste0(input$resPath, "/Schülerunterlagen_SimEP.pdf"))
       
       for (suffix in c("aux", "log", "out", "nav", "toc", "gz", "snm")) {
         move_temp_files(target_dir = "temp", file_ext = suffix, source_dir = "LaTeX")
@@ -524,7 +511,7 @@ server <- function(input, output, session) {
         paste0("\\newcommand\\klasse{", sheet, "}\n") |> cat()
         sink()}
         
-        tools::texi2pdf("LaTeX/TN-Zertifikat.tex", clean = T)
+        compile_tex_checked("LaTeX/TN-Zertifikat.tex", clean = T)
         file.rename("TN-Zertifikat.pdf", paste0(input$resPath, "/", sheet, ".pdf"))
       }
       
