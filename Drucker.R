@@ -451,7 +451,7 @@ server <- function(input, output, session) {
           n_land <- pdf_length(land_pdf)
           total_pages <- n_frak + n_entwurf + n_land
 
-          pdfs_to_combine <- c(frak_pdf, entwurf_pdf, land_pdf)
+          pdfs_to_combine <- c(frak_pdf, land_pdf, entwurf_pdf)
           if (total_pages %% 2 == 1) {
             blank_pdf <- "white.pdf"
             if (!file.exists(blank_pdf)) {
