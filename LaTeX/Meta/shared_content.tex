@@ -1,0 +1,241 @@
+% Shared text helpers for SimEP LaTeX documents.
+
+\providecommand{\SharedIdeologyOne}[1]{%
+\IfEqCase{#1}{%
+	{EVP}{Ausbau EU-Kompetenzen, aber Eigenst\"andigkeit erhalten}%
+	{SD}{Deutlicher Ausbau EU-Kompetenzen}%
+	{RE}{Deutlicher Ausbau EU-Kompetenzen in Schl\"usselbereichen}%
+	{Green}{Deutlicher Ausbau EU-Kompetenzen}%
+	{Gr\"une}{Deutlicher Ausbau EU-Kompetenzen}%
+	{PfE}{Deutliche Verringerung EU-Kompetenzen}%
+	{Left}{St\"arkere Kompetenzen Sozialpolitik, mehr demokratische Kontrolle}%
+	{Linke}{St\"arkere Kompetenzen Sozialpolitik, mehr demokratische Kontrolle}%
+}[]%
+}
+
+\providecommand{\SharedIdeologyTwo}[1]{%
+\IfEqCase{#1}{%
+	{EVP}{J\"udisch-christliche Werte, Grundrechte \& Rechtsstaatlichkeit}%
+	{SD}{Soziale Gerechtigkeit, Vielfalt \& Solidarit\"at}%
+	{RE}{Wohlstand, pers\"onliche Freiheit \& technologischer Fortschritt}%
+	{Green}{Soziale Gerechtigkeit, Nachhaltigkeit \& Bek\"ampfung von Diskriminierung}%
+	{Gr\"une}{Soziale Gerechtigkeit, Nachhaltigkeit \& Bek\"ampfung von Diskriminierung}%
+	{PfE}{Wohlstand, Sicherheit \& nationale Identit\"at}%
+	{Left}{Soziale Gerechtigkeit, Frieden \& Gleichberechtigung}%
+	{Linke}{Soziale Gerechtigkeit, Frieden \& Gleichberechtigung}%
+}[]%
+}
+
+\providecommand{\SharedIdeologyThree}[1]{%
+\IfEqCase{#1}{%
+	{EVP}{Wirtschaftswachstum, Begrenzung Migration \& Sicherheitspolitik}%
+	{SD}{Arbeitslosigkeit, Sozialstandards \& Chancengleichheit}%
+	{RE}{Wirtschaftswachstum, B\"urgerrechte \& digitale Transformation}%
+	{Green}{Generationengerechtigkeit, gr\"unes Wachstum \& Menschenrechte}%
+	{Gr\"une}{Generationengerechtigkeit, gr\"unes Wachstum \& Menschenrechte}%
+	{PfE}{Wirtschaftswachstum, Minimierung Migration \& Beschr\"ankung EU-Kompetenzen}%
+	{Left}{Sozialstaat, Umverteilung \& Klimagerechtigkeit}%
+	{Linke}{Sozialstaat, Umverteilung \& Klimagerechtigkeit}%
+}[]%
+}
+
+\providecommand{\SharedGoalOne}[2]{%
+\IfEqCase{#2}{%
+	{Green Deal}{%
+		\IfEqCase{#1}{%
+			{EVP}{Wohlstandsicherung durch gr\"une, marktwirtschaftliche Transformation}%
+			{SD}{Starker Klimaschutz mit sozialer Absicherung}%
+			{PfE}{Klimaschutz behindert wirtschaftliches Wachstum}%
+			{RE}{Wohlstandsicherung durch gr\"une Transformation}%
+			{Green}{Wirtschaft muss Menschen \& Umwelt dienen}%
+			{Gr\"une}{Wirtschaft muss Menschen \& Umwelt dienen}%
+			{Left}{-}%
+			{Linke}{-}%
+		}[]%
+	}%
+	{Asyl}{%
+		\IfEqCase{#1}{%
+			{EVP}{Fester Verteilungsmechanismus \& Asyl- und Integrationsfonds}%
+			{SD}{Fester Verteilungsmechanismus, Asyl- und Integrationsfonds \& Unterst\"utzung belastete Staaten}%
+			{PfE}{Keinerlei Verpflichtung der Mitgliedstaaten}%
+			{RE}{Fester Verteilungsmechanismus \& Asyl- und Integrationsfonds}%
+			{Green}{Fester Verteilungsmechanismus, Asyl- und Integrationsfonds \& Unterst\"utzung belastete Staaten}%
+			{Gr\"une}{Fester Verteilungsmechanismus, Asyl- und Integrationsfonds \& Unterst\"utzung belastete Staaten}%
+			{Left}{-}%
+			{Linke}{-}%
+		}[]%
+	}%
+	{Armee}{%
+		\IfEqCase{#1}{%
+			{EVP}{Erg\"anzung mit NATO \& keine Parallelstrukturen}%
+			{SD}{Erg\"anzung mit NATO \& keine Parallelstrukturen}%
+			{PfE}{NATO nur als Verteidigungsb\"undnis \& eigenst\"andige nationale Diplomatie}%
+			{RE}{Erg\"anzung mit NATO, aber selbstst\"andige EU}%
+			{Green}{Enge Zusammenarbeit mit Demokratien, keine Waffen an Diktaturen}%
+			{Gr\"une}{Enge Zusammenarbeit mit Demokratien, keine Waffen an Diktaturen}%
+			{Left}{Kritische Haltung gegen\"uber der NATO}%
+			{Linke}{Kritische Haltung gegen\"uber der NATO}%
+		}[]%
+	}%
+}[]%
+}
+
+\providecommand{\SharedGoalTwo}[2]{%
+\IfEqCase{#2}{%
+	{Green Deal}{%
+		\IfEqCase{#1}{%
+			{EVP}{$CO_2$-arme Technologien f\"ordern}%
+			{SD}{Kombination aus Investitionen, Emissionshandel \& Regulierung}%
+			{PfE}{Technologieoffenheit, bspw. bei nuklearer Energie}%
+			{RE}{Technologieoffenheit, Emissionshandel ausbauen \& $CO_2$-arme Technologien f\"ordern}%
+			{Green}{Massiver Ausbau erneuerbarer Energien \& F\"orderung umweltfreundlicher Technologien}%
+			{Gr\"une}{Massiver Ausbau erneuerbarer Energien \& F\"orderung umweltfreundlicher Technologien}%
+			{Left}{-}%
+			{Linke}{-}%
+		}[]%
+	}%
+	{Asyl}{%
+		\IfEqCase{#1}{%
+			{EVP}{St\"arkere Kontrolle \& Drittstaatenverfahren}%
+			{SD}{Gesicherte Grenzen, aber keine Drittstaatenverfahren}%
+			{PfE}{Verhinderung illegaler Migration durch Abschottung}%
+			{RE}{St\"arkere Kontrolle \& Drittstaatenverfahren}%
+			{Green}{Ausbau der Seenotrettung \& Verhinderung von Drittstaatenverfahren}%
+			{Gr\"une}{Ausbau der Seenotrettung \& Verhinderung von Drittstaatenverfahren}%
+			{Left}{-}%
+			{Linke}{-}%
+		}[]%
+	}%
+	{Armee}{%
+		\IfEqCase{#1}{%
+			{EVP}{EU muss Truppen in Krisensituationen schicken k\"onnen}%
+			{SD}{Auch Diplomatie \& Friedenssicherung vorantreiben}%
+			{PfE}{Milit\"arische Landesverteidigung \& friedliche Zusammenarbeit}%
+			{RE}{Milit\"arische Verteidigung der EU \& Unterst\"utzung Verb\"undeter essenziell}%
+			{Green}{Auch Diplomatie, Umweltschutz \& Entwicklungshilfe f\"ur langfristige Sicherheit}%
+			{Gr\"une}{Auch Diplomatie, Umweltschutz \& Entwicklungshilfe f\"ur langfristige Sicherheit}%
+			{Left}{Fokus auf Diplomatie \& Entwicklungszusammenarbeit, keine Milit\"arinterventionen}%
+			{Linke}{Fokus auf Diplomatie \& Entwicklungszusammenarbeit, keine Milit\"arinterventionen}%
+		}[]%
+	}%
+}[]%
+}
+
+\providecommand{\SharedGoalThree}[2]{%
+\IfEqCase{#2}{%
+	{Green Deal}{%
+		\IfEqCase{#1}{%
+			{EVP}{St\"arkere Unterst\"utzung von Landwirten}%
+			{SD}{Strengere Auflagen, aber Ausgleich f\"ur Betroffene}%
+			{PfE}{Keine staatliche Lenkung der Wirtschaft durch Subventionen oder Verbote}%
+			{RE}{Neue Gesch\"aftsm\"oglichkeiten f\"ur Landwirte schaffen}%
+			{Green}{Starke F\"orderung nachhaltiger Landwirtschaft}%
+			{Gr\"une}{Starke F\"orderung nachhaltiger Landwirtschaft}%
+			{Left}{-}%
+			{Linke}{-}%
+		}[]%
+	}%
+	{Asyl}{%
+		\IfEqCase{#1}{%
+			{EVP}{Schnellere R\"uckf\"uhrungen \& einheitliche Aufnahmebedingungen}%
+			{SD}{Unterst\"utzung bei Antrag \& Integration durch EUAA}%
+			{PfE}{Schnelle R\"uckf\"uhrungen, maximal tempor\"are Aufnahme}%
+			{RE}{Schnellere R\"uckf\"uhrungen \& einheitliche Aufnahmebedingungen}%
+			{Green}{Humane Aufnahme von Schutzsuchenden \& Wahrung der Menschenrechte bei R\"uckf\"uhrungen}%
+			{Gr\"une}{Humane Aufnahme von Schutzsuchenden \& Wahrung der Menschenrechte bei R\"uckf\"uhrungen}%
+			{Left}{-}%
+			{Linke}{-}%
+		}[]%
+	}%
+	{Armee}{%
+		\IfEqCase{#1}{%
+			{EVP}{Sowohl auf europ\"aischer als auch nationaler Ebene}%
+			{SD}{Sowohl auf europ\"aischer als auch nationaler Ebene, aber v.a. effizientere Ausgaben}%
+			{PfE}{Nationale Entscheidung \"uber Verteidigungsausgaben}%
+			{RE}{Sowohl auf europ\"aischer als auch nationaler Ebene, aber v.a. effizientere Ausgaben}%
+			{Green}{Eher verst\"arkte EU-Kooperation, um Ausgaben effizienter zu nutzen}%
+			{Gr\"une}{Eher verst\"arkte EU-Kooperation, um Ausgaben effizienter zu nutzen}%
+			{Left}{Ablehnung jeglicher Erh\"ohung}%
+			{Linke}{Ablehnung jeglicher Erh\"ohung}%
+		}[]%
+	}%
+}[]%
+}
+
+\providecommand{\SharedBuildIdeologyList}[1]{%
+\begin{itemize}
+	\item \textbf{Einstellung zur Reichweite der EU-Kompetenzen:} \newline
+	\SharedIdeologyOne{#1}
+	\item \textbf{Werte:} \newline
+	\SharedIdeologyTwo{#1}
+	\item \textbf{Thematische Schwerpunkte:} \newline
+	\SharedIdeologyThree{#1}
+\end{itemize}
+}
+
+\providecommand{\SharedBuildGoalsList}[2]{%
+\IfEqCase{#2}{%
+	{Green Deal}{%
+\begin{itemize}
+	\item \textbf{Verh\"altnis \"Okonomie \& \"Okologie:} \newline
+	\SharedGoalOne{#1}{#2}
+	\item \textbf{Vermeidung von Treibhausgasen:} \newline
+	\SharedGoalTwo{#1}{#2}
+	\item \textbf{Nachhaltige Landwirtschaft:} \newline
+	\SharedGoalThree{#1}{#2}
+\end{itemize}
+	}%
+	{Asyl}{%
+\begin{itemize}
+	\item \textbf{Lastenverteilung in der EU:} \newline
+	\SharedGoalOne{#1}{#2}
+	\item \textbf{Ausma\ss{} der Kontrolle der EU-Au\ss{}engrenzen:} \newline
+	\SharedGoalTwo{#1}{#2}
+	\item \textbf{Strenge bez\"uglich Asylantr\"age \& R\"uckf\"uhrungen:} \newline
+	\SharedGoalThree{#1}{#2}
+\end{itemize}
+	}%
+	{Armee}{%
+\begin{itemize}
+	\item \textbf{Internationale Kooperation:} \newline
+	\SharedGoalOne{#1}{#2}
+	\item \textbf{Milit\"arische vs. zivile Interventionen:} \newline
+	\SharedGoalTwo{#1}{#2}
+	\item \textbf{Erh\"ohung von Verteidigungsausgaben:} \newline
+	\SharedGoalThree{#1}{#2}
+\end{itemize}
+	}%
+}[]%
+}
+
+\providecommand{\SetSharedFraktionsIdeologyAndGoals}[1]{%
+\newcommand{\ideology}{\SharedBuildIdeologyList{#1}}%
+\newcommand{\goals}{\SharedBuildGoalsList{#1}{\Thema}}%
+}
+
+\providecommand{\SimEPContactBlockPM}[1]{%
+\begin{center}
+	\footnotesize #1
+\end{center}
+\begin{center}
+	\footnotesize Junge Europ\"aische F\"oderalist:innen Bayern e.V.
+\end{center}
+\begin{center}
+	\footnotesize jef-bayern.de $|$ @jef\_bayern $|$ simep@jef-bayern.de
+\end{center}
+\begin{center}
+	\footnotesize Oberanger 32, 80331 M\"unchen
+\end{center}
+}
+
+\providecommand{\SimEPContactBlockCertificate}{%
+\begin{center}
+	\footnotesize Junge Europ\"aische F\"oderalist:innen Bayern e.V.
+\end{center}
+\begin{center}
+	\footnotesize jef-bayern.de $|$ @jef\_bayern $|$ geschaeftsstelle@jef-bayern.de
+\end{center}
+\begin{center}
+	\footnotesize Oberanger 32, 80331 M\"unchen
+\end{center}
+}

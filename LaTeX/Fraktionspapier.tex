@@ -18,6 +18,9 @@
 \usepackage{xstring}
 \input{Meta/var.tex}
 \input{Meta/shinyin.tex}
+\input{Meta/logos.tex}
+\input{Meta/shared_content.tex}
+
 
 % -------------------------------------------------------------
 
@@ -46,17 +49,6 @@
         \ifthenelse{\equal{#1}{\party}}{\rank}{}%
     }%
 }   
-
-
-\newcommand{\constrainedlogo}[4][2cm]{%
-  \raisebox{#3}{\includegraphics[width=#2,height=#1,keepaspectratio]{#4}}%
-}
-
-\newcommand{\jeflogo}{\constrainedlogo[2.5cm]{5cm}{0pt}{Logos/jef.png}}
-\newcommand{\simeplogo}{\constrainedlogo[2.5cm]{5cm}{0pt}{Logos/simep.png}}
-\newcommand{\financelogo}{\constrainedlogo[1.5cm]{4cm}{0pt}{Logos/finance\_\city.png}}
-\newcommand{\citylogo}{\constrainedlogo[1.5cm]{4cm}{0pt}{Logos/\city.png}}
-\newcommand{\fraktionslogo}{\constrainedlogo[2.5cm]{5cm}{0pt}{Folien/Bilder/\Fraktion.png}}
 
 
 \IfEqCase{\Fraktion}{
@@ -334,29 +326,29 @@ Die Linksfraktion legt außerdem großen Wert auf Demokratie, Bürgerrechte und 
 	    	\newcommand{\themeTwo}{Vermeidung von Treibhausgasen}
     		\newcommand{\themeThree}{Nachhaltige Landwirtschaft}
     		
-	    	\newcommand{\evpOne}{\small Wohlstandsicherung durch grüne, marktwirtschaftliche Transformation}
-    		\newcommand{\evpTwo}{\small $CO_2$-arme Technologien fördern}
-	    	\newcommand{\evpThree}{\small Stärkere Unterstützung von Landwirten}
-    		
-    		\newcommand{\sdOne}{\small Starker Klimaschutz mit sozialer Absicherung}
-	    	\newcommand{\sdTwo}{\small Kombination aus Investitionen, Emissionshandel \& Regulierung}
-    		\newcommand{\sdThree}{\small Strengere Auflagen, aber Ausgleich für Betroffene}
-    	
-	    	\newcommand{\pfeOne}{\small Klimaschutz behindert wirtschaftliches Wachstum}
-    		\newcommand{\pfeTwo}{\small Technologieoffenheit, bspw. bei nuklearer Energie}
-	    	\newcommand{\pfeThree}{\small Keine staatliche Lenkung der Wirtschaft durch Subventionen oder Verbote}
+	    	\newcommand{\evpOne}{\small \SharedGoalOne{EVP}{Green Deal}}
+	    	\newcommand{\evpTwo}{\small \SharedGoalTwo{EVP}{Green Deal}}
+	    	\newcommand{\evpThree}{\small \SharedGoalThree{EVP}{Green Deal}}
+	    	
+	    	\newcommand{\sdOne}{\small \SharedGoalOne{SD}{Green Deal}}
+	    	\newcommand{\sdTwo}{\small \SharedGoalTwo{SD}{Green Deal}}
+	    	\newcommand{\sdThree}{\small \SharedGoalThree{SD}{Green Deal}}
+	
+	    	\newcommand{\pfeOne}{\small \SharedGoalOne{PfE}{Green Deal}}
+	    	\newcommand{\pfeTwo}{\small \SharedGoalTwo{PfE}{Green Deal}}
+	    	\newcommand{\pfeThree}{\small \SharedGoalThree{PfE}{Green Deal}}
 	    	    	
-	    	\newcommand{\reOne}{\small Wohlstandsicherung durch grüne Transformation}
-    		\newcommand{\reTwo}{\small Technologieoffenheit, Emissionshandel ausbauen \& $CO_2$-arme Technologien fördern}
-	    	\newcommand{\reThree}{\small Neue Geschäftsmöglichkeiten für Landwirte schaffen}
-    		
-    		\newcommand{\fifthOne}{\small Wirtschaft muss Menschen \& Umwelt dienen}
-	    	\newcommand{\fifthTwo}{\small Massiver Ausbau erneuerbarer Energien \& Förderung umweltfreundlicher Technologien}
-    		\newcommand{\fifthThree}{\small Starke Förderung nachhaltiger Landwirtschaft}
-    		
-    		\newcommand{\fifthGenOne}{\small Deutlicher Ausbau EU-Kompetenzen}
-    		\newcommand{\fifthGenTwo}{\small Soziale Gerechtigkeit, Nachhaltigkeit \& Bekämpfung von Diskriminierung}
-    		\newcommand{\fifthGenThree}{\small Generationengerechtigkeit, grünes Wachstum \& Menschenrechte}
+	    	\newcommand{\reOne}{\small \SharedGoalOne{RE}{Green Deal}}
+	    	\newcommand{\reTwo}{\small \SharedGoalTwo{RE}{Green Deal}}
+	    	\newcommand{\reThree}{\small \SharedGoalThree{RE}{Green Deal}}
+	    	
+	    	\newcommand{\fifthOne}{\small \SharedGoalOne{Green}{Green Deal}}
+	    	\newcommand{\fifthTwo}{\small \SharedGoalTwo{Green}{Green Deal}}
+	    	\newcommand{\fifthThree}{\small \SharedGoalThree{Green}{Green Deal}}
+	    	
+	    	\newcommand{\fifthGenOne}{\small \SharedIdeologyOne{Green}}
+	    	\newcommand{\fifthGenTwo}{\small \SharedIdeologyTwo{Green}}
+	    	\newcommand{\fifthGenThree}{\small \SharedIdeologyThree{Green}}
 	    
     		\newcommand{\glossar}{
         			\item \textbf{Emissionshandel:} 2005 in EU eingeführtes System, bei dem Unternehmen $CO_2$-Zertifikate kaufen \& handeln müssen, um diese ausstoßen zu dürfen.
@@ -370,29 +362,29 @@ Die Linksfraktion legt außerdem großen Wert auf Demokratie, Bürgerrechte und 
         \newcommand{\themeTwo}{Ausmaß der Kontrolle der EU-Außengrenzen}
         \newcommand{\themeThree}{Strenge bezüglich Asylanträge \& Rückführungen}
 
-        \newcommand{\evpOne}{\small Fester Verteilungsmechanismus \& Asyl- und Integrationsfonds}
-        \newcommand{\evpTwo}{\small Stärkere Kontrolle \& Drittstaatenverfahren}
-        \newcommand{\evpThree}{\small Schnellere Rückführungen \& einheitliche Aufnahmebedingungen}
+		\newcommand{\evpOne}{\small \SharedGoalOne{EVP}{Asyl}}
+		\newcommand{\evpTwo}{\small \SharedGoalTwo{EVP}{Asyl}}
+		\newcommand{\evpThree}{\small \SharedGoalThree{EVP}{Asyl}}
         
-        \newcommand{\sdOne}{\small Fester Verteilungsmechanismus, Asyl- und Integrationsfonds \& Unterstützung belastete Staaten}
-        \newcommand{\sdTwo}{\small Gesicherte Grenzen, aber keine Drittstaatenverfahren}
-        \newcommand{\sdThree}{\small Unterstützung bei Antrag \& Integration durch EUAA}
+		\newcommand{\sdOne}{\small \SharedGoalOne{SD}{Asyl}}
+		\newcommand{\sdTwo}{\small \SharedGoalTwo{SD}{Asyl}}
+		\newcommand{\sdThree}{\small \SharedGoalThree{SD}{Asyl}}
         
-        \newcommand{\pfeOne}{\small Keinerlei Verpflichtung der Mitgliedstaaten}
-        \newcommand{\pfeTwo}{\small Verhinderung illegaler Migration durch Abschottung}
-        \newcommand{\pfeThree}{\small Schnelle Rückführungen, maximal temporäre Aufnahme}
+		\newcommand{\pfeOne}{\small \SharedGoalOne{PfE}{Asyl}}
+		\newcommand{\pfeTwo}{\small \SharedGoalTwo{PfE}{Asyl}}
+		\newcommand{\pfeThree}{\small \SharedGoalThree{PfE}{Asyl}}
                 
-        \newcommand{\reOne}{\small Fester Verteilungsmechanismus \& Asyl- und Integrationsfonds}
-        \newcommand{\reTwo}{\small Stärkere Kontrolle \& Drittstaatenverfahren}
-        \newcommand{\reThree}{\small Schnellere Rückführungen \& einheitliche Aufnahmebedingungen}
+		\newcommand{\reOne}{\small \SharedGoalOne{RE}{Asyl}}
+		\newcommand{\reTwo}{\small \SharedGoalTwo{RE}{Asyl}}
+		\newcommand{\reThree}{\small \SharedGoalThree{RE}{Asyl}}
 
-        \newcommand{\fifthOne}{\small Fester Verteilungsmechanismus, Asyl- und Integrationsfonds \& Unterstützung belastete Staaten}
-        \newcommand{\fifthTwo}{\small Ausbau der Seenotrettung \& Verhinderung von Drittstaatenverfahren}
-        \newcommand{\fifthThree}{\small Humane Aufnahme von Schutzsuchenden \& Wahrung der Menschenrechte bei Rückführungen}
+		\newcommand{\fifthOne}{\small \SharedGoalOne{Green}{Asyl}}
+		\newcommand{\fifthTwo}{\small \SharedGoalTwo{Green}{Asyl}}
+		\newcommand{\fifthThree}{\small \SharedGoalThree{Green}{Asyl}}
         
-   		\newcommand{\fifthGenOne}{\small Deutlicher Ausbau EU-Kompetenzen}
-  		\newcommand{\fifthGenTwo}{\small Soziale Gerechtigkeit, Nachhaltigkeit \& Bekämpfung von Diskriminierung}
-  		\newcommand{\fifthGenThree}{\small Generationengerechtigkeit, grünes Wachstum \& Menschenrechte}
+		   	\newcommand{\fifthGenOne}{\small \SharedIdeologyOne{Green}}
+		 	\newcommand{\fifthGenTwo}{\small \SharedIdeologyTwo{Green}}
+		 	\newcommand{\fifthGenThree}{\small \SharedIdeologyThree{Green}}
 
         \newcommand{\glossar}{
         		\item \textbf{Dublin-Verordnung:} Legt fest, dass der EU-Mitgliedstaat für Asylverfahren zuständig ist, der zuerst von Asylsuchendem betreten wurde.
@@ -406,40 +398,40 @@ Die Linksfraktion legt außerdem großen Wert auf Demokratie, Bürgerrechte und 
         \newcommand{\themeTwo}{Militärische vs. zivile Interventionen}
         \newcommand{\themeThree}{Erhöhung von Verteidigungsausgaben}
         
-        \newcommand{\evpOne}{\small Ergänzung mit NATO \& keine Parallelstrukturen}
-        \newcommand{\evpTwo}{\small EU muss Truppen in Krisensituationen schicken können}
-        \newcommand{\evpThree}{\small Sowohl auf europäischer als auch nationaler Ebene}
+		\newcommand{\evpOne}{\small \SharedGoalOne{EVP}{Armee}}
+		\newcommand{\evpTwo}{\small \SharedGoalTwo{EVP}{Armee}}
+		\newcommand{\evpThree}{\small \SharedGoalThree{EVP}{Armee}}
         
-        \newcommand{\sdOne}{\small Ergänzung mit NATO \& keine Parallelstrukturen}
-        \newcommand{\sdTwo}{\small Auch Diplomatie \& Friedenssicherung vorantreiben}
-        \newcommand{\sdThree}{\small Sowohl auf europäischer als auch nationaler Ebene, aber v.a. effizientere Ausgaben}
+		\newcommand{\sdOne}{\small \SharedGoalOne{SD}{Armee}}
+		\newcommand{\sdTwo}{\small \SharedGoalTwo{SD}{Armee}}
+		\newcommand{\sdThree}{\small \SharedGoalThree{SD}{Armee}}
         
-        \newcommand{\pfeOne}{\small NATO nur als Verteidigungsbündnis \& eigenständige nationale Diplomatie}
-        \newcommand{\pfeTwo}{\small Militärische Landesverteidigung \& friedliche Zusammenarbeit}
-        \newcommand{\pfeThree}{\small Nationale Entscheidung über Verteidigungsausgaben}
+		\newcommand{\pfeOne}{\small \SharedGoalOne{PfE}{Armee}}
+		\newcommand{\pfeTwo}{\small \SharedGoalTwo{PfE}{Armee}}
+		\newcommand{\pfeThree}{\small \SharedGoalThree{PfE}{Armee}}
         
-        \newcommand{\reOne}{\small Ergänzung mit NATO, aber selbstständige EU}
-        \newcommand{\reTwo}{\small Militärische Verteidigung der EU \& Unterstützung Verbündeter essenziell}
-        \newcommand{\reThree}{\small Sowohl auf europäischer als auch nationaler Ebene, aber v.a. effizientere Ausgaben}
+		\newcommand{\reOne}{\small \SharedGoalOne{RE}{Armee}}
+		\newcommand{\reTwo}{\small \SharedGoalTwo{RE}{Armee}}
+		\newcommand{\reThree}{\small \SharedGoalThree{RE}{Armee}}
         
         \IfEqCase{\fifthGroup}{
 			{Grüne}{
-		        \newcommand{\fifthOne}{\small Enge Zusammenarbeit mit Demokratien, keine Waffen an Diktaturen}
-	        		\newcommand{\fifthTwo}{\small Auch Diplomatie, Umweltschutz \& Entwicklungshilfe für langfristige Sicherheit}
-        			\newcommand{\fifthThree}{\small Eher verstärkte EU-Kooperation, um Ausgaben effizienter zu nutzen}	
-        		
-   		   		\newcommand{\fifthGenOne}{\small Deutlicher Ausbau EU-Kompetenzen}
-  				\newcommand{\fifthGenTwo}{\small Soziale Gerechtigkeit, Nachhaltigkeit \& Bekämpfung von Diskriminierung}
-		  		\newcommand{\fifthGenThree}{\small Generationengerechtigkeit, grünes Wachstum \& Menschenrechte}			
+		   		\newcommand{\fifthOne}{\small \SharedGoalOne{Green}{Armee}}
+		        		\newcommand{\fifthTwo}{\small \SharedGoalTwo{Green}{Armee}}
+		        		\newcommand{\fifthThree}{\small \SharedGoalThree{Green}{Armee}}	
+	        	
+		   		\newcommand{\fifthGenOne}{\small \SharedIdeologyOne{Green}}
+		 		\newcommand{\fifthGenTwo}{\small \SharedIdeologyTwo{Green}}
+			  	\newcommand{\fifthGenThree}{\small \SharedIdeologyThree{Green}}			
 			}%
 			{Linke}{
-		    		\newcommand{\fifthOne}{\small Kritische Haltung gegenüber der NATO}
-		    		\newcommand{\fifthTwo}{\small Fokus auf Diplomatie \& Entwicklungszusammenarbeit, keine Militärinterventionen}
-	    			\newcommand{\fifthThree}{\small Ablehnung jeglicher Erhöhung}
+		    		\newcommand{\fifthOne}{\small \SharedGoalOne{Linke}{Armee}}
+		    		\newcommand{\fifthTwo}{\small \SharedGoalTwo{Linke}{Armee}}
+		    		\newcommand{\fifthThree}{\small \SharedGoalThree{Linke}{Armee}}
 	    		
-  		   		\newcommand{\fifthGenOne}{\small Stärkere Kompetenzen Sozialpolitik, mehr demokratische Kontrolle}
-  				\newcommand{\fifthGenTwo}{\small Soziale Gerechtigkeit, Frieden \& Gleichberechtigung}
-		  		\newcommand{\fifthGenThree}{\small Sozialstaat, Umverteilung \& Klimagerechtigkeit}
+		  		\newcommand{\fifthGenOne}{\small \SharedIdeologyOne{Linke}}
+		 		\newcommand{\fifthGenTwo}{\small \SharedIdeologyTwo{Linke}}
+			  	\newcommand{\fifthGenThree}{\small \SharedIdeologyThree{Linke}}
 			}%
 		}
 
@@ -504,36 +496,7 @@ Die Linksfraktion legt außerdem großen Wert auf Demokratie, Bürgerrechte und 
     \end{itemize}
 \end{minipage}
 
-\begin{tikzpicture}[remember picture, overlay]
-        % Top left corner
-        \node at ([xshift=10mm, yshift=-8mm] current page.north west) [anchor=north west, inner sep=0pt] {
-            {\jeflogo}
-        };
-        
-        % Top right corner
-        \node at ([xshift=-7.5mm, yshift=-6mm] current page.north east) [anchor=north east, inner sep=0pt] {
-            {\simeplogo}
-        };
-        
-        \node at ([xshift=-12mm, yshift=-35mm] current page.north east) [anchor=north east, inner sep=0pt] {
-			{\fraktionslogo}        		
-        	};
-        
-        % Bottom left corner
-        \node[anchor=south west, inner sep=0pt, text width=4.5cm, align=left] at ([xshift=10mm, yshift=12mm] current page.south west) {
-            \small Kofinanziert durch:\\[3mm]
-            \financelogo
-        };
-        
-    
-        % Bottom right corner
-        \node[anchor=south east, inner sep=0pt, text width=4.5cm, align=right] at ([xshift=-10mm, yshift=10mm] current page.south east) {
-            \small Unterstützt durch:\\[3mm]
-            \citylogo
-        };
-    
-
-    \end{tikzpicture}
+\PlaceLogosFraktion
 
 \newpage
 
@@ -551,33 +514,11 @@ Die Linksfraktion legt außerdem großen Wert auf Demokratie, Bürgerrechte und 
 
 \policyPosition
 
-\begin{tikzpicture}[remember picture, overlay]
-        % Top left corner
-        \node at ([xshift=10mm, yshift=-8mm] current page.north west) [anchor=north west, inner sep=0pt] {
-            {\jeflogo}
-        };
-        
-        % Top right corner
-        \node at ([xshift=-7.5mm, yshift=-6mm] current page.north east) [anchor=north east, inner sep=0pt] {
-            {\simeplogo}
-        }; 
-
-\end{tikzpicture}
+\PlaceLogosRest
 
 \newpage
 
-\begin{tikzpicture}[remember picture, overlay]
-        % Top left corner
-        \node at ([xshift=10mm, yshift=-8mm] current page.north west) [anchor=north west, inner sep=0pt] {
-            {\jeflogo}
-        };
-        
-        % Top right corner
-        \node at ([xshift=-7.5mm, yshift=-6mm] current page.north east) [anchor=north east, inner sep=0pt] {
-            {\simeplogo}
-        }; 
-
-\end{tikzpicture}
+\PlaceLogosRest
 
 \vspace*{1cm}
 

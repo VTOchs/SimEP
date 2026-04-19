@@ -11,17 +11,7 @@
 \usepackage{enumitem}
 \input{Meta/var.tex}
 \input{Meta/shinyin.tex}
-
-
-% Logo commands (exact same structure as TN-Zertifikat.tex)
-\newcommand{\constrainedlogo}[4][2cm]{%
-  \raisebox{#3}{\includegraphics[width=#2,height=#1,keepaspectratio]{#4}}%
-}
-
-\newcommand{\jeflogo}{\constrainedlogo[2.5cm]{5cm}{0pt}{Logos/jef.png}}
-\newcommand{\simeplogo}{\constrainedlogo[2.5cm]{5cm}{0pt}{Logos/simep.png}}
-\newcommand{\financelogo}{\constrainedlogo[1.5cm]{4cm}{0pt}{Logos/finance_\city.png}}
-\newcommand{\citylogo}{\constrainedlogo[1.5cm]{4cm}{0pt}{Logos/\city.png}}
+\input{Meta/logos.tex}
 
 \begin{document}
 
@@ -42,11 +32,11 @@ Hiermit stimme ich zu, dass im Rahmen der folgenden Veranstaltung:
 Fotografien, Bewegtbildaufnahmen sowie Tonaufnahmen von mir bzw. meinem Kind durch folgende Parteien erstellt, genutzt und veröffentlicht werden dürfen:
 
 \begin{itemize}[leftmargin=1.5cm]
-    \item Junge Europäische Föderalist:innen Bayern e.V.
-%    \item Junge Europäische Föderalist:innen Bayern e.V. / Junge Europäer - JEF Baden-Württemberg e.V.
+%    \item Junge Europäische Föderalist:innen Bayern e.V.
+    \item Junge Europäische Föderalist:innen Bayern e.V. / Junge Europäer - JEF Baden-Württemberg e.V.
     \item \sponsor
-    \item \localSupport
-%    \item \localSupport /Donaubüro
+%    \item \localSupport
+    \item \localSupport /Donaubüro
     \item zu der Veranstaltung eingeladene Pressevertreter
 \end{itemize}
 
@@ -86,30 +76,6 @@ Ort, Datum und Unterschrift (Bei Minderjährigen ein Erziehungsberechtigter)
 
 \vfill
 
-% Logo structure (adjusted positioning)
-\begin{tikzpicture}[remember picture, overlay]
-    % Top left corner
-    \node at ([xshift=10mm, yshift=-15mm] current page.north west) [anchor=north west, inner sep=0pt] {
-        {\jeflogo}
-    };
-    
-    % Top right corner
-    \node at ([xshift=-7.5mm, yshift=-12mm] current page.north east) [anchor=north east, inner sep=0pt] {
-        {\simeplogo}
-    };      
-    
-    % Bottom left corner
-    \node[anchor=south west, inner sep=0pt, text width=4.5cm, align=left] at ([xshift=10mm, yshift=10mm] current page.south west) {
-        \small Gefördert durch:\\[3mm]
-        \financelogo
-    };
-    
-
-    % Bottom right corner
-    \node[anchor=south east, inner sep=0pt, text width=4.5cm, align=right] at ([xshift=-10mm, yshift=8mm] current page.south east) {
-        \small Unterstützt durch:\\[3mm]
-        \citylogo
-    };
-\end{tikzpicture}
+\PlaceLogosOne
 
 \end{document}

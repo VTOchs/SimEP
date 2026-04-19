@@ -10,6 +10,8 @@
 \usepackage[utf8]{inputenc} % Use utf8 encoding for special characters
 \input{Meta/var.tex}
 \input{Meta/shinyin.tex}
+\input{Meta/logos.tex}
+\input{Meta/shared_content.tex}
 %\newcommand{\klasse}{test}
 
 \DTLloaddb[keys={Vorname,Nachname}]{class}{../Daten/SuS/\klasse.csv}
@@ -20,14 +22,6 @@
 	{Armee}{\newcommand{\theme}{zu einer Europäischen Armee}}%
 }
 
-\newcommand{\constrainedlogo}[4][2cm]{%
-  \raisebox{#3}{\includegraphics[width=#2,height=#1,keepaspectratio]{#4}}%
-}
-
-\newcommand{\jeflogo}{\constrainedlogo[2.5cm]{5cm}{0pt}{Logos/jef.png}}
-\newcommand{\simeplogo}{\constrainedlogo[2.5cm]{5cm}{0pt}{Logos/simep.png}}
-\newcommand{\financelogo}{\constrainedlogo[1.5cm]{4cm}{0pt}{Logos/finance\_\city.png}}
-\newcommand{\citylogo}{\constrainedlogo[1.5cm]{4cm}{0pt}{Logos/\city.png}}
 \newcommand{\signature}{Logos/signature.png}
 
 
@@ -97,15 +91,7 @@
     
 	\vspace{1cm}
 	
-	\begin{center}
-        \footnotesize Junge Europäische Föderalist:innen Bayern e.V.
-	\end{center}
-	\begin{center}  
-        \footnotesize jef-bayern.de $|$ @jef\_bayern $|$ geschaeftsstelle@jef-bayern.de
-	\end{center}
-	\begin{center}
-		\footnotesize Oberanger 32, 80331 München
-	\end{center}
+    \SimEPContactBlockCertificate
     \newpage
 }%
 \end{document}

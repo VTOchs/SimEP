@@ -11,7 +11,7 @@
 \usetikzlibrary{calc}
 \input{../Meta/var.tex}
 \input{../Meta/shinyin.tex}
-
+\input{../Meta/shared_content.tex}
 
 % -------------------------------------------------------------
 
@@ -59,54 +59,7 @@
 			    \end{tabular}
 			    }	    
 	    
-    	\newcommand{\ideology}{
-        	\begin{itemize}
-            		\item \textbf{Einstellung zur Reichweite der EU-Kompetenzen:} \newline
-	            Ausbau EU-Kompetenzen, aber Eigenständigkeit erhalten
-        		    \item \textbf{Werte:} \newline
-            		Jüdisch-christliche Werte, Grundrechte \& Rechtsstaatlichkeit
-	            \item \textbf{Thematische Schwerpunkte:} \newline
-    		        Wirtschaftswachstum, Begrenzung Migration \& Sicherheitspolitik
-        	\end{itemize}
-    		}
-    		\IfEqCase{\Thema}{%
-    			{Green Deal}{
-				\newcommand{\goals}{
-		            \begin{itemize}
-        			        \item \textbf{Verhältnis Ökonomie \& Ökologie:} \newline
-                			Wohlstandsicherung durch grüne, marktwirtschaftliche Transformation
-		                \item \textbf{Vermeidung von Treibhausgasen:} \newline
-            			    $CO_2$-arme Technologien fördern
-		                \item \textbf{Nachhaltige Landwirtschaft:} \newline
-        			        Stärkere Unterstützung von Landwirten
-		            \end{itemize}
-        			}
-    			}%
-    			{Asyl}{
-				\newcommand{\goals}{
-                    \begin{itemize}
-                        \item \textbf{Lastenverteilung in der EU:} \newline
-                        Fester Verteilungsmechanismus \& Asyl- und Integrationsfonds
-                        \item \textbf{Ausmaß der Kontrolle der EU-Außengrenzen:} \newline
-                        Stärkere Kontrolle \& Drittstaatenverfahren
-                        \item \textbf{Strenge bezüglich Asylanträge \& Rückführungen:} \newline
-                        Schnellere Rückführungen \& einheitliche Aufnahmebedingungen
-                    \end{itemize}
-		            }    			
-    			}%    			
-    			{Armee}{
-    				\newcommand{\goals}{
-                    \begin{itemize}
-                        \item \textbf{Internationale Kooperation:} \newline 
-                        Ergänzung mit NATO \& keine Parallelstrukturen
-                        \item \textbf{Militärische vs. zivile Interventionen:} \newline 
-                        EU muss Truppen in Krisensituationen schicken können
-                        \item \textbf{Erhöhung von Verteidigungsausgaben:} \newline 
-                        Sowohl auf europäischer als auch nationaler Ebene
-                    \end{itemize}
-                	}
-    			}%
-    		}
+		\SetSharedFraktionsIdeologyAndGoals{EVP}
 	}%
 	{SD}{
 		\newcommand{\Fraktionsname}{Progressive Allianz der Sozialdemokraten}
@@ -125,54 +78,7 @@
 		\item Süddeutsche Abgeordnete:         
 		Viven Costanzo (BW/SPD), Maria Noichl (BY/SPD), René Repasi (BW/SPD)
         }
-        \newcommand{\ideology}{
-            \begin{itemize}
-                \item \textbf{Einstellung zur Reichweite der EU-Kompetenzen:} \newline
-                Deutlicher Ausbau EU-Kompetenzen
-                \item \textbf{Werte:} \newline
-                Soziale Gerechtigkeit, Vielfalt \& Solidarität
-                \item \textbf{Thematische Schwerpunkte:} \newline
-                Arbeitslosigkeit, Sozialstandards \& Chancengleichheit
-            \end{itemize}
-        }
-        \IfEqCase{\Thema}{%
-    			{Green Deal}{
-				\newcommand{\goals}{
-                \begin{itemize}
-                    \item \textbf{Verhältnis Ökonomie \& Ökologie:} \newline
-                    Starker Klimaschutz mit sozialer Absicherung
-                    \item \textbf{Vermeidung von Treibhausgasen:} \newline
-                    Kombination aus Investitionen, Emissionshandel \& Regulierung
-                    \item \textbf{Nachhaltige Landwirtschaft:} \newline
-                    Strengere Auflagen, aber Ausgleich für Betroffene
-                \end{itemize}
-            		}    			
-    			}%
-    			{Asyl}{
-				\newcommand{\goals}{
-                        \begin{itemize}
-                            \item \textbf{Lastenverteilung in der EU:} \newline
-                            Fester Verteilungsmechanismus, Asyl- und Integrationsfonds \& Unterstützung belastete Staaten
-                            \item \textbf{Ausmaß der Kontrolle der EU-Außengrenzen:} \newline
-                            Gesicherte Grenzen, aber keine Drittstaatenverfahren
-                            \item \textbf{Strenge bezüglich Asylanträge \& Rückführungen:} \newline
-                            Unterstützung bei Antrag \& Integration durch EUAA
-                        \end{itemize}
-                	}    			
-    			}%    			
-    			{Armee}{
-    				\newcommand{\goals}{
-                        \begin{itemize}
-                            \item \textbf{Internationale Kooperation:} \newline 
-                            Ergänzung mit NATO \& keine Parallelstrukturen
-                            \item \textbf{Militärische vs. zivile Interventionen:} \newline 
-                            Auch Diplomatie \& Friedenssicherung vorantreiben
-                            \item \textbf{Erhöhung von Verteidigungsausgaben:} \newline 
-                            Sowohl auf europäischer als auch nationaler Ebene, \newline aber v.a. effizientere Ausgaben
-                        \end{itemize}
-                	}
-    			}%
-    		}
+		\SetSharedFraktionsIdeologyAndGoals{SD}
 	}%
 	{RE}{%
 		\newcommand{\Fraktionsname}{Renew Europe}
@@ -191,54 +97,7 @@
    		\item Süddeutsche Abgeordnete:         
 		Andreas Glück (BW/FDP), Christine Singer (BY/FW)
         }
-        \newcommand{\ideology}{
-    		    \begin{itemize}
- 	            \item \textbf{Einstellung zur Reichweite der EU-Kompetenzen:} \newline
-            		Deutlicher Ausbau EU-Kompetenzen in Schlüsselbereichen
-  				\item \textbf{Werte:} \newline
-        		    Wohlstand, persönliche Freiheit \& technologischer Fortschritt
-      	        \item \textbf{Thematische Schwerpunkte:} \newline
-      	        Wirtschaftswachstum, Bürgerrechte \& digitale Transformation
-   	        \end{itemize}
-     	}
-     	\IfEqCase{\Thema}{%
-    			{Green Deal}{
-				\newcommand{\goals}{
-                    \begin{itemize}
-                        \item \textbf{Verhältnis Ökonomie \& Ökologie:} \newline
-                        Wohlstandsicherung durch grüne Transformation
-                        \item \textbf{Vermeidung von Treibhausgasen:} \newline
-                        Technologieoffenheit, Emissionshandel ausbauen \& $CO_2$-arme Technologien fördern
-                        \item \textbf{Nachhaltige Landwirtschaft:} \newline
-                        Neue Geschäftsmöglichkeiten für Landwirte schaffen
-                    \end{itemize}
-                	}   			
-    			}%
-    			{Asyl}{
-				\newcommand{\goals}{
-       				\begin{itemize}
-		               	\item \textbf{Lastenverteilung in der EU:} \newline
-        			    Fester Verteilungsmechanismus \& Asyl- und Integrationsfonds
-			            \item \textbf{Ausmaß der Kontrolle der EU-Außengrenzen:} \newline
-			            Stärkere Kontrolle \& Drittstaatenverfahren
-            			\item \textbf{Strenge bezüglich Asylanträge \& Rückführungen:} \newline
-		                Schnellere Rückführungen \& einheitliche Aufnahmebedingungen
-                    \end{itemize}
-                	} 		
-    			}%    			
-    			{Armee}{
-    				\newcommand{\goals}{
-                 	\begin{itemize}
-				         \item \textbf{Internationale Kooperation:} \newline 
-        				     Ergänzung mit NATO, aber selbstständige EU
-                     	 \item \textbf{Militärische vs. zivile Interventionen:} \newline 
-		                 Militärische Verteidigung der EU \& Unterstützung Verbündeter essenziell
-        		            \item \textbf{Erhöhung von Verteidigungsausgaben:} \newline 
-            		        Sowohl auf europäischer als auch nationaler Ebene,\newline aber v.a. effizientere Ausgaben
-                    \end{itemize}
-                	}
-    			}%
-    		}
+        \SetSharedFraktionsIdeologyAndGoals{RE}
 	}%
 	{Green}{%
 		\newcommand{\Fraktionsname}{Die Grünen/Europäische Freie Allianz}
@@ -254,54 +113,7 @@
 		\newcommand{\thirdRepFirst}{Damian}
 		\newcommand{\thirdRepLast}{Boeselager}
 		\newcommand{\bayRep}{keine}
-		\newcommand{\ideology}{
-     		\begin{itemize}
-				\item \textbf{Einstellung zur Reichweite der EU-Kompetenzen:} \newline
-				Deutlicher Ausbau EU-Kompetenzen
-				\item \textbf{Werte:} \newline
-				Soziale Gerechtigkeit, Nachhaltigkeit \& Bekämpfung von Diskriminierung 
-				\item \textbf{Thematische Schwerpunkte:} \newline
-				Generationengerechtigkeit, grünes Wachstum \& Menschenrechte
-			\end{itemize}
-   		}
-   		\IfEqCase{\Thema}{%
-    			{Green Deal}{
-				\newcommand{\goals}{
-                    \begin{itemize}
-                      	\item \textbf{Verhältnis Ökonomie \& Ökologie:} \newline
-                      	Wirtschaft muss Menschen \& Umwelt dienen   
-                     	\item \textbf{Vermeidung von Treibhausgasen:} \newline
-                      	Massiver Ausbau erneuerbarer Energien \& Förderung umweltfreundlicher Technologien
-                       	\item \textbf{Nachhaltige Landwirtschaft:} \newline
-                		Starke Förderung nachhaltiger Landwirtschaft
-                		\end{itemize}
-                	}   		
-    			}%
-    			{Asyl}{
-				\newcommand{\goals}{
-                 	\begin{itemize}
-                       	\item \textbf{Lastenverteilung in der EU:} \newline
-                      	Fester Verteilungsmechanismus, Asyl- und Integrationsfonds \& Unterstützung belastete Staaten
-                    	\item \textbf{Ausmaß der Kontrolle der EU-Außengrenzen:} \newline
-                    	Ausbau der Seenotrettung \& Verhinderung von Drittstaatenverfahren
-                     	\item \textbf{Strenge bezüglich Asylanträge \& Rückführungen:} \newline
-                       	Humane Aufnahme von Schutzsuchenden \& Wahrung der Menschenrechte bei Rückführungen
-                		\end{itemize}
-             		} 			
-    			}%    			
-    			{Armee}{
-    				\newcommand{\goals}{
-               		\begin{itemize}
-                   		\item \textbf{Internationale Kooperation:} \newline 
-						Enge Zusammenarbeit mit Demokratien, keine Waffen an Diktaturen
-                      	\item \textbf{Militärische vs. zivile Interventionen:} \newline 
-                        Auch Diplomatie, Umweltschutz \& Entwicklungshilfe für langfristige Sicherheit
-                        \item \textbf{Erhöhung von Verteidigungsausgaben:} \newline
-                        Eher verstärkte EU-Kooperation, \newline um Ausgaben effizienter zu nutzen
-              		\end{itemize}
-                	}
-    			}%
-    		}
+		\SetSharedFraktionsIdeologyAndGoals{Green}
 	}%
 	{PfE}{%
 		\newcommand{\Fraktionsname}{Patrioten für Europa}
@@ -319,54 +131,7 @@
         \newcommand{\bayRep}{
 		\item Süddeutsche Abgeordnete: keine
         }
-		\newcommand{\ideology}{
-  			\begin{itemize}
-            		\item \textbf{Einstellung zur Reichweite der EU-Kompetenzen:} \newline
-                	Deutliche Verringerung EU-Kompetenzen
-               	\item \textbf{Werte:} \newline
-     			Wohlstand, Sicherheit \& nationale Identität
-               	\item \textbf{Thematische Schwerpunkte:} \newline
-                	Wirtschaftswachstum, Minimierung Migration \& Beschränkung EU-Kompetenzen
-        		\end{itemize}
-       	}
-       	\IfEqCase{\Thema}{%
-    			{Green Deal}{
-				\newcommand{\goals}{
-                    \begin{itemize}
-                      	\item \textbf{Verhältnis Ökonomie \& Ökologie:} \newline
-                   		Klimaschutz behindert wirtschaftliches Wachstum
-                    	\item \textbf{Vermeidung von Treibhausgasen:} \newline
-                       	Technologieoffenheit, bspw. bei nuklearer Energie
-       					\item \textbf{Nachhaltige Landwirtschaft:} \newline
-						Keine staatliche Lenkung der Wirtschaft durch Subventionen oder Verbote
-	               	\end{itemize}
-                	}   			
-    			}%
-    			{Asyl}{
-				\newcommand{\goals}{
-                 	\begin{itemize}
-                        \item \textbf{Lastenverteilung in der EU:} \newline
-                     	Keinerlei Verpflichtung der Mitgliedstaaten
-                       	\item \textbf{Ausmaß der Kontrolle der EU-Außengrenzen:} \newline
-                       	Verhinderung illegaler Migration durch Abschottung
-                      	\item \textbf{Strenge bezüglich Asylanträge \& Rückführungen:} \newline
-                   		Schnelle Rückführungen, maximal temporäre Aufnahme
-              		\end{itemize}
-             		} 			
-    			}%    			
-    			{Armee}{
-    				\newcommand{\goals}{
-               		\begin{itemize}
-                        \item \textbf{Internationale Kooperation:} \newline
-                        NATO nur als Verteidigungsbündnis \& eigenständige nationale Diplomatie
-                        \item \textbf{Militärische vs. zivile Interventionen:} \newline
-                        Militärische Landesverteidigung \& friedliche Zusammenarbeit
-                        \item \textbf{Erhöhung von Verteidigungsausgaben:} \newline
-                 		Nationale Entscheidung über Verteidigungsausgaben
-             		\end{itemize}
-                	}
-    			}%
-    		}
+		\SetSharedFraktionsIdeologyAndGoals{PfE}
 	}%
 	{Left}{%
 		\newcommand{\Fraktionsname}{Die Linke}
@@ -384,54 +149,7 @@
         \newcommand{\bayRep}{
 		\item Süddeutsche Abgeordnete: keine
         }
-		\newcommand{\ideology}{
-  			\begin{itemize}
-            		\item \textbf{Einstellung zur Reichweite der EU-Kompetenzen:} \newline
-                	Stärkere Kompetenzen Sozialpolitik, mehr demokratische Kontrolle
-               	\item \textbf{Werte:} \newline
-     			Soziale Gerechtigkeit, Frieden \& Gleichberechtigung
-               	\item \textbf{Thematische Schwerpunkte:} \newline
-                	Sozialstaat, Umverteilung \& Klimagerechtigkeit
-        		\end{itemize}
-       	}
-       	\IfEqCase{\Thema}{%
-    			{Green Deal}{
-				\newcommand{\goals}{
-                    \begin{itemize}
-                      	\item \textbf{Verhältnis Ökonomie \& Ökologie:} \newline
-                      	-
-	                    	\item \textbf{Vermeidung von Treibhausgasen:} \newline
-                       	-
-       					\item \textbf{Nachhaltige Landwirtschaft:} \newline
-						-
-	               	\end{itemize}
-                	}   			
-    			}%
-    			{Asyl}{
-				\newcommand{\goals}{
-                 	\begin{itemize}
-                        \item \textbf{Lastenverteilung in der EU:} \newline
-                     	-
-                       	\item \textbf{Ausmaß der Kontrolle der EU-Außengrenzen:} \newline
-                       	-
-                      	\item \textbf{Strenge bezüglich Asylanträge \& Rückführungen:} \newline
-                   		-
-              		\end{itemize}
-             		} 			
-    			}%			
-    			{Armee}{
-    				\newcommand{\goals}{
-               		\begin{itemize}
-                        \item \textbf{Internationale Kooperation:} \newline
-                        Kritische Haltung gegenüber der NATO
-                        \item \textbf{Militärische vs. zivile Interventionen:} \newline
-                        Fokus auf Diplomatie \& Entwicklungszusammenarbeit, keine Militärinterventionen
-                        \item \textbf{Erhöhung von Verteidigungsausgaben:} \newline
-                 		Ablehnung jeglicher Erhöhung
-             		\end{itemize}
-                	}
-    			}%
-    		}
+		\SetSharedFraktionsIdeologyAndGoals{Left}
 	}%	
 }
 

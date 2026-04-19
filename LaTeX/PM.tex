@@ -10,6 +10,8 @@
 \usepackage{hyperref}
 \input{Meta/var.tex}
 \input{Meta/shinyin.tex}
+\input{Meta/logos.tex}
+\input{Meta/shared_content.tex}
 
 
 % Theme selection
@@ -18,16 +20,6 @@
 	{Asyl}{\newcommand{\theme}{zu einem gemeinsamen Europäischen Asylsystem}}%
 	{Armee}{\newcommand{\theme}{zu einer Europäischen Armee}}%
 }
-
-% Logo commands (exact same structure as TN-Zertifikat.tex)
-\newcommand{\constrainedlogo}[4][2cm]{%
-  \raisebox{#3}{\includegraphics[width=#2,height=#1,keepaspectratio]{#4}}%
-}
-
-\newcommand{\jeflogo}{\constrainedlogo[2.5cm]{5cm}{0pt}{Logos/jef.png}}
-\newcommand{\simeplogo}{\constrainedlogo[2.5cm]{5cm}{0pt}{Logos/simep.png}}
-\newcommand{\financelogo}{\constrainedlogo[1.5cm]{4cm}{0pt}{Logos/finance_\city.png}}
-\newcommand{\citylogo}{\constrainedlogo[1.5cm]{4cm}{0pt}{Logos/\city.png}}
 
 \begin{document}
 
@@ -43,9 +35,11 @@
 
 Am \datum\ veranstalten die Jungen Europäischen Föderalist:innen (JEF) Bayern e.V. eine Simulation des Europäischen Parlaments (SimEP) \location. Rund \numSuS\ Schülerinnen und Schüler übernehmen für einen Tag die Rolle von Europaabgeordneten.
 
-Im Rahmen dieses interaktiven Planspiels wirken die Schülerinnen und Schüler als Mitglieder einer Fraktion und eines Ausschusses aktiv am Gesetzgebungsprozess mit -- vom Entwurf bis zur abschließenden Abstimmung im Plenum. Dabei können sie selbst mit Änderungsanträgen Einfluss nehmen und mit kurzen Redebeiträgen andere Abgeordnete überzeugen. Die Veranstaltung wird durch Grußworte von \stadtvertreter\ (\stadtvertreterOffice) und \politiker\ (\politikerOffice) begleitet.
+Im Rahmen dieses interaktiven Planspiels wirken die Schülerinnen und Schüler als Mitglieder einer Fraktion und eines Ausschusses aktiv am Gesetzgebungsprozess \theme\ mit. Dabei können sie selbst mit Änderungsanträgen Einfluss nehmen und mit Redebeiträgen andere Abgeordnete überzeugen. Die Veranstaltung wird durch Grußworte von \stadtvertreter\ (\stadtvertreterOffice) und \politiker\ (\politikerOffice) begleitet.
 
-Die~Simulation des Europäischen Parlaments wurde durch \sponsor\ und \localSupport\ unterstützt. Vertreter:innen der Presse sind herzlich eingeladen die Veranstaltung journalistisch zu begleiten.
+Die Vertretung der Europäischen Kommission in München ist Kooperationspartner und Auftraggeber der Simulation des Europäischen Parlaments.
+Diese wird zudem durch \localSupport\ unterstützt.
+Vertreter:innen der Presse sind herzlich eingeladen die Veranstaltung journalistisch zu begleiten.
 
 \section*{Über die Jungen Europäischen Föderalist:innen (JEF) Bayern}
 
@@ -53,46 +47,11 @@ Die JEF Bayern e.V. ist der bayerische Landesverband der JEF Europe. Die JEF Bay
 
 \vfill
 
-% Logo structure (same as TN-Zertifikat.tex)
-\begin{tikzpicture}[remember picture, overlay]
-    % Top left corner
-    \node at ([xshift=10mm, yshift=-8mm] current page.north west) [anchor=north west, inner sep=0pt] {
-        {\jeflogo}
-    };
-    
-    % Top right corner
-    \node at ([xshift=-7.5mm, yshift=-6mm] current page.north east) [anchor=north east, inner sep=0pt] {
-        {\simeplogo}
-    };      
-    
-    % Bottom left corner
-    \node[anchor=south west, inner sep=0pt, text width=4.5cm, align=left] at ([xshift=10mm, yshift=10mm] current page.south west) {
-        \small Gefördert durch:\\[3mm]
-        \financelogo
-    };
-    
-
-    % Bottom right corner
-    \node[anchor=south east, inner sep=0pt, text width=4.5cm, align=right] at ([xshift=-10mm, yshift=8mm] current page.south east) {
-        \small Unterstützt durch:\\[3mm]
-        \citylogo
-    };
-\end{tikzpicture}
+\PlaceLogosOne
 
 \vspace{1cm}
 
 % Contact info at bottom (same style as TN-Zertifikat.tex)
-\begin{center}
-	\footnotesize Vincent Ochs \& Svea Semerák
-\end{center}
-\begin{center}
-    \footnotesize Junge Europäische Föderalist:innen Bayern e.V.
-\end{center}
-\begin{center}  
-    \footnotesize jef-bayern.de $|$ @jef\_bayern $|$ simep@jef-bayern.de
-\end{center}
-\begin{center}
-    \footnotesize Oberanger 32, 80331 München
-\end{center}
+\SimEPContactBlockPM{Vincent Ochs \& Svea Semerák}
 
 \end{document}

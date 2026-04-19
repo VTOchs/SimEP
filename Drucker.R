@@ -83,7 +83,7 @@ body <- dashboardBody(
                       choices = c("das Europe Direct Coburg", "das Europe Direct München", "das Europe Direct Nürnberg",
                                   "die Universität Passau", "das Europe Direct Ulm"),
                       selected = "das Europe Direct Ulm"),
-          textInput("sponsor", "Sponsor:", "die Europäische Kommission"),
+          textInput("sponsor", "Sponsor:", "die Vertretung der Europäischen Kommission in München"),
           textInput("jefvorsitz", "Vorsitz JEF Bayern:", value = "Farras Fathi"),
           selectInput("gender", "Geschlecht Vorsitz JEF Bayern", choices = c("M", "W"), selected = "M")
         )

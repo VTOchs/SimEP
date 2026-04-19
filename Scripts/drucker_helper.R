@@ -150,8 +150,14 @@ compile_tex_checked <- function(tex_path, clean = TRUE, max_runs = 3) {
       return(pdf_path)
     }
 
-    log_lines <- readLines(log_path, warn = FALSE)
-    rerun_needed <- any(grepl("Rerun to get cross-references right|Label\\(s\\) may have changed|Rerun filecheck", log_lines))
+    # Read as raw bytes to avoid locale/encoding conversion issues in TeX logs.
+    log_lines <- tryCatch(
+      readLines(log_path, warn = FALSE, encoding = "bytes"),
+      error = function(error) readLines(log_path, warn = FALSE)
+    )
+
+    rerun_pattern <- "Rerun to get cross-references right|Label\\(s\\) may have changed|Rerun filecheck"
+    rerun_needed <- any(grepl(rerun_pattern, log_lines, useBytes = TRUE))
 
     if (!rerun_needed) {
       return(pdf_path)

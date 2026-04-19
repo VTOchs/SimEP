@@ -22,15 +22,8 @@
 
 \input{../Meta/var.tex}
 \input{../Meta/shinyin.tex}
-
-\newcommand{\constrainedlogo}[4][2cm]{%
-  \raisebox{#3}{\includegraphics[width=#2,height=#1,keepaspectratio]{#4}}%
-}
-
-\newcommand{\jeflogo}{\constrainedlogo[2.5cm]{5cm}{0pt}{../Logos/jef.png}}
-\newcommand{\simeplogo}{\constrainedlogo[2.5cm]{5cm}{0pt}{../Logos/simep.png}}
-\newcommand{\financelogo}{\constrainedlogo[1.5cm]{4cm}{0pt}{../Logos/finance\_\city.png}}
-\newcommand{\citylogo}{\constrainedlogo[1.5cm]{4cm}{0pt}{../Logos/\city.png}}
+\newcommand{\LogoBasePath}{../Logos}
+\input{../Meta/logos.tex}
 
 \begin{document}
 
@@ -64,33 +57,7 @@ Federführende Ausschüsse:
 \end{center}
 
 
-\begin{tikzpicture}[remember picture, overlay]
-        % Top left corner
-        \node at ([xshift=10mm, yshift=-8mm] current page.north west) [anchor=north west, inner sep=0pt] {
-            {\jeflogo}
-        };
-        
-        % Top right corner
-        \node at ([xshift=-7.5mm, yshift=-6mm] current page.north east) [anchor=north east, inner sep=0pt] {
-            {\simeplogo}
-        };
-        
-        
-        % Bottom left corner
-        \node[anchor=south west, inner sep=0pt, text width=4.5cm, align=left] at ([xshift=10mm, yshift=12mm] current page.south west) {
-            \small Kofinanziert durch:\\[3mm]
-            \financelogo
-        };
-        
-    
-        % Bottom right corner
-        \node[anchor=south east, inner sep=0pt, text width=4.5cm, align=right] at ([xshift=-10mm, yshift=10mm] current page.south east) {
-            \small Unterstützt durch:\\[3mm]
-            \citylogo
-        };
-    
-
-    \end{tikzpicture}
+\PlaceLogosOne
 
 \newpage
 

@@ -15,15 +15,7 @@
 \renewcommand{\familydefault}{\sfdefault}
 
 \input{Meta/shinyin.tex}
-
-% Logo commands from Datenschutzvereinbarung.tex
-\newcommand{\constrainedlogo}[4][2cm]{%
-  \raisebox{#3}{\includegraphics[width=#2,height=#1,keepaspectratio]{#4}}%
-}
-\newcommand{\jeflogo}{\constrainedlogo[2.5cm]{5cm}{0pt}{Logos/jef.png}}
-\newcommand{\simeplogo}{\constrainedlogo[2.5cm]{5cm}{0pt}{Logos/simep.png}}
-\newcommand{\financelogo}{\constrainedlogo[1.5cm]{4cm}{0pt}{Logos/finance_\city.png}}
-\newcommand{\citylogo}{\constrainedlogo[1.5cm]{4cm}{0pt}{Logos/\city.png}}
+\input{Meta/logos.tex}
 
 \definecolor{headerblue}{RGB}{30, 80, 150}
 
@@ -32,25 +24,6 @@
 \setlength{\headheight}{14pt}
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
-
-\newcommand{\PlaceLogos}{%
-  \begin{tikzpicture}[remember picture, overlay]
-    \node at ([xshift=10mm, yshift=-15mm] current page.north west) [anchor=north west, inner sep=0pt] {
-      {\jeflogo}
-    };
-    \node at ([xshift=-7.5mm, yshift=-12mm] current page.north east) [anchor=north east, inner sep=0pt] {
-      {\simeplogo}
-    };
-    \node[anchor=south west, inner sep=0pt, text width=4.5cm, align=left] at ([xshift=10mm, yshift=8mm] current page.south west) {
-      \small Gefördert durch:\\[3mm]
-      \financelogo
-    };
-    \node[anchor=south east, inner sep=0pt, text width=4.5cm, align=right] at ([xshift=-10mm, yshift=8mm] current page.south east) {
-      \small Unterstützt durch:\\[3mm]
-      \citylogo
-    };
-  \end{tikzpicture}
-}
 
 \newcommand{\TopHeader}[1]{%
   \vspace*{2.3cm}
@@ -125,7 +98,7 @@
 \AttRow{19}
 \AttRow{20}
 \end{tabular}
-\PlaceLogos
+\PlaceLogosOne
 
 \newpage
 
@@ -152,7 +125,7 @@
 \AttRow{39}
 \AttRow{40}
 \end{tabular}
-\PlaceLogos
+\PlaceLogosRest
 
 \newpage
 
@@ -179,6 +152,6 @@
 \AttRow{59}
 \AttRow{60}
 \end{tabular}
-\PlaceLogos
+\PlaceLogosRest
 
 \end{document}
