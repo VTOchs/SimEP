@@ -22,7 +22,8 @@ sidebar <- dashboardSidebar(
     menuItem("R/TN", tabName = "r_tn_tab"),
     menuItem("R/U", tabName = "r_u_tab"),
     menuItem("R", tabName = "r_tab"),
-    menuItem("TN", tabName = "tn_tab")
+    menuItem("TN", tabName = "tn_tab"),
+    menuItem("U", tabName = "u_tab")
   )
 )
 
@@ -34,17 +35,17 @@ body <- dashboardBody(
         title = "Allgemein",
         fluidRow(
           box(
-            width = 12,
-            selectInput("docs", "Dokumente:",
-                        choices = c("Repository", "Unterlagen SuS (min. 27)", "TN-Zertifikate", "SuS-Verteilung", "Aufräumen"),
-                        selected = "SuS-Verteilung"),
-            numericInput("numSuS", "Anzahl SuS:", 27),
-            selectInput("fifthGroup", "Fünfte Fraktion:",
-                        choices = c("Grüne", "Linke"),
-                        selected = "Linke"),
-            actionButton("reload", "Daten aktualisieren"),
-            actionButton("print", "Drucken")
-          )
+              width = 12,
+              selectInput("docs", "Dokumente:",
+                          choices = c("Repository", "Unterlagen SuS (min. 27)", "TN-Zertifikate", "SuS-Verteilung", "Aufräumen"),
+                          selected = "SuS-Verteilung"),
+              numericInput("numSuS", "Anzahl SuS:", 27),
+              selectInput("fifthGroup", "Fünfte Fraktion:",
+                          choices = c("Grüne", "Linke"),
+                          selected = "Linke"),
+              actionButton("reload", "Daten aktualisieren"),
+              actionButton("print", "Drucken")
+            )
         ),
         fluidRow(
           box(
@@ -95,15 +96,23 @@ body <- dashboardBody(
       fluidRow(
         box(
           width = 12,
-          textInput("timeVorb", "Uhrzeit Vorbereitung:", value = "07:45-09:00"),
-          textInput("timeEinf", "Uhrzeit Briefing:", value = "09:00-09:45"),
-          textInput("timeFrakOne", "Uhrzeit 1. Fraktionssitzung:", value = "09:45-11:15"),
-          textInput("timePauseOne", "Uhrzeit Zwischenpause:", value = "11:15-11:30"),
-          textInput("timeAuss", "Uhrzeit Ausschusssitzung:", value = "11:30-12:45"),
-          textInput("timeMittag", "Uhrzeit Mittagspause:", value = "12:45-13:15"),
-          textInput("timeFrakTwo", "Uhrzeit 2. Fraktionssitzung:", value = "13:15-13:45"),
-          textInput("timeFinVerh", "Uhrzeit Finale Verhandlungsphase:", value = "13:45-14:15"),
-          textInput("timePlenar", "Uhrzeit Plenardebatte:", value = "14:15-15:15"),
+          textInput("timeVorb", "Uhrzeit Vorbereitung:", value = "07:30-09:00"),
+          textInput("timeEinf", "Uhrzeit Briefing:", value = "09:00-09:30"),
+          # textInput("timeEinf", "Uhrzeit Briefing:", value = "09:00-09:45"),
+          # textInput("timeFrakOne", "Uhrzeit 1. Fraktionssitzung:", value = "09:45-11:15"),
+          textInput("timeFrakOne", "Uhrzeit 1. Fraktionssitzung:", value = "09:30-11:00"),
+          textInput("timePauseOne", "Uhrzeit Zwischenpause:", value = "11:00-11:15"),
+          # textInput("timePauseOne", "Uhrzeit Zwischenpause:", value = "11:15-11:30"),
+          # textInput("timeAuss", "Uhrzeit Ausschusssitzung:", value = "11:30-12:45"),
+          textInput("timeAuss", "Uhrzeit Ausschusssitzung:", value = "11:15-12:30"),
+          # textInput("timeMittag", "Uhrzeit Mittagspause:", value = "12:45-13:15"),
+          textInput("timeMittag", "Uhrzeit Mittagspause:", value = "12:30-13:00"),
+          # textInput("timeFrakTwo", "Uhrzeit 2. Fraktionssitzung:", value = "13:15-13:45"),
+          textInput("timeFrakTwo", "Uhrzeit 2. Fraktionssitzung:", value = "13:00-13:30"),
+          # textInput("timeFinVerh", "Uhrzeit Finale Verhandlungsphase:", value = "13:45-14:15"),
+          textInput("timeFinVerh", "Uhrzeit Finale Verhandlungsphase:", value = "13:30-14:00"),
+          # textInput("timePlenar", "Uhrzeit Plenardebatte:", value = "14:15-15:15"),
+          textInput("timePlenar", "Uhrzeit Plenardebatte:", value = "14:00-15:15"),
           textInput("timeDebr", "Uhrzeit Debriefing:", value = "15:15-15:30")
         )
       )
@@ -130,19 +139,19 @@ body <- dashboardBody(
         ),
         box(
           width = 4,
-          textInput("leit_evp", "Leitung EVP:", value = "TBD"),
-          textInput("leit_sd", "Leitung S&D:", value = "TBD"),
-          textInput("leit_renew", "Leitung Renew:", value = "TBD"),
-          textInput("leit_green", "Leitung Grüne:", value = "TBD"),
-          textInput("leit_pfe", "Leitung PfE:", value = "TBD")
+          textInput("leit_evp", "Leitung EVP:", value = "Tobias"),
+          textInput("leit_sd", "Leitung S&D:", value = "Antonia"),
+          textInput("leit_renew", "Leitung Renew:", value = "Alica"),
+          textInput("leit_pfe", "Leitung PfE:", value = "Hannah"),
+          textInput("leit_5th", "Leitung 5. Fraktion:", value = "Farras")
         ),
         box(
           width = 4,
-          textInput("room_evp", "Raum EVP:", value = "TBD"),
-          textInput("room_sd", "Raum S&D:", value = "TBD"),
-          textInput("room_renew", "Raum Renew:", value = "TBD"),
-          textInput("room_green", "Raum Grüne:", value = "TBD"),
-          textInput("room_pfe", "Raum PfE:", value = "TBD")
+          textInput("room_evp", "Raum EVP:", value = "Kleiner Sitzungssaal"),
+          textInput("room_sd", "Raum S&D:", value = "Veranstaltungsraum Europe Direct"),
+          textInput("room_renew", "Raum Renew:", value = "Besprechungszimmer Donaubüro I"),
+          textInput("room_pfe", "Raum PfE:", value = "Besprechungszimmer BM III"),
+          textInput("room_5th", "Raum 5. Fraktion:", value = "Besprechungszimmer Öffentlichkeitsarbeit")
         )
       )
     ),
@@ -153,6 +162,15 @@ body <- dashboardBody(
         box(
           width = 12,
           textInput("tnListPath", "Dateiname TN-Excel:")
+        )
+      )
+    ),
+    tabItem(
+      tabName = "u_tab",
+      fluidRow(
+        box(
+          width = 12,
+          checkboxInput("recreateUnterlagen", "Dokumente neu erstellen (nur für Unterlagen Druck)", value = FALSE)
         )
       )
     )
@@ -251,8 +269,8 @@ server <- function(input, output, session) {
         cat(paste0("\\newcommand\\sdRoom{", input$room_sd, "}\n"))
         cat(paste0("\\newcommand\\reLeader{", input$leit_renew, "}\n"))
         cat(paste0("\\newcommand\\reRoom{", input$room_renew, "}\n"))
-        cat(paste0("\\newcommand\\greenLeader{", input$leit_green, "}\n"))
-        cat(paste0("\\newcommand\\greenRoom{", input$room_green, "}\n"))
+        cat(paste0("\\newcommand\\fifthLeader{", input$leit_5th, "}\n"))
+        cat(paste0("\\newcommand\\fifthRoom{", input$room_5th, "}\n"))
         cat(paste0("\\newcommand\\pfeLeader{", input$leit_pfe, "}\n"))
         cat(paste0("\\newcommand\\pfeRoom{", input$room_pfe, "}\n"))
         cat(paste0("\\newcommand\\numSuS{", input$numSuS, "}\n"))
@@ -409,7 +427,7 @@ server <- function(input, output, session) {
       for (group in groupsEP) {
         output_file <- paste0(input$resPath, "/Einzeldokumente/Fraktionspapier_", group, ".pdf")
         
-        if (!file.exists(output_file)) {
+        if (input$recreateUnterlagen || !file.exists(output_file)) {
           {sink("LaTeX/Meta/var.tex")
           paste0("\\newcommand\\Fraktion{", group, "}\n") |> cat()
           sink()}
@@ -422,7 +440,7 @@ server <- function(input, output, session) {
       for (member in countries) {
         output_file <- paste0(input$resPath, "/Einzeldokumente/Länderpapier_", member, ".pdf")
         
-        if (!file.exists(output_file)) {
+        if (input$recreateUnterlagen || !file.exists(output_file)) {
           {sink("LaTeX/Meta/var.tex")
           paste0("\\newcommand\\kurzel{", member, "}\n") |> cat()
           sink()}
@@ -433,6 +451,7 @@ server <- function(input, output, session) {
       }
       
       susFrakLand <- get_sus_dist(input$numSuS, groupsEP)
+      susOverview <- build_sus_overview(susFrakLand)
       
       # Process PDF combinations in batches to avoid "Too many open files" error.
       batch_size <- 10
@@ -492,6 +511,12 @@ server <- function(input, output, session) {
           }
         }
       }
+
+      save_sus_overview_pdf(
+        susOverview = susOverview,
+        file_path = file.path(input$resPath, "Länderaufteilung_Übersicht.pdf"),
+        title = paste("Schülerunterlagen Übersicht -", input$city)
+      )
       
       for (suffix in c("aux", "log", "out", "nav", "toc", "gz", "snm")) {
         move_temp_files(target_dir = "temp", file_ext = suffix, source_dir = "LaTeX")

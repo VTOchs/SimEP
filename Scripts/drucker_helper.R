@@ -20,6 +20,8 @@ translation_data_latex <- data.frame(
   de = c("EVP", "SD", "RE", "Green", "PfE", "EKR", "Left", "ESN", "Green", "EVP", "Green")
 )
 
+translation_data_country <- read.csv("Daten/data_landerpapiere.csv", stringsAsFactors = FALSE)[, c("iso", "country")]
+
 get_slido_link <- function(city, group){
   slido_link <- read_excel("Daten/data_slido.xlsx") |> 
     filter(Stadt == city) |> 
@@ -28,6 +30,151 @@ get_slido_link <- function(city, group){
 
 translate_latex <- function(group){
   translation_data_latex[translation_data_latex$en == group, "de"]
+}
+
+translate_country_iso <- function(country_code) {
+  translated <- translation_data_country$country[match(country_code, translation_data_country$iso)]
+  ifelse(is.na(translated), country_code, translated)
+}
+
+translate_sus_group <- function(group) {
+  translation_data_group <- c(
+    EVP = "EVP",
+    SD = "S&D",
+    RE = "Renew",
+    PfE = "PfE",
+    Green = "Grüne",
+    Left = "Linke"
+  )
+
+  translated <- unname(translation_data_group[group])
+  ifelse(is.na(translated), group, translated)
+}
+
+build_sus_overview <- function(susFrakLand) {
+  all_countries <- sort(unique(unlist(susFrakLand, use.names = FALSE)))
+  country_names <- vapply(all_countries, translate_country_iso, character(1))
+  ord <- order(country_names)
+  country_names <- country_names[ord]
+  all_countries <- all_countries[ord]
+
+  overview <- data.frame(
+    Land = country_names,
+    stringsAsFactors = FALSE
+  )
+
+  group_names <- names(susFrakLand)
+  for (group in group_names) {
+    overview[[translate_sus_group(group)]] <- vapply(all_countries, function(country) {
+      sum(susFrakLand[[group]] == country)
+    }, integer(1))
+  }
+
+  count_cols <- setdiff(names(overview), "Land")
+  overview$Gesamt <- rowSums(overview[, count_cols, drop = FALSE])
+  # Sort alphabetically by German country name
+  overview <- overview[order(overview$Land), ]
+
+  overview
+}
+
+save_sus_overview_pdf <- function(susOverview, file_path, title) {
+  dir.create(dirname(file_path), recursive = TRUE, showWarnings = FALSE)
+
+  pdf(file_path, width = 11.69, height = 8.27, family = "Helvetica")
+  on.exit(dev.off(), add = TRUE)
+
+  grid::grid.newpage()
+  grid::pushViewport(grid::viewport(width = 0.94, height = 0.92))
+
+  grid::grid.text(
+    title,
+    x = 0.5,
+    y = 0.97,
+    gp = grid::gpar(fontsize = 20, fontface = "bold", col = "#16361f")
+  )
+
+  grid::grid.text(
+    "Anzahl der Länder je Fraktion; alphabetisch nach Land sortiert.",
+    x = 0.5,
+    y = 0.935,
+    gp = grid::gpar(fontsize = 10.5, col = "#4b4b4b")
+  )
+
+  table_top <- 0.88
+  table_bottom <- 0.06
+  table_height <- table_top - table_bottom
+  n_rows <- nrow(susOverview) + 1
+  n_cols <- ncol(susOverview)
+  row_height <- table_height / n_rows
+  col_widths <- c(0.28, rep((1 - 0.28) / (n_cols - 1), n_cols - 1))
+  col_lefts <- c(0, cumsum(col_widths)[-n_cols])
+
+  header_fill <- "#1f6b45"
+  row_fill_a <- "#f5f9f6"
+  row_fill_b <- "#e8f1eb"
+  border_col <- "#b7c8bd"
+
+  draw_cell <- function(x, y, width, height, label, fill, col = "#1f1f1f", fontface = "plain", just = "center") {
+    grid::grid.rect(
+      x = x + width / 2,
+      y = y - height / 2,
+      width = width,
+      height = height,
+      gp = grid::gpar(fill = fill, col = border_col, lwd = 0.8)
+    )
+    grid::grid.text(
+      label,
+      x = x + if (just == "left") 0.01 else width / 2,
+      y = y - height / 2,
+      just = just,
+      gp = grid::gpar(fontsize = 10.5, col = col, fontface = fontface)
+    )
+  }
+
+  y_top <- table_top
+  for (col_idx in seq_len(n_cols)) {
+    x_left <- col_lefts[col_idx]
+    width <- col_widths[col_idx]
+    draw_cell(
+      x = x_left,
+      y = y_top,
+      width = width,
+      height = row_height,
+      label = names(susOverview)[col_idx],
+      fill = header_fill,
+      col = "white",
+      fontface = "bold",
+      just = if (col_idx == 1) "left" else "center"
+    )
+  }
+
+  for (row_idx in seq_len(nrow(susOverview))) {
+    y_top <- table_top - row_height * row_idx
+    fill <- if (row_idx %% 2 == 1) row_fill_a else row_fill_b
+    for (col_idx in seq_len(n_cols)) {
+      x_left <- col_lefts[col_idx]
+      width <- col_widths[col_idx]
+      value <- susOverview[row_idx, col_idx, drop = TRUE]
+      draw_cell(
+        x = x_left,
+        y = y_top,
+        width = width,
+        height = row_height,
+        label = as.character(value),
+        fill = fill,
+        just = if (col_idx == 1) "left" else "center"
+      )
+    }
+  }
+
+  grid::grid.text(
+    paste("Datei:", basename(file_path)),
+    x = 0,
+    y = 0.015,
+    just = "left",
+    gp = grid::gpar(fontsize = 8.5, col = "#666666")
+  )
 }
 
 dhondt <- function (parties, votes, n_seats){
