@@ -207,12 +207,6 @@ dhondt <- function (parties, votes, n_seats){
 
 
 
-
-
-
-
-
-
 get_sus_dist <- function(numSuS, groupsEP, landDist = T){
   if (landDist) {
     listTC <- readRDS("Daten/country_party.rds")

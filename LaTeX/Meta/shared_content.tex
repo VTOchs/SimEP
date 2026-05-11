@@ -208,6 +208,36 @@
 }[]%
 }
 
+% Macros for ideology statement titles (slide titles only)
+\providecommand{\IdeologyTitleOne}{Einstellung zur Reichweite der EU-Kompetenzen}
+\providecommand{\IdeologyTitleTwo}{Werte}
+\providecommand{\IdeologyTitleThree}{Thematische Schwerpunkte}
+
+% Macros for goal statement titles (slide titles only) — depend on topic
+\providecommand{\GoalTitleOne}[1]{%
+	\IfEqCase{#1}{%
+		{Green Deal}{Verhältnis Ökonomie \& Ökologie}%
+		{Asyl}{Lastenverteilung in der EU}%
+		{Armee}{Internationale Kooperation}%
+	}[]%
+}
+
+\providecommand{\GoalTitleTwo}[1]{%
+	\IfEqCase{#1}{%
+		{Green Deal}{Vermeidung von Treibhausgasen}%
+		{Asyl}{Ausmaß der Kontrolle der EU-Außengrenzen}%
+		{Armee}{Militärische vs. zivile Interventionen}%
+	}[]%
+}
+
+\providecommand{\GoalTitleThree}[1]{%
+	\IfEqCase{#1}{%
+		{Green Deal}{Nachhaltige Landwirtschaft}%
+		{Asyl}{Strenge bezüglich Asylanträge \& Rückführungen}%
+		{Armee}{Erhöhung von Verteidigungsausgaben}%
+	}[]%
+}
+
 \providecommand{\SetSharedFraktionsIdeologyAndGoals}[1]{%
 \newcommand{\ideology}{\SharedBuildIdeologyList{#1}}%
 \newcommand{\goals}{\SharedBuildGoalsList{#1}{\Thema}}%

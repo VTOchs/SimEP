@@ -13,6 +13,7 @@
 \input{../Meta/shinyin.tex}
 \input{../Meta/shared_content.tex}
 
+\newcommand{\Fraktion}{EVP}
 
 % -------------------------------------------------------------
 
@@ -41,17 +42,25 @@
 	{EVP}{
 		\newcommand{\Fraktionsname}{Europäische Volkspartei}
 		\newcommand{\Fraktionskuerzel}{EVP}
-    		\newcommand{\Beschreibung}{Christdemokratische Parteien (Deutschland: CSU, CDU, Familienpartei \& ÖDP)}
+    		\newcommand{\Beschreibung}{Christdemokratische Parteien (Deutschland: CDU, CSU Familienpartei \& ÖDP)}
 		\newcommand{\numSeats}{\partyseats{EPP}}
     		\newcommand{\numCountry}{\partycountries{EPP}}
 	    \newcommand{\vorsitz}{\partypres{EPP}}
     		\newcommand{\firstRepFirst}{Manfred}
 	    \newcommand{\firstRepLast}{Weber}
-    		\newcommand{\secondRepFirst}{Christian}
-	    \newcommand{\secondRepLast}{Doleschal}
+    		\newcommand{\secondRepFirst}{Andrea}
+	    \newcommand{\secondRepLast}{Wechsler}
     		\newcommand{\thirdRepFirst}{Angelika}
 	    \newcommand{\thirdRepLast}{Niebler}
-	    \newcommand{\bayRep}{Christian Doleschal, Markus Ferber, Monika Hohlmeier, Stefan Köhler, Angelika Niebler, Manfred Weber (alle CSU)}
+			    \newcommand{\bayRep}{
+			    \begin{tabular}{lll}
+			    BaWü: & \footnotesize Marie-Sophie Lanig, Norbert Lins, & \footnotesize CDU \\
+			    & \footnotesize Andreas Schwab, Andrea Wechsler &\\
+			    Bayern: & \footnotesize Christian Doleschal, Markus Ferber, Monika Hohlmeier & \footnotesize CSU \\
+			    & \footnotesize Stefan Köhler, Angelika Niebler, Manfred Weber &
+			    \end{tabular}
+			    }	    
+	    
 		\SetSharedFraktionsIdeologyAndGoals{EVP}
 	}%
 	{SD}{
@@ -65,9 +74,12 @@
         \newcommand{\firstRepLast}{García Pérez}
         \newcommand{\secondRepFirst}{Maria}
         \newcommand{\secondRepLast}{Noichl}
-        \newcommand{\thirdRepFirst}{Katarina}
-        \newcommand{\thirdRepLast}{Barley}
-        \newcommand{\bayRep}{Maria Noichl (SPD)}
+        \newcommand{\thirdRepFirst}{René}
+        \newcommand{\thirdRepLast}{Repasi}
+        \newcommand{\bayRep}{
+		\item Süddeutsche Abgeordnete:         
+		Vivien Costanzo (BW/SPD), Maria Noichl (BY/SPD), René Repasi (BW/SPD)
+        }
 		\SetSharedFraktionsIdeologyAndGoals{SD}
 	}%
 	{RE}{%
@@ -81,9 +93,12 @@
         \newcommand{\firstRepLast}{Hayer}
         \newcommand{\secondRepFirst}{Christine}
         \newcommand{\secondRepLast}{Singer}
-        \newcommand{\thirdRepFirst}{Marie-Agnes}
-        \newcommand{\thirdRepLast}{Strack-Zimmermann}
-        \newcommand{\bayRep}{Christine Singer (FW)}
+        \newcommand{\thirdRepFirst}{Andreas}
+        \newcommand{\thirdRepLast}{Glück}
+        \newcommand{\bayRep}{
+   		\item Süddeutsche Abgeordnete:         
+		Andreas Glück (BW/FDP), Christine Singer (BY/FW)
+        }
         \SetSharedFraktionsIdeologyAndGoals{RE}
 	}%
 	{Green}{%
@@ -115,7 +130,9 @@
 		\newcommand{\secondRepLast}{Vilimsky}
 		\newcommand{\thirdRepFirst}{Klara}
 		\newcommand{\thirdRepLast}{Dostalova}
-		\newcommand{\bayRep}{keine}
+        \newcommand{\bayRep}{
+		\item Süddeutsche Abgeordnete: keine
+        }
 		\SetSharedFraktionsIdeologyAndGoals{PfE}
 	}%
 	{Left}{%
@@ -131,12 +148,12 @@
 		\newcommand{\secondRepLast}{Aubry}
 		\newcommand{\thirdRepFirst}{Sebastian}
 		\newcommand{\thirdRepLast}{Everding}
-		\newcommand{\bayRep}{keine}
+        \newcommand{\bayRep}{
+		\item Süddeutsche Abgeordnete: keine
+        }
 		\SetSharedFraktionsIdeologyAndGoals{Left}
 	}%	
 }
-
-
 
 
 \IfEqCase{\Thema}{%
@@ -145,12 +162,12 @@
    		     \begin{enumerate}
         		    \item Haushaltsausschuss (BUDG)
             		\item Ausschuss für Industrie, Forschung und Energie (ITRE)
-    	    		    \item Ausschuss für Verkehr und Tourismus (TRAN)
+    	    		\item Ausschuss für Verkehr und Tourismus (TRAN)
     		        \item Ausschuss für Landwirtschaft und ländliche Entwicklung (AGRI)
 	        \end{enumerate}
 		}        
         \newcommand{\ausschussgruppen}{
-        			\item Art. 3 - \textit{Haushaltsausschuss (BUDG)}
+        		\item Art. 3 - \textit{Haushaltsausschuss (BUDG)}
        		    \item Art. 4 - \textit{Ausschuss für Industrie, Forschung und Energie (ITRE)}
       		    \item Art. 5 - \textit{Ausschuss für Verkehr und Tourismus (TRAN)}
       		    \item Art. 6 - \textit{Ausschuss für Landwirtschaft und ländliche Entwicklung (AGRI)}
@@ -168,9 +185,9 @@
             \end{enumerate}
     		}
     		\newcommand{\ausschussgruppen}{
-                	\item Art. 3 - \textit{Haushaltsausschuss (BUDG)}
+                \item Art. 3 - \textit{Haushaltsausschuss (BUDG)}
 				\item Art. 4 - \textit{Ausschuss für Beschäftigung und soziale Angelegenheiten (EMPL)}
-                	\item Art. 5 - \textit{Unterausschuss für Menschenrechte (DROI)}
+                \item Art. 5 - \textit{Unterausschuss für Menschenrechte (DROI)}
 				\item Art. 6 - \textit{Ausschuss für bürgerliche Freiheiten, Justiz und Inneres (LIBE)}
     		}
 	    \newcommand{\entwurf}{Gesetzesentwurf}
@@ -270,7 +287,7 @@
     \item \Beschreibung
     \item \numSeats\ Abgeordnete aus \numCountry\ Mitgliedstaaten
     \item Fraktionsvorsitz: \vorsitz
-    \item Bayerische Abgeordnete: \bayRep
+    \bayRep
 \end{itemize}
 \begin{figure}[!htb]
 \minipage{0.32\textwidth}

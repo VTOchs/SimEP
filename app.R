@@ -22,7 +22,7 @@ party_info <- list(
   sd    = list(name = "S&D",   logo = "S&D.png",   color = "#E2011A", var = "sd"),
   renew = list(name = "Renew", logo = "Renew.png", color = "#FFD700", var = "renew"),
   green = list(name = "Grüne", logo = "Greens.png", color = "#00A86B", var = "green"),
-  pfe   = list(name = "PfE",   logo = "PfE.png",   color = "#00BFFF", var = "pfe"),
+  pfe   = list(name = "PfE",   logo = "PfE.png",   color = "#000000", var = "pfe"),
   left  = list(name = "Linke", logo = "Left.png", color = "#5f013b", var = "left")
 )
 

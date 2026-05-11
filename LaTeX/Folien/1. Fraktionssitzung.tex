@@ -13,8 +13,6 @@
 \input{../Meta/shinyin.tex}
 \input{../Meta/shared_content.tex}
 
-\newcommand{\Fraktion}{EVP}
-
 % -------------------------------------------------------------
 
 % Load the CSV file
@@ -42,25 +40,17 @@
 	{EVP}{
 		\newcommand{\Fraktionsname}{Europäische Volkspartei}
 		\newcommand{\Fraktionskuerzel}{EVP}
-    		\newcommand{\Beschreibung}{Christdemokratische Parteien (Deutschland: CDU, CSU Familienpartei \& ÖDP)}
+    		\newcommand{\Beschreibung}{Christdemokratische Parteien (Deutschland: CSU, CDU, Familienpartei \& ÖDP)}
 		\newcommand{\numSeats}{\partyseats{EPP}}
     		\newcommand{\numCountry}{\partycountries{EPP}}
 	    \newcommand{\vorsitz}{\partypres{EPP}}
     		\newcommand{\firstRepFirst}{Manfred}
 	    \newcommand{\firstRepLast}{Weber}
-    		\newcommand{\secondRepFirst}{Andrea}
-	    \newcommand{\secondRepLast}{Wechsler}
+    		\newcommand{\secondRepFirst}{Christian}
+	    \newcommand{\secondRepLast}{Doleschal}
     		\newcommand{\thirdRepFirst}{Angelika}
 	    \newcommand{\thirdRepLast}{Niebler}
-			    \newcommand{\bayRep}{
-			    \begin{tabular}{lll}
-			    BaWü: & \footnotesize Marie-Sophie Lanig, Norbert Lins, & \footnotesize CDU \\
-			    & \footnotesize Andreas Schwab, Andrea Wechsler &\\
-			    Bayern: & \footnotesize Christian Doleschal, Markus Ferber, Monika Hohlmeier & \footnotesize CSU \\
-			    & \footnotesize Stefan Köhler, Angelika Niebler, Manfred Weber &
-			    \end{tabular}
-			    }	    
-	    
+	    \newcommand{\bayRep}{Christian Doleschal, Markus Ferber, Monika Hohlmeier, Stefan Köhler, Angelika Niebler, Manfred Weber (alle CSU)}
 		\SetSharedFraktionsIdeologyAndGoals{EVP}
 	}%
 	{SD}{
@@ -74,12 +64,9 @@
         \newcommand{\firstRepLast}{García Pérez}
         \newcommand{\secondRepFirst}{Maria}
         \newcommand{\secondRepLast}{Noichl}
-        \newcommand{\thirdRepFirst}{René}
-        \newcommand{\thirdRepLast}{Repasi}
-        \newcommand{\bayRep}{
-		\item Süddeutsche Abgeordnete:         
-		Vivien Costanzo (BW/SPD), Maria Noichl (BY/SPD), René Repasi (BW/SPD)
-        }
+        \newcommand{\thirdRepFirst}{Katarina}
+        \newcommand{\thirdRepLast}{Barley}
+        \newcommand{\bayRep}{Maria Noichl (SPD)}
 		\SetSharedFraktionsIdeologyAndGoals{SD}
 	}%
 	{RE}{%
@@ -93,12 +80,9 @@
         \newcommand{\firstRepLast}{Hayer}
         \newcommand{\secondRepFirst}{Christine}
         \newcommand{\secondRepLast}{Singer}
-        \newcommand{\thirdRepFirst}{Andreas}
-        \newcommand{\thirdRepLast}{Glück}
-        \newcommand{\bayRep}{
-   		\item Süddeutsche Abgeordnete:         
-		Andreas Glück (BW/FDP), Christine Singer (BY/FW)
-        }
+        \newcommand{\thirdRepFirst}{Marie-Agnes}
+        \newcommand{\thirdRepLast}{Strack-Zimmermann}
+        \newcommand{\bayRep}{Christine Singer (FW)}
         \SetSharedFraktionsIdeologyAndGoals{RE}
 	}%
 	{Green}{%
@@ -130,9 +114,7 @@
 		\newcommand{\secondRepLast}{Vilimsky}
 		\newcommand{\thirdRepFirst}{Klara}
 		\newcommand{\thirdRepLast}{Dostalova}
-        \newcommand{\bayRep}{
-		\item Süddeutsche Abgeordnete: keine
-        }
+		\newcommand{\bayRep}{keine}
 		\SetSharedFraktionsIdeologyAndGoals{PfE}
 	}%
 	{Left}{%
@@ -148,12 +130,12 @@
 		\newcommand{\secondRepLast}{Aubry}
 		\newcommand{\thirdRepFirst}{Sebastian}
 		\newcommand{\thirdRepLast}{Everding}
-        \newcommand{\bayRep}{
-		\item Süddeutsche Abgeordnete: keine
-        }
+		\newcommand{\bayRep}{keine}
 		\SetSharedFraktionsIdeologyAndGoals{Left}
 	}%	
 }
+
+
 
 
 \IfEqCase{\Thema}{%
@@ -162,12 +144,12 @@
    		     \begin{enumerate}
         		    \item Haushaltsausschuss (BUDG)
             		\item Ausschuss für Industrie, Forschung und Energie (ITRE)
-    	    		\item Ausschuss für Verkehr und Tourismus (TRAN)
+    	    		    \item Ausschuss für Verkehr und Tourismus (TRAN)
     		        \item Ausschuss für Landwirtschaft und ländliche Entwicklung (AGRI)
 	        \end{enumerate}
 		}        
         \newcommand{\ausschussgruppen}{
-        		\item Art. 3 - \textit{Haushaltsausschuss (BUDG)}
+        			\item Art. 3 - \textit{Haushaltsausschuss (BUDG)}
        		    \item Art. 4 - \textit{Ausschuss für Industrie, Forschung und Energie (ITRE)}
       		    \item Art. 5 - \textit{Ausschuss für Verkehr und Tourismus (TRAN)}
       		    \item Art. 6 - \textit{Ausschuss für Landwirtschaft und ländliche Entwicklung (AGRI)}
@@ -185,9 +167,9 @@
             \end{enumerate}
     		}
     		\newcommand{\ausschussgruppen}{
-                \item Art. 3 - \textit{Haushaltsausschuss (BUDG)}
+                	\item Art. 3 - \textit{Haushaltsausschuss (BUDG)}
 				\item Art. 4 - \textit{Ausschuss für Beschäftigung und soziale Angelegenheiten (EMPL)}
-                \item Art. 5 - \textit{Unterausschuss für Menschenrechte (DROI)}
+                	\item Art. 5 - \textit{Unterausschuss für Menschenrechte (DROI)}
 				\item Art. 6 - \textit{Ausschuss für bürgerliche Freiheiten, Justiz und Inneres (LIBE)}
     		}
 	    \newcommand{\entwurf}{Gesetzesentwurf}
@@ -275,47 +257,270 @@
     Abgeordnete schließen sich gemäß ihrer politischen Vorstellungen und nicht ihrem Herkunftsland zu Fraktionen zusammen:
 \end{center}
 \begin{figure}[h]
+  \centering
+  \begin{minipage}[c]{0.48\textwidth}
     \centering
-    \includegraphics[height=5.5cm]{Bilder/EP_seats.jpg}
+    \includegraphics[width=4cm]{Bilder/EP_seats.jpg}
+  \end{minipage}\hfill
+  \begin{minipage}[c]{0.48\textwidth}
+    \centering
+    \ifthenelse{\equal{\fifthGroup}{Green}}{%
+      \includegraphics[width=6cm]{../../Scripts/semicircle_Green.png}%
+    }{%
+      \includegraphics[width=6cm]{../../Scripts/semicircle_Left.png}%
+    }%
+  \end{minipage}
 \end{figure}
 \end{frame}
 
 
-\begin{frame}{\Fraktionsname} % allgemeine Infos
-\vspace{-0.5cm}
-\begin{itemize}
-    \item \Beschreibung
-    \item \numSeats\ Abgeordnete aus \numCountry\ Mitgliedstaaten
-    \item Fraktionsvorsitz: \vorsitz
-    \bayRep
-\end{itemize}
-\begin{figure}[!htb]
-\minipage{0.32\textwidth}
-    \centering
-    \includegraphics[height=2cm]{Bilder/rep1_\Fraktion.jpg}
-  \caption*{\centering \firstRepFirst\ \firstRepLast}
-\endminipage\hfill
-\minipage{0.32\textwidth}
-    \centering
-    \includegraphics[height=2cm]{Bilder/rep2_\Fraktion.jpg}
-    \caption*{\centering \secondRepFirst\ \secondRepLast}
-\endminipage\hfill
-\minipage{0.32\textwidth}
-    \centering
-    \includegraphics[height=2cm]{Bilder/rep3_\Fraktion.jpg}
-    \caption*{\centering \thirdRepFirst\ \thirdRepLast}
-\endminipage
-\end{figure}
+% ------------------ New: Individual statement slides ------------------
+% Macro to select ideology statement by index
+\newcommand{\ShowIdeology}[1]{%
+	\IfEqCase{#1}{%
+		{1}{\SharedIdeologyOne{\Fraktion}}%
+		{2}{\SharedIdeologyTwo{\Fraktion}}%
+		{3}{\SharedIdeologyThree{\Fraktion}}%
+	}[]%
+}
+
+\newcommand{\ShowGoal}[1]{%
+	\IfEqCase{#1}{%
+		{1}{\SharedGoalOne{\Fraktion}{\Thema}}%
+		{2}{\SharedGoalTwo{\Fraktion}{\Thema}}%
+		{3}{\SharedGoalThree{\Fraktion}{\Thema}}%
+	}[]%
+}
+
+% Helper macro for grid cells: fixed-width logo container + text
+% Each cell uses fixed logo + text columns and a fixed row height for stable alignment
+\newcommand{\GridCell}[2]{%
+  \begin{minipage}[c]{0.49\textwidth}%
+  \begin{minipage}[c]{0.05\textwidth}\centering
+    \includegraphics[width=1cm]{Bilder/#1.png}%
+  \end{minipage}\hspace{0.3\textwidth}%
+  \begin{minipage}[c]{0.6\textwidth}\footnotesize\raggedright
+    #2
+  \end{minipage}%
+  \end{minipage}%
+}
+
+% Helper macro for goal grid cells (with \Thema parameter)
+\newcommand{\GridCellGoal}[2]{%
+  \begin{minipage}[c]{0.49\textwidth}%
+  \begin{minipage}[c]{0.05\textwidth}\centering
+    \includegraphics[width=1cm]{Bilder/#1.png}%
+  \end{minipage}\hspace{0.3\textwidth}%
+  \begin{minipage}[c]{0.6\textwidth}\footnotesize\raggedright
+    #2{\Thema}
+  \end{minipage}%
+  \end{minipage}%
+}
+
+% Helper macro to render a 2x2 grid of caucuses (excluding current)
+% Usage: \ShowCaucusGrid{MACRO} where MACRO is the statement accessor (e.g., \SharedIdeologyOne)
+\newcommand{\ShowCaucusGrid}[1]{%
+  \ifthenelse{\equal{EVP}{\Fraktion}}{%
+    % Current = EVP, show SD, RE, PfE, fifthGroup
+    \GridCell{SD}{#1{SD}}\hfill
+    \GridCell{RE}{#1{RE}}\par\vspace{0.4cm}
+    \GridCell{PfE}{#1{PfE}}\hfill
+    \ifthenelse{\equal{\fifthGroup}{Green}}{%
+      \GridCell{Green}{#1{Green}}%
+    }{%
+      \GridCell{Left}{#1{Linke}}%
+    }%
+  }{%
+    \ifthenelse{\equal{SD}{\Fraktion}}{%
+      % Current = SD, show EVP, RE, PfE, fifthGroup
+      \GridCell{EVP}{#1{EVP}}\hfill
+      \GridCell{RE}{#1{RE}}\par\vspace{0.4cm}
+      \GridCell{PfE}{#1{PfE}}\hfill
+      \ifthenelse{\equal{\fifthGroup}{Green}}{%
+        \GridCell{Green}{#1{Green}}%
+      }{%
+        \GridCell{Left}{#1{Linke}}%
+      }%
+    }{%
+      \ifthenelse{\equal{RE}{\Fraktion}}{%
+        % Current = RE, show EVP, SD, PfE, fifthGroup
+        \GridCell{EVP}{#1{EVP}}\hfill
+        \GridCell{SD}{#1{SD}}\par\vspace{0.4cm}
+        \GridCell{PfE}{#1{PfE}}\hfill
+        \ifthenelse{\equal{\fifthGroup}{Green}}{%
+          \GridCell{Green}{#1{Green}}%
+        }{%
+          \GridCell{Left}{#1{Linke}}%
+        }%
+      }{%
+        \ifthenelse{\equal{PfE}{\Fraktion}}{%
+          % Current = PfE, show EVP, SD, RE, fifthGroup
+          \GridCell{EVP}{#1{EVP}}\hfill
+          \GridCell{SD}{#1{SD}}\par\vspace{0.4cm}
+          \GridCell{RE}{#1{RE}}\hfill
+          \ifthenelse{\equal{\fifthGroup}{Green}}{%
+            \GridCell{Green}{#1{Green}}%
+          }{%
+            \GridCell{Left}{#1{Linke}}%
+          }%
+        }{%
+          % Current = fifthGroup, show EVP, SD, RE, PfE
+          \GridCell{EVP}{#1{EVP}}\hfill
+          \GridCell{SD}{#1{SD}}\par\vspace{0.4cm}
+          \GridCell{RE}{#1{RE}}\hfill
+          \GridCell{PfE}{#1{PfE}}%
+        }%
+      }%
+    }%
+  }%
+}
+
+% Helper macro for goal grids (same pattern but macros need \Thema)
+\newcommand{\ShowCaucusGridGoal}[1]{%
+  \ifthenelse{\equal{EVP}{\Fraktion}}{%
+    \GridCellGoal{SD}{#1{SD}}\hfill
+    \GridCellGoal{RE}{#1{RE}}\par\vspace{0.4cm}
+    \GridCellGoal{PfE}{#1{PfE}}\hfill
+    \ifthenelse{\equal{\fifthGroup}{Green}}{%
+      \GridCellGoal{Green}{#1{Green}}%
+    }{%
+      \GridCellGoal{Left}{#1{Linke}}%
+    }%
+  }{%
+    \ifthenelse{\equal{SD}{\Fraktion}}{%
+      \GridCellGoal{EVP}{#1{EVP}}\hfill
+      \GridCellGoal{RE}{#1{RE}}\par\vspace{0.4cm}
+      \GridCellGoal{PfE}{#1{PfE}}\hfill
+      \ifthenelse{\equal{\fifthGroup}{Green}}{%
+        \GridCellGoal{Green}{#1{Green}}%
+      }{%
+        \GridCellGoal{Left}{#1{Linke}}%
+      }%
+    }{%
+      \ifthenelse{\equal{RE}{\Fraktion}}{%
+        \GridCellGoal{EVP}{#1{EVP}}\hfill
+        \GridCellGoal{SD}{#1{SD}}\par\vspace{0.4cm}
+        \GridCellGoal{PfE}{#1{PfE}}\hfill
+        \ifthenelse{\equal{\fifthGroup}{Green}}{%
+          \GridCellGoal{Green}{#1{Green}}%
+        }{%
+          \GridCellGoal{Left}{#1{Linke}}%
+        }%
+      }{%
+        \ifthenelse{\equal{PfE}{\Fraktion}}{%
+          \GridCellGoal{EVP}{#1{EVP}}\hfill
+          \GridCellGoal{SD}{#1{SD}}\par\vspace{0.4cm}
+          \GridCellGoal{RE}{#1{RE}}\hfill
+          \ifthenelse{\equal{\fifthGroup}{Green}}{%
+            \GridCellGoal{Green}{#1{Green}}%
+          }{%
+            \GridCellGoal{Left}{#1{Linke}}%
+          }%
+        }{%
+          \GridCellGoal{EVP}{#1{EVP}}\hfill
+          \GridCellGoal{SD}{#1{SD}}\par\vspace{0.4cm}
+          \GridCellGoal{RE}{#1{RE}}\hfill
+          \GridCellGoal{PfE}{#1{PfE}}%
+        }%
+      }%
+    }%
+  }%
+}
+\begin{frame}{\Fraktionsname\ --- \IdeologyTitleOne}
+\vspace{-0.15cm}
+\begin{minipage}[c][0.85cm][c]{0.15\textwidth}\centering
+  \includegraphics[height=0.8cm]{Bilder/\Fraktion.png}
+\end{minipage}\hfill
+\begin{minipage}[c][0.85cm][c]{0.82\textwidth}\small
+  \ShowIdeology{1}
+\end{minipage}
+\vspace{0.08cm}
+\hrule
+\vspace{0.1cm}
+{\footnotesize
+  \ShowCaucusGrid{\SharedIdeologyOne}
+}
 \end{frame}
 
-\begin{frame}{\Fraktionsname\ - Leitlinien}
-\vspace{-1.5cm}
-\ideology
+\begin{frame}{\Fraktionsname\ --- \IdeologyTitleTwo}
+\vspace{-0.15cm}
+\begin{minipage}[c][0.85cm][c]{0.15\textwidth}\centering
+  \includegraphics[height=0.8cm]{Bilder/\Fraktion.png}
+\end{minipage}\hfill
+\begin{minipage}[c][0.85cm][c]{0.82\textwidth}\small
+  \ShowIdeology{2}
+\end{minipage}
+\vspace{0.08cm}
+\hrule
+\vspace{0.1cm}
+{\footnotesize
+  \ShowCaucusGrid{\SharedIdeologyTwo}
+}
 \end{frame}
 
-\begin{frame}{\Fraktionsname\ - \Thema}
-\vspace{-1.5cm}
-\goals
+\begin{frame}{\Fraktionsname\ --- \IdeologyTitleThree}
+\vspace{-0.15cm}
+\begin{minipage}[c][0.85cm][c]{0.15\textwidth}\centering
+  \includegraphics[height=0.8cm]{Bilder/\Fraktion.png}
+\end{minipage}\hfill
+\begin{minipage}[c][0.85cm][c]{0.82\textwidth}\small
+  \ShowIdeology{3}
+\end{minipage}
+\vspace{0.08cm}
+\hrule
+\vspace{0.1cm}
+{\footnotesize
+  \ShowCaucusGrid{\SharedIdeologyThree}
+}
+\end{frame}
+
+% Create three explicit slides for goals (1..3) — simplified, no loops
+\begin{frame}[fragile]{\Fraktionsname\ --- \GoalTitleOne{\Thema}}
+\vspace{-0.15cm}
+\begin{minipage}[c][0.85cm][c]{0.15\textwidth}\centering
+  \includegraphics[height=0.8cm]{Bilder/\Fraktion.png}
+\end{minipage}\hfill
+\begin{minipage}[c][0.85cm][c]{0.82\textwidth}\small
+  \ShowGoal{1}
+\end{minipage}
+\vspace{0.08cm}
+\hrule
+\vspace{0.1cm}
+{\footnotesize
+  \ShowCaucusGridGoal{\SharedGoalOne}
+}
+\end{frame}
+
+\begin{frame}[fragile]{\Fraktionsname\ --- \GoalTitleTwo{\Thema}}
+\vspace{-0.15cm}
+\begin{minipage}[c][0.85cm][c]{0.15\textwidth}\centering
+  \includegraphics[height=0.8cm]{Bilder/\Fraktion.png}
+\end{minipage}\hfill
+\begin{minipage}[c][0.85cm][c]{0.82\textwidth}\small
+  \ShowGoal{2}
+\end{minipage}
+\vspace{0.08cm}
+\hrule
+\vspace{0.1cm}
+{\footnotesize
+  \ShowCaucusGridGoal{\SharedGoalTwo}
+}
+\end{frame}
+
+\begin{frame}[fragile]{\Fraktionsname\ --- \GoalTitleThree{\Thema}}
+\vspace{-0.15cm}
+\begin{minipage}[c][0.85cm][c]{0.15\textwidth}\centering
+  \includegraphics[height=0.8cm]{Bilder/\Fraktion.png}
+\end{minipage}\hfill
+\begin{minipage}[c][0.85cm][c]{0.82\textwidth}\small
+  \ShowGoal{3}
+\end{minipage}
+\vspace{0.08cm}
+\hrule
+\vspace{0.1cm}
+{\footnotesize
+  \ShowCaucusGridGoal{\SharedGoalThree}
+}
 \end{frame}
 
 \begin{frame}{\glqq Zwischenprüfung\grqq}

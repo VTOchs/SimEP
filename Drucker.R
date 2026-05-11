@@ -42,7 +42,7 @@ body <- dashboardBody(
               numericInput("numSuS", "Anzahl SuS:", 27),
               selectInput("fifthGroup", "Fünfte Fraktion:",
                           choices = c("Grüne", "Linke"),
-                          selected = "Linke"),
+                          selected = "Grüne"),
               actionButton("reload", "Daten aktualisieren"),
               actionButton("print", "Drucken")
             )
@@ -66,11 +66,11 @@ body <- dashboardBody(
                       selected = "Armee"),
           selectInput("city", "Stadt:",
                       choices = c("Coburg", "München", "Nürnberg", "Passau", "Ulm"),
-                      selected = "Ulm"),
+                      selected = "Coburg"),
           dateInput("date", "Datum:", format = "dd.mm.yyyy", language = "de", weekstart = 1),
           selectInput("resPath", "Zielordner:",
                       choices = c("Coburg", "München", "Nürnberg", "Passau", "Ulm"),
-                      selected = "Ulm")
+                      selected = "Coburg")
         )
       )
     ),
@@ -83,7 +83,7 @@ body <- dashboardBody(
           selectInput("localSup", "Lokale Unterstützung:",
                       choices = c("das Europe Direct Coburg", "das Europe Direct München", "das Europe Direct Nürnberg",
                                   "die Universität Passau", "das Europe Direct Ulm"),
-                      selected = "das Europe Direct Ulm"),
+                      selected = "das Europe Direct Coburg"),
           textInput("sponsor", "Sponsor:", "die Vertretung der Europäischen Kommission in München"),
           textInput("jefvorsitz", "Vorsitz JEF Bayern:", value = "Farras Fathi"),
           selectInput("gender", "Geschlecht Vorsitz JEF Bayern", choices = c("M", "W"), selected = "M")
@@ -97,22 +97,22 @@ body <- dashboardBody(
         box(
           width = 12,
           textInput("timeVorb", "Uhrzeit Vorbereitung:", value = "07:30-09:00"),
-          textInput("timeEinf", "Uhrzeit Briefing:", value = "09:00-09:30"),
-          # textInput("timeEinf", "Uhrzeit Briefing:", value = "09:00-09:45"),
-          # textInput("timeFrakOne", "Uhrzeit 1. Fraktionssitzung:", value = "09:45-11:15"),
-          textInput("timeFrakOne", "Uhrzeit 1. Fraktionssitzung:", value = "09:30-11:00"),
-          textInput("timePauseOne", "Uhrzeit Zwischenpause:", value = "11:00-11:15"),
-          # textInput("timePauseOne", "Uhrzeit Zwischenpause:", value = "11:15-11:30"),
-          # textInput("timeAuss", "Uhrzeit Ausschusssitzung:", value = "11:30-12:45"),
-          textInput("timeAuss", "Uhrzeit Ausschusssitzung:", value = "11:15-12:30"),
-          # textInput("timeMittag", "Uhrzeit Mittagspause:", value = "12:45-13:15"),
-          textInput("timeMittag", "Uhrzeit Mittagspause:", value = "12:30-13:00"),
-          # textInput("timeFrakTwo", "Uhrzeit 2. Fraktionssitzung:", value = "13:15-13:45"),
-          textInput("timeFrakTwo", "Uhrzeit 2. Fraktionssitzung:", value = "13:00-13:30"),
-          # textInput("timeFinVerh", "Uhrzeit Finale Verhandlungsphase:", value = "13:45-14:15"),
-          textInput("timeFinVerh", "Uhrzeit Finale Verhandlungsphase:", value = "13:30-14:00"),
-          # textInput("timePlenar", "Uhrzeit Plenardebatte:", value = "14:15-15:15"),
-          textInput("timePlenar", "Uhrzeit Plenardebatte:", value = "14:00-15:15"),
+          # textInput("timeEinf", "Uhrzeit Briefing:", value = "09:00-09:30"),
+          textInput("timeEinf", "Uhrzeit Briefing:", value = "09:00-09:45"),
+          textInput("timeFrakOne", "Uhrzeit 1. Fraktionssitzung:", value = "09:45-11:15"),
+          # textInput("timeFrakOne", "Uhrzeit 1. Fraktionssitzung:", value = "09:30-11:00"),
+          # textInput("timePauseOne", "Uhrzeit Zwischenpause:", value = "11:00-11:15"),
+          textInput("timePauseOne", "Uhrzeit Zwischenpause:", value = "11:15-11:30"),
+          textInput("timeAuss", "Uhrzeit Ausschusssitzung:", value = "11:30-12:45"),
+          # textInput("timeAuss", "Uhrzeit Ausschusssitzung:", value = "11:15-12:30"),
+          textInput("timeMittag", "Uhrzeit Mittagspause:", value = "12:45-13:15"),
+          # textInput("timeMittag", "Uhrzeit Mittagspause:", value = "12:30-13:00"),
+          textInput("timeFrakTwo", "Uhrzeit 2. Fraktionssitzung:", value = "13:15-13:45"),
+          # textInput("timeFrakTwo", "Uhrzeit 2. Fraktionssitzung:", value = "13:00-13:30"),
+          textInput("timeFinVerh", "Uhrzeit Finale Verhandlungsphase:", value = "13:45-14:15"),
+          # textInput("timeFinVerh", "Uhrzeit Finale Verhandlungsphase:", value = "13:30-14:00"),
+          textInput("timePlenar", "Uhrzeit Plenardebatte:", value = "14:15-15:15"),
+          # textInput("timePlenar", "Uhrzeit Plenardebatte:", value = "14:00-15:15"),
           textInput("timeDebr", "Uhrzeit Debriefing:", value = "15:15-15:30")
         )
       )
@@ -124,8 +124,8 @@ body <- dashboardBody(
         box(
           width = 4,
           selectInput("pol", "Politiker:",
-                      choices = c("Andrea Wechsler", "Karl Freller", "Johannes Wagner", "Johannes Schätzl", "Maria Noichl"),
-                      selected = "Andrea Wechsler"),
+                      choices = c("Lena Düpont", "Karl Freller", "Johannes Wagner", "Johannes Schätzl", "Maria Noichl"),
+                      selected = "Lena Düpont"),
           selectInput("pol_office", "Politiker (Amt):",
                       choices = c("Mitglied des Europäischen Parlaments", "Mitglied des Bundestags",
                                   "Mitglied des Landtags"),
@@ -139,19 +139,19 @@ body <- dashboardBody(
         ),
         box(
           width = 4,
-          textInput("leit_evp", "Leitung EVP:", value = "Tobias"),
-          textInput("leit_sd", "Leitung S&D:", value = "Antonia"),
-          textInput("leit_renew", "Leitung Renew:", value = "Alica"),
-          textInput("leit_pfe", "Leitung PfE:", value = "Hannah"),
-          textInput("leit_5th", "Leitung 5. Fraktion:", value = "Farras")
+          textInput("leit_evp", "Leitung EVP:", value = "TBD"),
+          textInput("leit_sd", "Leitung S&D:", value = "TBD"),
+          textInput("leit_renew", "Leitung Renew:", value = "TBD"),
+          textInput("leit_pfe", "Leitung PfE:", value = "TBD"),
+          textInput("leit_5th", "Leitung 5. Fraktion:", value = "TBD")
         ),
         box(
           width = 4,
-          textInput("room_evp", "Raum EVP:", value = "Kleiner Sitzungssaal"),
-          textInput("room_sd", "Raum S&D:", value = "Veranstaltungsraum Europe Direct"),
-          textInput("room_renew", "Raum Renew:", value = "Besprechungszimmer Donaubüro I"),
-          textInput("room_pfe", "Raum PfE:", value = "Besprechungszimmer BM III"),
-          textInput("room_5th", "Raum 5. Fraktion:", value = "Besprechungszimmer Öffentlichkeitsarbeit")
+          textInput("room_evp", "Raum EVP:", value = "TBD"),
+          textInput("room_sd", "Raum S&D:", value = "TBD"),
+          textInput("room_renew", "Raum Renew:", value = "TBD"),
+          textInput("room_pfe", "Raum PfE:", value = "TBD"),
+          textInput("room_5th", "Raum 5. Fraktion:", value = "TBD")
         )
       )
     ),
