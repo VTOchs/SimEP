@@ -21,6 +21,7 @@ sidebar <- dashboardSidebar(
     menuItem("R/U/TN", tabName = "r_u_tn_tab"),
     menuItem("R/TN", tabName = "r_tn_tab"),
     menuItem("R/U", tabName = "r_u_tab"),
+    menuItem("A", tabName = "a_tab"),
     menuItem("R", tabName = "r_tab"),
     menuItem("TN", tabName = "tn_tab"),
     menuItem("U", tabName = "u_tab")
@@ -36,13 +37,13 @@ body <- dashboardBody(
         fluidRow(
           box(
               width = 12,
-              selectInput("docs", "Dokumente:",
-                          choices = c("Repository", "Unterlagen SuS (min. 27)", "TN-Zertifikate", "SuS-Verteilung", "Aufräumen"),
+                      selectInput("docs", "Dokumente:",
+                                  choices = c("Repository", "Ausschussübersicht", "Unterlagen SuS (min. 27)", "TN-Zertifikate", "SuS-Verteilung", "Aufräumen"),
                           selected = "SuS-Verteilung"),
               numericInput("numSuS", "Anzahl SuS:", 27),
               selectInput("fifthGroup", "Fünfte Fraktion:",
                           choices = c("Grüne", "Linke"),
-                          selected = "Grüne"),
+                          selected = "Linke"),
               actionButton("reload", "Daten aktualisieren"),
               actionButton("print", "Drucken")
             )
@@ -117,7 +118,15 @@ body <- dashboardBody(
         )
       )
     ),
-    
+    tabItem(
+      tabName = "a_tab",
+      fluidRow(
+        box(
+          width = 12,
+            numericInput("numAntrag", "Antragsgrün Nummer:", 56456),
+        )
+      )
+    ),
     tabItem(
       tabName = "r_tab",
       fluidRow(
@@ -125,17 +134,17 @@ body <- dashboardBody(
           width = 4,
           selectInput("pol", "Politiker:",
                       choices = c("Lena Düpont", "Karl Freller", "Johannes Wagner", "Johannes Schätzl", "Maria Noichl"),
-                      selected = "Lena Düpont"),
+                      selected = "Johannes Wagner"),
           selectInput("pol_office", "Politiker (Amt):",
                       choices = c("Mitglied des Europäischen Parlaments", "Mitglied des Bundestags",
                                   "Mitglied des Landtags"),
-                      selected = "Mitglied des Europäischen Parlaments"),
-          textInput("stadtvert", "Stadtvertreter:", value = "Nalan Schmidt"),
-          textInput("stadtvert_office", "Stadtvertreter (Amt):", value = "Anlauf- und Koordinierungsstelle Bürgerdialog (Open Government) der Stadt Ulm"),
+                      selected = "Mitglied des Bundestags"),
+          textInput("stadtvert", "Stadtvertreter:", value = "TBD"),
+          textInput("stadtvert_office", "Stadtvertreter (Amt):", value = "TBD"),
           selectInput("location", "Veranstaltungsort:",
                       choices = c("in den Räumlichkeiten des Coburger Stadtjugendrings", "im Münchner Rathaus",
                                   "im Nürnberger Rathaus", "in der Universität Passau", "im Ulmer Rathaus"),
-                      selected = "im Ulmer Rathaus")
+                      selected = "in den Räumlichkeiten des Coburger Stadtjugendrings")
         ),
         box(
           width = 4,
@@ -155,7 +164,6 @@ body <- dashboardBody(
         )
       )
     ),
-  
     tabItem(
       tabName = "tn_tab",
       fluidRow(
@@ -182,43 +190,7 @@ ui <- dashboardPage(skin = "green", header, sidebar, body)
 # Server ------------------------------------------------------------------
 
 server <- function(input, output, session) {
-
-  get_committee_summary <- function() {
-    if (file.exists("Daten/committee_data.csv")) {
-      committee_df <- read.csv("Daten/committee_data.csv")
-      committee_df$meps <- as.numeric(committee_df$meps)
-      return(list(
-        totcoms = nrow(committee_df),
-        minmems = min(committee_df$meps, na.rm = TRUE),
-        maxmems = max(committee_df$meps, na.rm = TRUE)
-      ))
-    }
-
-    list(totcoms = 0, minmems = 0, maxmems = 0)
-  }
-
-  generate_draft_pdf <- function(topic) {
-    tex_path <- file.path("LaTeX", "Gesetzesentwürfe", paste0("Entwurf_", topic, ".tex"))
-    pdf_name <- paste0("Entwurf_", topic, ".pdf")
-    pdf_path <- file.path("LaTeX", "Gesetzesentwürfe", pdf_name)
-
-    if (!file.exists(tex_path)) {
-      stop(paste("Gesetzesentwurf nicht gefunden:", tex_path))
-    }
-
-    compile_tex_checked(tex_path, clean = T)
-
-    if (file.exists(pdf_name)) {
-      file.copy(pdf_name, pdf_path, overwrite = TRUE)
-      file.remove(pdf_name)
-    }
-
-    if (!file.exists(pdf_path)) {
-      stop(paste("PDF konnte nicht erzeugt werden:", pdf_path))
-    }
-
-    pdf_path
-  }
+  # Helper functions moved to Scripts/drucker_helper.R
 
   observeEvent(input$reload,
                 {source("Scripts/Länderpapiere.R")
@@ -229,17 +201,11 @@ server <- function(input, output, session) {
   observeEvent(input$print, 
      
        # Involvierte Ausschüsse festlegen
-       {if (input$topic == "Green Deal") {
-         committees <- c("AGRI", "BUDG", "ITRE", "TRAN")
-       } else if (input$topic == "Asyl") {
-         committees <- c("BUDG", "DROI", "EMPL", "LIBE")
-       } else if (input$topic == "Armee") {
-         committees <- c("BUDG", "LIBE", "SEDE")
-       }
+       {committees <- get_committees_for_topic(input$topic)
          
 
         # Fix LaTex-Variables into tex-File
-          committee_summary <- get_committee_summary()
+        committee_summary <- get_committee_summary()
 
         sink("LaTeX/Meta/shinyin.tex")
         cat(paste0("\\newcommand\\Thema{", input$topic, "}\n"))
@@ -285,18 +251,19 @@ server <- function(input, output, session) {
 
   observeEvent(input$print, 
     
-    if (input$docs == "Repository") {
+    if (input$docs == "Ausschussübersicht") {
+      committees <- get_committees_for_topic(input$topic)
+
+      generate_ausschussuebersicht(committees, input$numAntrag, input$fifthGroup, input$city)
+
+      print(paste0("Ausschussübersicht (", input$city, ") fertig!"))
+
+    } else if (input$docs == "Repository") {
       
       selected_fifth_group <- ifelse(input$fifthGroup == "Grüne", "Green", "Left")
       groupsEP <- append(groupsEP4, selected_fifth_group)
       
-      if (input$topic == "Green Deal") {
-        committees <- c("AGRI", "BUDG", "ITRE", "TRAN")
-      } else if (input$topic == "Asyl") {
-        committees <- c("BUDG", "DROI", "EMPL", "LIBE")
-      } else if (input$topic == "Armee") {
-        committees <- c("BUDG", "LIBE", "SEDE")
-      }
+      committees <- get_committees_for_topic(input$topic)
 
       entwurf_pdf <- generate_draft_pdf(input$topic)
       

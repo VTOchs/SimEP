@@ -185,12 +185,90 @@ def clean_latex_document(latex_content):
     indent_unit = "  "
 
     just_closed_env = False
+    # Helper: render a LaTeX tabular block into centered plain-text rows with dotted separators
+    def render_tabular_text(tab_block):
+        # Normalize line endings and remove surrounding begin/end
+        content = re.sub(r"\\begin\{tabular\}.*?\n", "", tab_block, flags=re.S)
+        content = re.sub(r"\\end\{tabular\}.*", "", content, flags=re.S)
+        # Split rows on LaTeX row terminator \\\\ (allow trailing spaces)
+        rows = [r.strip() for r in content.split('\\\\')]
+        parsed_rows = []
+        for row in rows:
+            row = row.strip()
+            if not row:
+                continue
+            # split columns by & but ignore escaped \& (simple approach)
+            cols = [c.replace('\\&', '&').strip() for c in re.split(r'(?<!\\)&', row)]
+            row_cells = []
+            for c in cols:
+                m_inc = re.search(r"\\\includegraphics(?:\[[^\]]*\])?\{([^}]+)\}", c)
+                if m_inc:
+                    # use filename as placeholder for logo, keep basename
+                    cell = Path(m_inc.group(1)).name
+                else:
+                    cell = strip_inline_latex(c)
+                row_cells.append(cell)
+            parsed_rows.append(row_cells)
 
-    for raw_line in latex_content.splitlines():
+        if not parsed_rows:
+            return ""
+
+        # compute column widths
+        ncols = max(len(r) for r in parsed_rows)
+        widths = [0] * ncols
+        for r in parsed_rows:
+            for i in range(ncols):
+                cell = r[i] if i < len(r) else ""
+                widths[i] = max(widths[i], len(cell))
+
+        lines_out = []
+        total_width = sum(widths) + 3 * (ncols - 1)
+        sep_line = "." * total_width
+
+        for ridx, r in enumerate(parsed_rows):
+            cells = []
+            for i in range(ncols):
+                cell = r[i] if i < len(r) else ""
+                # center cell content
+                pad = widths[i] - len(cell)
+                left = pad // 2
+                right = pad - left
+                cells.append(" " * left + cell + " " * right)
+            lines_out.append("   ".join(cells))
+            # add dotted separator between rows (but not after last)
+            if ridx < len(parsed_rows) - 1:
+                lines_out.append(sep_line)
+
+        return "\n".join(lines_out)
+
+    lines = latex_content.splitlines()
+    i = 0
+    while i < len(lines):
+        raw_line = lines[i]
         line = re.sub(r"(?<!\\)%.*$", "", raw_line).strip()
         if not line:
             if out_lines and out_lines[-1] != "":
                 out_lines.append("")
+            just_closed_env = False
+            i += 1
+            continue
+
+        # detect tabular start and consume the whole block
+        if re.match(r"\\begin\{tabular\}", line):
+            # collect until \end{tabular}
+            j = i
+            block_lines = []
+            while j < len(lines):
+                block_lines.append(lines[j])
+                if re.search(r"\\end\{tabular\}", lines[j]):
+                    break
+                j += 1
+            tab_block = "\n".join(block_lines)
+            rendered = render_tabular_text(tab_block)
+            if rendered:
+                for rl in rendered.splitlines():
+                    out_lines.append(rl)
+            i = j + 1
             just_closed_env = False
             continue
 
@@ -211,12 +289,14 @@ def clean_latex_document(latex_content):
             else:
                 env_stack.append({"type": "itemize", "last_item_index": None})
             just_closed_env = False
+            i += 1
             continue
 
         if re.match(r"\\end\{(enumerate|itemize)\}", line):
             if env_stack:
                 env_stack.pop()
             just_closed_env = True
+            i += 1
             continue
 
         m_section = re.match(r"\\(?:subsection|subsubsection|section)\*?\{(.*)\}", line)
@@ -228,6 +308,7 @@ def clean_latex_document(latex_content):
                 out_lines.append(f"<<H>>{title}")
                 out_lines.append("")
             just_closed_env = False
+            i += 1
             continue
 
         m_item = re.match(r"\\item\s*(.*)", line)
@@ -252,10 +333,12 @@ def clean_latex_document(latex_content):
             out_lines.append(f"{indent}{marker} {content}".rstrip())
             env_stack[-1]["last_item_index"] = len(out_lines) - 1
             just_closed_env = False
+            i += 1
             continue
 
         cleaned = strip_inline_latex(line)
         if not cleaned:
+            i += 1
             continue
 
         if env_stack:
@@ -276,6 +359,7 @@ def clean_latex_document(latex_content):
             out_lines.append(cleaned)
 
         just_closed_env = False
+        i += 1
 
     for i, value in enumerate(out_lines):
         if value.strip():
@@ -333,6 +417,7 @@ def main():
         print(f"  Input:  {input_path}")
         print(f"  Output: {output_path}")
 
+    print("\n✓ Ausschussübersicht Druck")
     print("\nOutput is strict plain text for direct paste into Antragsgrün text fields.")
 
 

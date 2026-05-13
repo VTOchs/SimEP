@@ -307,3 +307,73 @@ compile_tex_checked <- function(tex_path, clean = TRUE, max_runs = 3) {
 
   stop(paste("LaTeX-Build wurde nach", max_runs, "Durchläufen nicht stabil:", tex_path))
 }
+
+
+# Server helper functions moved from Drucker.R
+get_committee_summary <- function() {
+  if (file.exists("Daten/committee_data.csv")) {
+    committee_df <- read.csv("Daten/committee_data.csv")
+    committee_df$meps <- as.numeric(committee_df$meps)
+    return(list(
+      totcoms = nrow(committee_df),
+      minmems = min(committee_df$meps, na.rm = TRUE),
+      maxmems = max(committee_df$meps, na.rm = TRUE)
+    ))
+  }
+
+  list(totcoms = 0, minmems = 0, maxmems = 0)
+}
+
+
+generate_draft_pdf <- function(topic) {
+  tex_path <- file.path("LaTeX", "Gesetzesentwürfe", paste0("Entwurf_", topic, ".tex"))
+  pdf_name <- paste0("Entwurf_", topic, ".pdf")
+  pdf_path <- file.path("LaTeX", "Gesetzesentwürfe", pdf_name)
+
+  if (!file.exists(tex_path)) {
+    stop(paste("Gesetzesentwurf nicht gefunden:", tex_path))
+  }
+
+  compile_tex_checked(tex_path, clean = T)
+
+  if (file.exists(pdf_name)) {
+    file.copy(pdf_name, pdf_path, overwrite = TRUE)
+    file.remove(pdf_name)
+  }
+
+  if (!file.exists(pdf_path)) {
+    stop(paste("PDF konnte nicht erzeugt werden:", pdf_path))
+  }
+
+  pdf_path
+}
+
+
+generate_ausschussuebersicht <- function(committees, motion_id, fifth_group, city) {
+  dir.create("LaTeX/Coms", recursive = TRUE, showWarnings = FALSE)
+  pdfs <- character(0)
+  for (committee in committees) {
+    args <- c("Scripts/generate_antragsgruen_compare_tex.R", committee, as.character(motion_id), "--force-left=1")
+    if (identical(fifth_group, "Grüne")) {
+      args <- c("Scripts/generate_antragsgruen_compare_tex.R", committee, as.character(motion_id))
+    }
+    status <- system2("Rscript", args = args, stdout = TRUE, stderr = TRUE)
+    final_pdf <- file.path("LaTeX", "Coms", sprintf("Vergleich_%s_%s.pdf", committee, city))
+    if (file.exists(final_pdf)) {
+      pdfs <- c(pdfs, final_pdf)
+    } else {
+      warning(sprintf("Ausschussübersicht konnte für %s nicht erstellt werden. Ausgabe: %s", committee, paste(status, collapse = "\n")))
+    }
+  }
+  pdfs
+}
+
+
+get_committees_for_topic <- function(topic) {
+  switch(topic,
+    "Green Deal" = c("AGRI", "BUDG", "ITRE", "TRAN"),
+    "Asyl" = c("BUDG", "DROI", "EMPL", "LIBE"),
+    "Armee" = c("BUDG", "LIBE", "SEDE"),
+    c("BUDG", "LIBE", "SEDE")  # default
+  )
+}
