@@ -350,21 +350,43 @@ generate_draft_pdf <- function(topic) {
 
 
 generate_ausschussuebersicht <- function(committees, motion_id, fifth_group, city) {
-  dir.create("LaTeX/Coms", recursive = TRUE, showWarnings = FALSE)
+  output_dir <- file.path(city, "Ausschüsse")
+  dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
   pdfs <- character(0)
   for (committee in committees) {
     args <- c("Scripts/generate_antragsgruen_compare_tex.R", committee, as.character(motion_id), "--force-left=1")
     if (identical(fifth_group, "Grüne")) {
       args <- c("Scripts/generate_antragsgruen_compare_tex.R", committee, as.character(motion_id))
     }
+
     status <- system2("Rscript", args = args, stdout = TRUE, stderr = TRUE)
-    final_pdf <- file.path("LaTeX", "Coms", sprintf("Vergleich_%s_%s.pdf", committee, city))
-    if (file.exists(final_pdf)) {
-      pdfs <- c(pdfs, final_pdf)
-    } else {
-      warning(sprintf("Ausschussübersicht konnte für %s nicht erstellt werden. Ausgabe: %s", committee, paste(status, collapse = "\n")))
+    slide_snippet <- file.path("LaTeX", "Meta", sprintf("antragsgruen_slide_%s.tex", committee))
+
+    if (!file.exists(slide_snippet)) {
+      warning(sprintf(
+        "Ausschussübersicht konnte für %s nicht aktualisiert werden. Ausgabe: %s",
+        committee,
+        paste(status, collapse = "\n")
+      ))
+      next
     }
+
+    sink("LaTeX/Meta/var.tex")
+    paste0("\\newcommand\\Committee{", committee, "}\n") |> cat()
+    paste0("\\newcommand\\Fraktion{LEER}\n") |> cat()
+    sink()
+
+    compile_tex_checked("LaTeX/Folien/Ausschusssitzung.tex", clean = TRUE)
+    target_pdf <- file.path(output_dir, paste0(committee, ".pdf"))
+    if (!file.rename("Ausschusssitzung.pdf", target_pdf)) {
+      warning(sprintf("Konnte erzeugtes PDF nicht nach %s verschieben.", target_pdf))
+      next
+    }
+
+    pdfs <- c(pdfs, target_pdf)
   }
+
   pdfs
 }
 

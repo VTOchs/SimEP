@@ -1,7 +1,6 @@
 #!/usr/bin/env Rscript
 
 source(file.path("Scripts", "antragsgruen_api.R"))
-source(file.path("Scripts", "drucker_helper.R"))
 
 latex_escape <- function(text) {
   text <- as.character(text)
@@ -27,12 +26,31 @@ html_entity_unescape <- function(text) {
   text
 }
 
+normalize_umlauts <- function(text) {
+  consonants <- "bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ"
+  prefix <- "(^|[^A-Za-zÄÖÜäöü])"
+  suffix <- paste0("(?=[", consonants, "]|$)")
+  infix <- paste0("(?<=[", consonants, "])")
+
+  text <- gsub(paste0(prefix, "Ae", suffix), "\\1Ä", text, perl = TRUE)
+  text <- gsub(paste0(prefix, "Oe", suffix), "\\1Ö", text, perl = TRUE)
+  text <- gsub(paste0(prefix, "Ue", suffix), "\\1Ü", text, perl = TRUE)
+  text <- gsub(paste0(prefix, "ae", suffix), "\\1ä", text, perl = TRUE)
+  text <- gsub(paste0(prefix, "oe", suffix), "\\1ö", text, perl = TRUE)
+  text <- gsub(paste0(prefix, "ue", suffix), "\\1ü", text, perl = TRUE)
+  text <- gsub(paste0(infix, "ae", suffix), "ä", text, perl = TRUE)
+  text <- gsub(paste0(infix, "oe", suffix), "ö", text, perl = TRUE)
+  text <- gsub(paste0(infix, "ue", suffix), "ü", text, perl = TRUE)
+  text
+}
+
 strip_html <- function(html) {
   if (!antragsgruen_has_text(html)) {
     return("")
   }
   text <- gsub("<[^>]+>", " ", html)
   text <- html_entity_unescape(text)
+  text <- normalize_umlauts(text)
   text <- gsub("[[:space:]]+", " ", text)
   trimws(text)
 }
@@ -68,7 +86,7 @@ html_diff_to_tex <- function(html) {
   for (i in seq_along(parts)) {
     piece <- parts[[i]]
     if (nzchar(piece)) {
-      out <- c(out, latex_escape(piece))
+      out <- c(out, latex_escape(normalize_umlauts(piece)))
     }
     if (i <= length(tags)) {
       tag <- tags[[i]]
@@ -191,52 +209,31 @@ resolve_party_rows <- function(amendments, committee, fifth_group) {
 
 build_tex <- function(committee, motion_id, amendments, fifth_group) {
   rows <- resolve_party_rows(amendments$items, committee, fifth_group)
-  bs <- intToUtf8(92)
-
   row_lines <- vapply(
     rows,
     function(row) {
       paste0(
-        "\\includegraphics[width=1.9cm,height=0.9cm,keepaspectratio]{../Folien/Bilder/", row$logo, "} & ",
+        "\\includegraphics[width=1.2cm,height=0.55cm,keepaspectratio]{Bilder/", row$logo, "} & ",
         row$diff,
-        " ", bs, bs
+        " \\\\"
       )
     },
     character(1)
   )
 
   paste0(
-    "\\documentclass[a4paper,11pt]{article}\n",
-    "\\usepackage[margin=1.2cm]{geometry}\n",
-    "\\usepackage{graphicx}\n",
-    "\\usepackage[german]{babel}\n",
-    "\\usepackage{array}\n",
-    "\\usepackage{booktabs}\n",
-    "\\usepackage{ragged2e}\n",
-    "\\usepackage{tabularx}\n",
-    "\\usepackage{etoolbox}\n",
-    "\\usepackage[normalem]{ulem}\n",
-    "\\usepackage{xcolor}\n\n",
-    "\\input{../Meta/var.tex}\n",
-    "\\input{../Meta/shinyin.tex}\n\n",
-    "\\renewcommand{\\arraystretch}{1.0}\n",
-    "\\setlength{\\tabcolsep}{3pt}\n\n",
-    "\\begin{document}\n\n",
-    "\\thispagestyle{empty}\n",
-    "\\begin{center}\n",
-    "{\\LARGE\\textbf{", latex_escape(committee), "}}\\par\n",
-    "\\end{center}\n",
-    "\\vspace{0.4em}\n",
-    "{\\small\n",
-    "\\begin{tabularx}{\\textwidth}{@{}>{\\centering\\arraybackslash}m{2.4cm} >{\\RaggedRight\\arraybackslash}X@{}}\n",
+    "\\begin{frame}{Änderungsanträge (", latex_escape(committee), ")}\n",
+    "\\scriptsize\n",
+    "\\renewcommand{\\arraystretch}{0.9}\n",
+    "\\setlength{\\tabcolsep}{2pt}\n",
+    "\\begin{tabularx}{\\textwidth}{@{}>{\\centering\\arraybackslash}m{1.55cm} >{\\RaggedRight\\arraybackslash}X@{}}\n",
     "\\toprule\n",
-    paste0(bs, "textbf{Fraktion} & ", bs, "textbf{Änderungsantrag} ", bs, bs), "\n",
+    "\\textbf{Fraktion} & \\textbf{Änderungsantrag} \\\\\n",
     "\\midrule\n",
     paste0(row_lines, collapse = "\n"), "\n",
     "\\bottomrule\n",
     "\\end{tabularx}\n",
-    "}\n\n",
-    "\\end{document}\n"
+    "\\end{frame}\n"
   )
 }
 
@@ -283,35 +280,14 @@ main <- function() {
     items[[length(items) + 1]] <- amendment
   }
 
-  out_dir <- file.path("LaTeX", "Coms")
+  out_dir <- file.path("LaTeX", "Meta")
   if (!dir.exists(out_dir)) {
     dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
   }
-  out_file <- file.path(out_dir, sprintf("Antragsgruen_Vergleich_%s_%s.tex", committee, motion_id))
+  out_file <- file.path(out_dir, sprintf("antragsgruen_slide_%s.tex", committee))
   tex <- build_tex(committee, motion_id, list(items = items), fifth_group)
   writeLines(tex, out_file, useBytes = TRUE)
   message(sprintf("Wrote %s", out_file))
-
-  # Compile and rename output PDF using drucker helper
-  pdf_path <- compile_tex_checked(out_file)
-  # determine city from shinyin.tex
-  city <- read_shinyin_city()
-  if (!nzchar(city)) city <- "unknown"
-  committee_s <- sanitize(committee)
-  city_s <- sanitize(city)
-  new_pdf <- file.path(dirname(out_file), sprintf("Vergleich_%s_%s.pdf", committee_s, city_s))
-  if (!file.exists(pdf_path)) {
-    warning(sprintf("Compiled PDF not found: %s", pdf_path))
-  } else {
-    ok <- tryCatch({
-      file.rename(pdf_path, new_pdf)
-    }, error = function(e) FALSE)
-    if (!isTRUE(ok)) {
-      warning(sprintf("Could not rename %s to %s", pdf_path, new_pdf))
-    } else {
-      message(sprintf("Wrote final PDF %s", new_pdf))
-    }
-  }
 }
 
 main()

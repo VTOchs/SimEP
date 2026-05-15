@@ -54,27 +54,28 @@ translate_rank <- function(rank){
 }
 
 capitalize_first_letter <- function(text) {
-  # Split the text into words
-
-  words <- strsplit(text, "[ -]")[[1]]
-  
-  # Ausnahme für McAllister
-  if (words[2] == "MCALLISTER") {
-    return("David McAllister")
-  }else{
-    # Capitalize the first letter of each word and make the rest lowercase
-    words <- sapply(words, function(word) {
-      if (nchar(word) > 0) {
-        paste0(toupper(substr(word, 1, 1)), tolower(substr(word, 2, nchar(word))))
-      } else {
-        word
-      }
-    })
-    
-    # Combine the words back into a single string
-    result <- paste(words, collapse = " ")
-    return(result)
+  text <- str_squish(as.character(text))
+  if (!nzchar(text)) {
+    return(text)
   }
+
+  # Capitalize each space-separated token while preserving hyphens.
+  words <- strsplit(text, "\\s+")[[1]]
+  words <- vapply(words, function(word) {
+    parts <- strsplit(word, "-", fixed = TRUE)[[1]]
+    parts <- vapply(parts, function(part) {
+      if (nchar(part) == 0) {
+        return(part)
+      }
+      paste0(toupper(substr(part, 1, 1)), tolower(substr(part, 2, nchar(part))))
+    }, character(1))
+    paste(parts, collapse = "-")
+  }, character(1))
+
+  result <- paste(words, collapse = " ")
+  # Handle common Mc-forms after title casing, e.g. Mcallister -> McAllister.
+  result <- gsub("\\bMc([a-z])", "Mc\\U\\1\\E", result, perl = TRUE)
+  result
 }
 
 # Seats -------------------------------------------------------------------
@@ -279,7 +280,7 @@ parse_member_card <- function(card) {
     str_trim()
 
   data.frame(
-    name = card |> html_element(".es_title-h4") |> html_text2() |> str_trim(),
+    name = card |> html_element(".es_title-h4") |> html_text2() |> str_trim() |> capitalize_first_letter(),
     status = ifelse(length(infos) >= 1, infos[1], NA),
     party = ifelse(length(infos) >= 2, infos[2], NA),
     country = ifelse(length(infos) >= 3, infos[3], NA)

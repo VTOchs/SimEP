@@ -37,14 +37,15 @@ body <- dashboardBody(
         fluidRow(
           box(
               width = 12,
-                      selectInput("docs", "Dokumente:",
-                                  choices = c("Repository", "Ausschussübersicht", "Unterlagen SuS (min. 27)", "TN-Zertifikate", "SuS-Verteilung", "Aufräumen"),
-                          selected = "SuS-Verteilung"),
+                            selectInput("docs", "Dokumente:",
+                              choices = c("Repository", "Unterlagen SuS (min. 27)", "TN-Zertifikate", "SuS-Verteilung", "Aufräumen"),
+                            selected = "SuS-Verteilung"),
               numericInput("numSuS", "Anzahl SuS:", 27),
               selectInput("fifthGroup", "Fünfte Fraktion:",
                           choices = c("Grüne", "Linke"),
                           selected = "Linke"),
               actionButton("reload", "Daten aktualisieren"),
+              actionButton("update_aea", "ÄA aktualisieren"),
               actionButton("print", "Drucken")
             )
         ),
@@ -197,6 +198,12 @@ server <- function(input, output, session) {
                 source("Scripts/Folien.R")
                 print("New data downloaded!")}
                )
+
+  observeEvent(input$update_aea, {
+    committees <- get_committees_for_topic(input$topic)
+    generate_ausschussuebersicht(committees, input$numAntrag, input$fifthGroup, input$resPath)
+    print(paste0("Ausschussübersicht (", input$city, ") fertig!"))
+  })
   
   observeEvent(input$print, 
      
@@ -251,14 +258,7 @@ server <- function(input, output, session) {
 
   observeEvent(input$print, 
     
-    if (input$docs == "Ausschussübersicht") {
-      committees <- get_committees_for_topic(input$topic)
-
-      generate_ausschussuebersicht(committees, input$numAntrag, input$fifthGroup, input$city)
-
-      print(paste0("Ausschussübersicht (", input$city, ") fertig!"))
-
-    } else if (input$docs == "Repository") {
+      if (input$docs == "Repository") {
       
       selected_fifth_group <- ifelse(input$fifthGroup == "Grüne", "Green", "Left")
       groupsEP <- append(groupsEP4, selected_fifth_group)
@@ -365,7 +365,7 @@ server <- function(input, output, session) {
         xlPath <- paste0("Daten/SuS/", excel)
         for (sheet in excel_sheets(xlPath)) {
           df_xlsx <- read_excel(xlPath, sheet = sheet)
-          write.csv(df_xlsx, paste0("Daten/SuS/", sheet, ".csv"), row.names = FALSE, fileEncoding = "UTF-8", quote = FALSE)
+          # write.csv(df_xlsx, paste0("Daten/SuS/", sheet, ".csv"), row.names = FALSE, fileEncoding = "UTF-8", quote = FALSE)
           write.csv(df_xlsx, paste0("Daten/SuS/", sheet, ".csv"), row.names = FALSE)
           {sink("LaTeX/Meta/var.tex")
             paste0("\\newcommand\\klasse{", sheet, "}\n") |> cat()

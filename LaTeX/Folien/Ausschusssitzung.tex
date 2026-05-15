@@ -6,6 +6,12 @@
 \usepackage{etoolbox}
 \usepackage{xstring}
 \usepackage[german]{babel}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{ragged2e}
+\usepackage{tabularx}
+\usepackage[normalem]{ulem}
+\usepackage{xcolor}
 \input{../Meta/var.tex}
 \input{../Meta/shinyin.tex}
 
@@ -149,6 +155,15 @@
         \item Formelle Abstimmung: Mehr JA- als NEIN-Stimmen zur Annahme nötig
     \end{enumerate}
 \end{frame}
+
+\IfFileExists{../Meta/antragsgruen_slide_\Committee.tex}{
+	\input{../Meta/antragsgruen_slide_\Committee.tex}
+}{
+	\begin{frame}{Änderungsanträge (\Committee)}
+		\vspace{-0.4cm}
+		Kein aktueller Vergleich aus Antragsgrün vorhanden.
+	\end{frame}
+}
 
 
 \end{document}
