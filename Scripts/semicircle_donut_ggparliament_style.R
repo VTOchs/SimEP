@@ -172,13 +172,18 @@ p_final <- ggplot() +
   theme_void() +
   theme(legend.position = "none")
 
+# add centered caption below the plot (appears under the graphic)
+p_final <- p_final +
+  labs(caption = "Fraktionen in der SimEP") +
+  theme(plot.caption = element_text(hjust = 0.5, size = 20, margin = margin(t = 10)))
+
 # subtle center divider for the parliament midpoint
 p_final <- p_final +
   geom_segment(
     aes(x = 0, xend = 0, y = 0, yend = r_outer + 0.18),
     inherit.aes = FALSE,
     linetype = "dotted",
-    linewidth = 0.45,
+    linewidth = 2.0,
     color = "grey35",
     alpha = 0.7
   )
@@ -188,7 +193,7 @@ p_final <- p_final +
   geom_image(data = labels %>% filter(has_img),
              aes(x = lx, y = ly, image = image),
              inherit.aes = FALSE,
-             size = 0.16, by = "width", asp = 1.0)
+             size = 0.25, by = "width", asp = 1.0)
 
 # add text fallback
 p_final <- p_final +
@@ -208,7 +213,8 @@ segments <- parts %>% mutate(
 # trim plot to top half (y >= 0) by setting limits
 ## already set limits via coord_equal; no ylim trimming
 
-# Save output image to Scripts/
-out_file <- file.path("Scripts", paste0("semicircle_", fifthGroup, ".png"))
+# Save output image to LaTeX/Folien/Bilder (create dir if needed)
+out_file <- file.path("LaTeX", "Folien", "Bilder", paste0("semicircle_", fifthGroup, ".png"))
+dir.create(dirname(out_file), recursive = TRUE, showWarnings = FALSE)
 ggsave(out_file, p_final, width = 8, height = 4, dpi = 150)
 message("Saved semicircle test image to: ", normalizePath(out_file))

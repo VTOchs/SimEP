@@ -21,7 +21,6 @@ sidebar <- dashboardSidebar(
     menuItem("R/U/TN", tabName = "r_u_tn_tab"),
     menuItem("R/TN", tabName = "r_tn_tab"),
     menuItem("R/U", tabName = "r_u_tab"),
-    menuItem("A", tabName = "a_tab"),
     menuItem("R", tabName = "r_tab"),
     menuItem("TN", tabName = "tn_tab"),
     menuItem("U", tabName = "u_tab")
@@ -109,10 +108,10 @@ body <- dashboardBody(
           # textInput("timeAuss", "Uhrzeit Ausschusssitzung:", value = "11:15-12:30"),
           textInput("timeMittag", "Uhrzeit Mittagspause:", value = "12:45-13:15"),
           # textInput("timeMittag", "Uhrzeit Mittagspause:", value = "12:30-13:00"),
-          textInput("timeFrakTwo", "Uhrzeit 2. Fraktionssitzung:", value = "13:15-13:45"),
-          # textInput("timeFrakTwo", "Uhrzeit 2. Fraktionssitzung:", value = "13:00-13:30"),
-          textInput("timeFinVerh", "Uhrzeit Finale Verhandlungsphase:", value = "13:45-14:15"),
-          # textInput("timeFinVerh", "Uhrzeit Finale Verhandlungsphase:", value = "13:30-14:00"),
+          textInput("timeFrakTwo", "Uhrzeit 2. Fraktionssitzung:", value = "13:15-13:55"),
+          # textInput("timeFrakTwo", "Uhrzeit 2. Fraktionssitzung:", value = "13:00-13:40"),
+          textInput("timeFinVerh", "Uhrzeit Finale Verhandlungsphase:", value = "13:55-14:15"),
+          # textInput("timeFinVerh", "Uhrzeit Finale Verhandlungsphase:", value = "13:40-14:00"),
           textInput("timePlenar", "Uhrzeit Plenardebatte:", value = "14:15-15:15"),
           # textInput("timePlenar", "Uhrzeit Plenardebatte:", value = "14:00-15:15"),
           textInput("timeDebr", "Uhrzeit Debriefing:", value = "15:15-15:30")
@@ -145,7 +144,8 @@ body <- dashboardBody(
           selectInput("location", "Veranstaltungsort:",
                       choices = c("in den Räumlichkeiten des Coburger Stadtjugendrings", "im Münchner Rathaus",
                                   "im Nürnberger Rathaus", "in der Universität Passau", "im Ulmer Rathaus"),
-                      selected = "in den Räumlichkeiten des Coburger Stadtjugendrings")
+                      selected = "in den Räumlichkeiten des Coburger Stadtjugendrings"),
+          numericInput("numAntrag", "Antragsgrün Nummer:", 56456)
         ),
         box(
           width = 4,
