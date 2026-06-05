@@ -33,8 +33,12 @@ translate_latex <- function(group){
 }
 
 translate_country_iso <- function(country_code) {
+  if (length(country_code) == 0) {
+    return(NA_character_)
+  }
+
   translated <- translation_data_country$country[match(country_code, translation_data_country$iso)]
-  ifelse(is.na(translated), country_code, translated)
+  ifelse(is.na(translated), as.character(country_code), translated)
 }
 
 translate_sus_group <- function(group) {
