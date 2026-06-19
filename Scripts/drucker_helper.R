@@ -20,7 +20,7 @@ translation_data_latex <- data.frame(
   de = c("EVP", "SD", "RE", "Green", "PfE", "EKR", "Left", "ESN", "Green", "EVP", "Green")
 )
 
-translation_data_country <- read.csv("Daten/data_landerpapiere.csv", stringsAsFactors = FALSE)[, c("iso", "country")]
+translation_data_country <- read.csv("Daten/data_landerpapiere.csv", stringsAsFactors = FALSE)[, c("iso", "iso2c", "country")]
 
 get_slido_link <- function(city, group){
   slido_link <- read_excel("Daten/data_slido.xlsx") |> 
@@ -32,13 +32,69 @@ translate_latex <- function(group){
   translation_data_latex[translation_data_latex$en == group, "de"]
 }
 
-translate_country_iso <- function(country_code) {
-  if (length(country_code) == 0) {
-    return(NA_character_)
+normalize_country_codes <- function(country_values, strict = TRUE, context = "country values") {
+  raw_values <- as.character(unlist(country_values, use.names = FALSE))
+  raw_values <- trimws(raw_values)
+  raw_values <- raw_values[!is.na(raw_values) & nzchar(raw_values)]
+
+  if (length(raw_values) == 0) {
+    return(character(0))
   }
 
-  translated <- translation_data_country$country[match(country_code, translation_data_country$iso)]
-  ifelse(is.na(translated), as.character(country_code), translated)
+  iso3 <- toupper(trimws(as.character(translation_data_country$iso)))
+  iso2 <- toupper(trimws(as.character(translation_data_country$iso2c)))
+  country <- tolower(trimws(as.character(translation_data_country$country)))
+
+  valid_iso3 <- !is.na(iso3) & nzchar(iso3)
+  iso3 <- iso3[valid_iso3]
+  iso2 <- iso2[valid_iso3]
+  country <- country[valid_iso3]
+
+  normalized <- rep(NA_character_, length(raw_values))
+  raw_upper <- toupper(raw_values)
+  raw_lower <- tolower(raw_values)
+
+  idx_iso3 <- match(raw_upper, iso3)
+  hit_iso3 <- !is.na(idx_iso3)
+  normalized[hit_iso3] <- iso3[idx_iso3[hit_iso3]]
+
+  remaining <- is.na(normalized)
+  if (any(remaining)) {
+    idx_iso2 <- match(raw_upper[remaining], iso2)
+    hit_iso2 <- !is.na(idx_iso2)
+    normalized[which(remaining)[hit_iso2]] <- iso3[idx_iso2[hit_iso2]]
+  }
+
+  remaining <- is.na(normalized)
+  if (any(remaining)) {
+    idx_country <- match(raw_lower[remaining], country)
+    hit_country <- !is.na(idx_country)
+    normalized[which(remaining)[hit_country]] <- iso3[idx_country[hit_country]]
+  }
+
+  unknown_values <- unique(raw_values[is.na(normalized)])
+  if (strict && length(unknown_values) > 0) {
+    stop(
+      paste0(
+        "Unbekannte Länderwerte in ", context, ": ",
+        paste(unknown_values, collapse = ", "),
+        ". Erwartet werden ISO3, ISO2 oder Landname aus Daten/data_landerpapiere.csv."
+      )
+    )
+  }
+
+  normalized
+}
+
+translate_country_iso <- function(country_code) {
+  if (length(country_code) == 0) {
+    return(character(0))
+  }
+
+  normalized <- normalize_country_codes(country_code, strict = FALSE, context = "translate_country_iso")
+  iso3 <- toupper(trimws(as.character(translation_data_country$iso)))
+  translated <- translation_data_country$country[match(normalized, iso3)]
+  ifelse(is.na(translated), normalized, translated)
 }
 
 translate_sus_group <- function(group) {
@@ -56,8 +112,14 @@ translate_sus_group <- function(group) {
 }
 
 build_sus_overview <- function(susFrakLand) {
-  all_countries <- sort(unique(unlist(susFrakLand, use.names = FALSE)))
-  country_names <- vapply(all_countries, translate_country_iso, character(1))
+  all_countries <- normalize_country_codes(
+    unlist(susFrakLand, use.names = FALSE),
+    strict = TRUE,
+    context = "build_sus_overview"
+  )
+  all_countries <- sort(unique(all_countries))
+
+  country_names <- translate_country_iso(all_countries)
   ord <- order(country_names)
   country_names <- country_names[ord]
   all_countries <- all_countries[ord]
@@ -69,8 +131,14 @@ build_sus_overview <- function(susFrakLand) {
 
   group_names <- names(susFrakLand)
   for (group in group_names) {
+    group_countries <- normalize_country_codes(
+      susFrakLand[[group]],
+      strict = TRUE,
+      context = paste0("Fraktion ", group)
+    )
+
     overview[[translate_sus_group(group)]] <- vapply(all_countries, function(country) {
-      sum(susFrakLand[[group]] == country)
+      sum(group_countries == country)
     }, integer(1))
   }
 
@@ -219,7 +287,15 @@ get_sus_dist <- function(numSuS, groupsEP, landDist = T){
     listDist <- list()
     for (group in groupsEP) {
       numDep <- dfCG |> filter(Fraktion == group) |> select(SuS)
-      listDist[[group]] <- sample(listTC[[group]], numDep$SuS, replace = T)
+      if (is.null(listTC[[group]])) {
+        stop(paste0("Keine Länderliste für Fraktion gefunden: ", group))
+      }
+
+      listDist[[group]] <- normalize_country_codes(
+        sample(listTC[[group]], numDep$SuS, replace = T),
+        strict = TRUE,
+        context = paste0("country_party.rds / ", group)
+      )
     }
     listDist
   } else {

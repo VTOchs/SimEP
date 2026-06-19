@@ -39,7 +39,7 @@ body <- dashboardBody(
                             selectInput("docs", "Dokumente:",
                               choices = c("Repository", "Unterlagen SuS (min. 27)", "TN-Zertifikate", "SuS-Verteilung", "Aufräumen"),
                             selected = "SuS-Verteilung"),
-              numericInput("numSuS", "Anzahl SuS:", 27),
+              numericInput("numSuS", "Anzahl SuS:", 100),
               selectInput("fifthGroup", "Fünfte Fraktion:",
                           choices = c("Grüne", "Linke"),
                           selected = "Linke"),
@@ -82,7 +82,7 @@ body <- dashboardBody(
         box(
           width = 12,
           selectInput("localSup", "Lokale Unterstützung:",
-                      choices = c("das Europe Direct Coburg", "das Europe Direct München", "das Europe Direct Nürnberg",
+                      choices = c("das Europe Direct Coburg Oberfranken/Südthüringen", "das Europe Direct München", "das Europe Direct Nürnberg",
                                   "die Universität Passau", "das Europe Direct Ulm"),
                       selected = "das Europe Direct Coburg"),
           textInput("sponsor", "Sponsor:", "die Vertretung der Europäischen Kommission in München"),
@@ -149,19 +149,19 @@ body <- dashboardBody(
         ),
         box(
           width = 4,
-          textInput("leit_evp", "Leitung EVP:", value = "TBD"),
-          textInput("leit_sd", "Leitung S&D:", value = "TBD"),
-          textInput("leit_renew", "Leitung Renew:", value = "TBD"),
-          textInput("leit_pfe", "Leitung PfE:", value = "TBD"),
-          textInput("leit_5th", "Leitung 5. Fraktion:", value = "TBD")
+          textInput("leit_evp", "Leitung EVP:", value = "Max"),
+          textInput("leit_sd", "Leitung S&D:", value = "Christoph"),
+          textInput("leit_renew", "Leitung Renew:", value = "Marco"),
+          textInput("leit_pfe", "Leitung PfE:", value = "Linus"),
+          textInput("leit_5th", "Leitung 5. Fraktion:", value = "Farras")
         ),
         box(
           width = 4,
-          textInput("room_evp", "Raum EVP:", value = "TBD"),
-          textInput("room_sd", "Raum S&D:", value = "TBD"),
-          textInput("room_renew", "Raum Renew:", value = "TBD"),
-          textInput("room_pfe", "Raum PfE:", value = "TBD"),
-          textInput("room_5th", "Raum 5. Fraktion:", value = "TBD")
+          textInput("room_evp", "Raum EVP:", value = "Mehrzweckraum 2"),
+          textInput("room_sd", "Raum S&D:", value = "Durchgangsraum"),
+          textInput("room_renew", "Raum Renew:", value = "Cafeteria"),
+          textInput("room_pfe", "Raum PfE:", value = "Mehrzweckraum 1"),
+          textInput("room_5th", "Raum 5. Fraktion:", value = "Sitznische")
         )
       )
     ),
