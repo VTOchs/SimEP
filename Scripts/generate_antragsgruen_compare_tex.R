@@ -213,7 +213,7 @@ build_tex <- function(committee, motion_id, amendments, fifth_group) {
     rows,
     function(row) {
       paste0(
-        "\\includegraphics[width=1.2cm,height=0.55cm,keepaspectratio]{Bilder/", row$logo, "} & ",
+        "\\includegraphics[width=2cm,height=1cm,keepaspectratio]{Bilder/", row$logo, "} & ",
         row$diff,
         " \\\\"
       )
@@ -223,12 +223,15 @@ build_tex <- function(committee, motion_id, amendments, fifth_group) {
 
   paste0(
     "\\begin{frame}{Änderungsanträge (", latex_escape(committee), ")}\n",
-    "\\scriptsize\n",
+    "\\tiny\n",
+    "\\vspace{-0.45cm}\n",
     "\\renewcommand{\\arraystretch}{0.9}\n",
     "\\setlength{\\tabcolsep}{2pt}\n",
-    "\\begin{tabularx}{\\textwidth}{@{}>{\\centering\\arraybackslash}m{1.55cm} >{\\RaggedRight\\arraybackslash}X@{}}\n",
+    "\\setlength{\\abovetopsep}{0pt}\n",
+    "\\setlength{\\belowrulesep}{0pt}\n",
+    "\\begin{tabularx}{\\textwidth}{@{}>{\\centering\\arraybackslash}m{1.55cm} >{\\RaggedRight\\arraybackslash}m{\\dimexpr\\linewidth-1.55cm-2\\tabcolsep\\relax}@{}}\n",
     "\\toprule\n",
-    "\\textbf{Fraktion} & \\textbf{Änderungsantrag} \\\\\n",
+    "\\multicolumn{1}{m{1.55cm}}{\\centering\\textbf{Fraktion}} & \\multicolumn{1}{m{\\dimexpr\\linewidth-1.55cm-2\\tabcolsep\\relax}}{\\centering\\textbf{Änderungsantrag}} \\\\\n",
     "\\midrule\n",
     paste0(row_lines, collapse = "\n"), "\n",
     "\\bottomrule\n",

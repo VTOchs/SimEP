@@ -21,6 +21,7 @@ sidebar <- dashboardSidebar(
     menuItem("R/U/TN", tabName = "r_u_tn_tab"),
     menuItem("R/TN", tabName = "r_tn_tab"),
     menuItem("R/U", tabName = "r_u_tab"),
+    menuItem("A", tabName = "a_tab"),
     menuItem("R", tabName = "r_tab"),
     menuItem("TN", tabName = "tn_tab"),
     menuItem("U", tabName = "u_tab")

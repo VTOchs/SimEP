@@ -338,6 +338,14 @@ compile_tex_checked <- function(tex_path, clean = TRUE, max_runs = 3) {
   tex_file <- basename(tex_path)
   pdf_name <- sub("\\.tex$", ".pdf", tex_file)
   log_name <- sub("\\.tex$", ".log", tex_file)
+  aux_names <- c(
+    sub("\\.tex$", ".aux", tex_file),
+    sub("\\.tex$", ".log", tex_file),
+    sub("\\.tex$", ".out", tex_file),
+    sub("\\.tex$", ".nav", tex_file),
+    sub("\\.tex$", ".toc", tex_file),
+    sub("\\.tex$", ".snm", tex_file)
+  )
 
   find_artifact <- function(file_name) {
     candidates <- unique(c(
@@ -355,7 +363,7 @@ compile_tex_checked <- function(tex_path, clean = TRUE, max_runs = 3) {
 
   for (run_idx in seq_len(max_runs)) {
     tryCatch(
-      tools::texi2pdf(tex_path, clean = clean),
+      tools::texi2pdf(tex_path, clean = FALSE),
       error = function(error) {
         stop(paste("LaTeX-Kompilierung fehlgeschlagen:", tex_path, "\n", conditionMessage(error)))
       }
@@ -381,6 +389,18 @@ compile_tex_checked <- function(tex_path, clean = TRUE, max_runs = 3) {
     rerun_needed <- any(grepl(rerun_pattern, log_lines, useBytes = TRUE))
 
     if (!rerun_needed) {
+      if (clean) {
+        for (artifact_name in aux_names) {
+          for (artifact_path in unique(c(
+            file.path(getwd(), artifact_name),
+            file.path(dirname(tex_path), artifact_name)
+          ))) {
+            if (file.exists(artifact_path)) {
+              file.remove(artifact_path)
+            }
+          }
+        }
+      }
       return(pdf_path)
     }
   }
