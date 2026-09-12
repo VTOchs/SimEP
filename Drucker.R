@@ -65,14 +65,14 @@ body <- dashboardBody(
           width = 12,
           selectInput("topic", "Thema:",
                       choices = c("Green Deal", "Asyl", "Armee"),
-                      selected = "Armee"),
+                      selected = "Asyl"),
           selectInput("city", "Stadt:",
                       choices = c("Coburg", "München", "Nürnberg", "Passau", "Ulm"),
-                      selected = "Coburg"),
+                      selected = "Nürnberg"),
           dateInput("date", "Datum:", format = "dd.mm.yyyy", language = "de", weekstart = 1),
           selectInput("resPath", "Zielordner:",
                       choices = c("Coburg", "München", "Nürnberg", "Passau", "Ulm"),
-                      selected = "Coburg")
+                      selected = "Nürnberg")
         )
       )
     ),
@@ -85,7 +85,7 @@ body <- dashboardBody(
           selectInput("localSup", "Lokale Unterstützung:",
                       choices = c("das Europe Direct Coburg Oberfranken/Südthüringen", "das Europe Direct München", "das Europe Direct Nürnberg",
                                   "die Universität Passau", "das Europe Direct Ulm"),
-                      selected = "das Europe Direct Coburg"),
+                      selected = "das Europe Direct Nürnberg"),
           textInput("sponsor", "Sponsor:", "die Vertretung der Europäischen Kommission in München"),
           textInput("jefvorsitz", "Vorsitz JEF Bayern:", value = "Farras Fathi"),
           selectInput("gender", "Geschlecht Vorsitz JEF Bayern", choices = c("M", "W"), selected = "M")
@@ -134,35 +134,35 @@ body <- dashboardBody(
         box(
           width = 4,
           selectInput("pol", "Politiker:",
-                      choices = c("Lena Düpont", "Karl Freller", "Johannes Wagner", "Johannes Schätzl", "TBD"),
-                      selected = "Johannes Wagner"),
+                      choices = c("Lena Düpont", "Karl Freller", "Johannes Wagner", "Johannes Schätzl", "Maria Noichl"),
+                      selected = "Karl Freller"),
           selectInput("pol_office", "Politiker (Amt):",
                       choices = c("Mitglied des Europäischen Parlaments", "Mitglied des Bundestags",
                                   "Mitglied des Landtags", "TBD"),
-                      selected = "Mitglied des Bundestags"),
-          textInput("stadtvert", "Stadtvertreter:", value = "Can Aydin"),
-          textInput("stadtvert_office", "Stadtvertreter (Amt):", value = "Zweiter Bürgermeister"),
+                      selected = "Mitglied des Landtags"),
+          textInput("stadtvert", "Stadtvertreter:", value = "Dr. Andrea Heilmaier"),
+          textInput("stadtvert_office", "Stadtvertreter (Amt):", value = "Wirtschafts- und Wissenschaftsreferentin der Stadt Nürnberg"),
           selectInput("location", "Veranstaltungsort:",
                       choices = c("in den Räumlichkeiten des Coburger Stadtjugendrings", "im Münchner Rathaus",
                                   "im Nürnberger Rathaus", "in der Universität Passau", "im Ulmer Rathaus"),
-                      selected = "in den Räumlichkeiten des Coburger Stadtjugendrings"),
+                      selected = "im Nürnberger Rathaus"),
           numericInput("numAntrag", "Antragsgrün Nummer:", 56456)
         ),
         box(
           width = 4,
-          textInput("leit_evp", "Leitung EVP:", value = "Max"),
-          textInput("leit_sd", "Leitung S&D:", value = "Christoph"),
-          textInput("leit_renew", "Leitung Renew:", value = "Marco"),
-          textInput("leit_pfe", "Leitung PfE:", value = "Linus"),
-          textInput("leit_5th", "Leitung 5. Fraktion:", value = "Farras")
+          textInput("leit_evp", "Leitung EVP:", value = "TBD"),
+          textInput("leit_sd", "Leitung S&D:", value = "TBD"),
+          textInput("leit_renew", "Leitung Renew:", value = "TBD"),
+          textInput("leit_pfe", "Leitung PfE:", value = "TBD"),
+          textInput("leit_5th", "Leitung 5. Fraktion:", value = "TBD")
         ),
         box(
           width = 4,
-          textInput("room_evp", "Raum EVP:", value = "Mehrzweckraum 2"),
-          textInput("room_sd", "Raum S&D:", value = "Durchgangsraum"),
-          textInput("room_renew", "Raum Renew:", value = "Cafeteria"),
-          textInput("room_pfe", "Raum PfE:", value = "Mehrzweckraum 1"),
-          textInput("room_5th", "Raum 5. Fraktion:", value = "Sitznische")
+          textInput("room_evp", "Raum EVP:", value = "TBD"),
+          textInput("room_sd", "Raum S&D:", value = "TBD"),
+          textInput("room_renew", "Raum Renew:", value = "TBD"),
+          textInput("room_pfe", "Raum PfE:", value = "TBD"),
+          textInput("room_5th", "Raum 5. Fraktion:", value = "TBD")
         )
       )
     ),
@@ -289,10 +289,10 @@ server <- function(input, output, session) {
       pdf_order <- c()
       ## Fraktionen
       for (group in groupsEP) {
-        {sink("LaTeX/Meta/var.tex")
-        paste0("\\newcommand\\Fraktion{", group, "}\n") |> cat()
-        paste0("\\newcommand\\slidolink{", get_slido_link(input$city, group), "}\n") |> cat()
-        sink()}
+        write_tex_vars(
+          paste0("\\newcommand\\Fraktion{", group, "}"),
+          paste0("\\newcommand\\slidolink{", get_slido_link(input$city, group), "}")
+        )
         
         compile_tex_checked("LaTeX/Folien/1. Fraktionssitzung.tex", clean = T)
         file.rename("1. Fraktionssitzung.pdf", paste0(input$resPath, "/Fraktionen/", group, "/1. Fraktionssitzung_", group, ".pdf"))
@@ -308,10 +308,10 @@ server <- function(input, output, session) {
       
       ## Ausschüsse
       for (committee in committees) {
-        {sink("LaTeX/Meta/var.tex")
-        paste0("\\newcommand\\Committee{", committee, "}\n") |> cat()
-        paste0("\\newcommand\\Fraktion{LEER}\n") |> cat()
-        sink()}
+        write_tex_vars(
+          paste0("\\newcommand\\Committee{", committee, "}"),
+          "\\newcommand\\Fraktion{LEER}"
+        )
         compile_tex_checked("LaTeX/Folien/Ausschusssitzung.tex", clean = T)
         file.rename("Ausschusssitzung.pdf", paste0(input$resPath, "/Ausschüsse/", committee, ".pdf"))
 
@@ -368,9 +368,7 @@ server <- function(input, output, session) {
           df_xlsx <- read_excel(xlPath, sheet = sheet)
           # write.csv(df_xlsx, paste0("Daten/SuS/", sheet, ".csv"), row.names = FALSE, fileEncoding = "UTF-8", quote = FALSE)
           write.csv(df_xlsx, paste0("Daten/SuS/", sheet, ".csv"), row.names = FALSE)
-          {sink("LaTeX/Meta/var.tex")
-            paste0("\\newcommand\\klasse{", sheet, "}\n") |> cat()
-            sink()}
+          write_tex_vars(paste0("\\newcommand\\klasse{", sheet, "}"))
           compile_tex_checked("LaTeX/TN-Zertifikat.tex", clean = T)
           file.rename("TN-Zertifikat.pdf", paste0(input$resPath, "/Sonstiges/TN-Zertifikate/", sheet, ".pdf"))
         }
@@ -396,9 +394,7 @@ server <- function(input, output, session) {
         output_file <- paste0(input$resPath, "/Einzeldokumente/Fraktionspapier_", group, ".pdf")
         
         if (input$recreateUnterlagen || !file.exists(output_file)) {
-          {sink("LaTeX/Meta/var.tex")
-          paste0("\\newcommand\\Fraktion{", group, "}\n") |> cat()
-          sink()}
+          write_tex_vars(paste0("\\newcommand\\Fraktion{", group, "}"))
           
           compile_tex_checked("LaTeX/Fraktionspapier.tex", clean = T)
           file.rename("Fraktionspapier.pdf", paste0(input$resPath, "/Einzeldokumente/Fraktionspapier_", group,".pdf"))
@@ -409,9 +405,7 @@ server <- function(input, output, session) {
         output_file <- paste0(input$resPath, "/Einzeldokumente/Länderpapier_", member, ".pdf")
         
         if (input$recreateUnterlagen || !file.exists(output_file)) {
-          {sink("LaTeX/Meta/var.tex")
-          paste0("\\newcommand\\kurzel{", member, "}\n") |> cat()
-          sink()}
+          write_tex_vars(paste0("\\newcommand\\kurzel{", member, "}"))
           
           compile_tex_checked("LaTeX/Länderpapier.tex", clean = T)
           file.rename("Länderpapier.pdf", paste0(input$resPath, "/Einzeldokumente/Länderpapier_", member,".pdf"))
@@ -500,9 +494,7 @@ server <- function(input, output, session) {
       for (sheet in excel_sheets(xlPath)) {
         df_xlsx <- read_excel(xlPath, sheet = sheet)
         write.csv(df_xlsx, paste0("Daten/SuS/", sheet, ".csv"), row.names = FALSE, fileEncoding = "UTF-8", quote = FALSE)
-        {sink("LaTeX/Meta/var.tex")
-        paste0("\\newcommand\\klasse{", sheet, "}\n") |> cat()
-        sink()}
+        write_tex_vars(paste0("\\newcommand\\klasse{", sheet, "}"))
         
         compile_tex_checked("LaTeX/TN-Zertifikat.tex", clean = T)
         file.rename("TN-Zertifikat.pdf", paste0(input$resPath, "/", sheet, ".pdf"))
