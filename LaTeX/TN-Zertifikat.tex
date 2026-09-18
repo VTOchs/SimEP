@@ -14,8 +14,6 @@
 \input{Meta/shared_content.tex}
 %\newcommand{\klasse}{test}
 
-\DTLloaddb[keys={Vorname,Nachname}]{class}{../Daten/SuS/\klasse.csv}
-
 \IfEqCase{\Thema}{%
 	{Green Deal}{\newcommand{\theme}{zur Europäischen Klimapolitik im Rahmen des Green Deal}}%
 	{Asyl}{\newcommand{\theme}{{zu einem gemeinsamen Europäischen Asylsystem}}}%
@@ -26,6 +24,7 @@
 
 
 \begin{document}
+\DTLloaddb{class}{../Daten/SuS/\klasse.csv}
 \DTLforeach{class}{\prename=Vorname, \surname=Nachname}{
     \thispagestyle{empty} % No page number on the certificate
     

@@ -43,7 +43,7 @@ body <- dashboardBody(
               numericInput("numSuS", "Anzahl SuS:", 100),
               selectInput("fifthGroup", "Fünfte Fraktion:",
                           choices = c("Grüne", "Linke"),
-                          selected = "Linke"),
+                          selected = "Grüne"),
               actionButton("reload", "Daten aktualisieren"),
               actionButton("update_aea", "ÄA aktualisieren"),
               actionButton("print", "Drucken")
@@ -67,11 +67,11 @@ body <- dashboardBody(
                       choices = c("Green Deal", "Asyl", "Armee"),
                       selected = "Asyl"),
           selectInput("city", "Stadt:",
-                      choices = c("Coburg", "München", "Nürnberg", "Passau", "Ulm"),
+                      choices = c("München", "Nürnberg"),
                       selected = "Nürnberg"),
           dateInput("date", "Datum:", format = "dd.mm.yyyy", language = "de", weekstart = 1),
           selectInput("resPath", "Zielordner:",
-                      choices = c("Coburg", "München", "Nürnberg", "Passau", "Ulm"),
+                      choices = c("München", "Nürnberg"),
                       selected = "Nürnberg")
         )
       )
@@ -83,8 +83,7 @@ body <- dashboardBody(
         box(
           width = 12,
           selectInput("localSup", "Lokale Unterstützung:",
-                      choices = c("das Europe Direct Coburg Oberfranken/Südthüringen", "das Europe Direct München", "das Europe Direct Nürnberg",
-                                  "die Universität Passau", "das Europe Direct Ulm"),
+                      choices = c("das Europe Direct München", "das Europe Direct Nürnberg"),
                       selected = "das Europe Direct Nürnberg"),
           textInput("sponsor", "Sponsor:", "die Vertretung der Europäischen Kommission in München"),
           textInput("jefvorsitz", "Vorsitz JEF Bayern:", value = "Farras Fathi"),
@@ -134,17 +133,23 @@ body <- dashboardBody(
         box(
           width = 4,
           selectInput("pol", "Politiker:",
-                      choices = c("Lena Düpont", "Karl Freller", "Johannes Wagner", "Johannes Schätzl", "Maria Noichl"),
+                      choices = c("Karl Freller", "Maria Noichl"),
                       selected = "Karl Freller"),
           selectInput("pol_office", "Politiker (Amt):",
                       choices = c("Mitglied des Europäischen Parlaments", "Mitglied des Bundestags",
-                                  "Mitglied des Landtags", "TBD"),
+                                  "Mitglied des Landtags"),
                       selected = "Mitglied des Landtags"),
-          textInput("stadtvert", "Stadtvertreter:", value = "Dr. Andrea Heilmaier"),
-          textInput("stadtvert_office", "Stadtvertreter (Amt):", value = "Wirtschafts- und Wissenschaftsreferentin der Stadt Nürnberg"),
+          selectInput("stadtvert", "Stadtvertreter:",
+                      choices = c("Dr. Andrea Heilmaier", "Verena Dietl"),
+                      selected = "Dr. Andrea Heilmaier"),
+          selectInput("stadtvert_office", "Stadtvertreter (Amt):",
+                      choices = c("Wirtschafts- und Wissenschaftsreferentin der Stadt Nürnberg",
+                                  "3. Bürgermeisterin der Stadt München"),
+                      selected = "Wirtschafts- und Wissenschaftsreferentin der Stadt Nürnberg"),        
+          # textInput("stadtvert", "Stadtvertreter:", value = "Dr. Andrea Heilmaier"),
+          # textInput("stadtvert_office", "Stadtvertreter (Amt):", value = "Wirtschafts- und Wissenschaftsreferentin der Stadt Nürnberg"),
           selectInput("location", "Veranstaltungsort:",
-                      choices = c("in den Räumlichkeiten des Coburger Stadtjugendrings", "im Münchner Rathaus",
-                                  "im Nürnberger Rathaus", "in der Universität Passau", "im Ulmer Rathaus"),
+                      choices = c("im Nürnberger Rathaus", "im Münchner Rathaus"),
                       selected = "im Nürnberger Rathaus"),
           numericInput("numAntrag", "Antragsgrün Nummer:", 56456)
         ),
@@ -180,7 +185,7 @@ body <- dashboardBody(
       fluidRow(
         box(
           width = 12,
-          checkboxInput("recreateUnterlagen", "Dokumente neu erstellen (nur für Unterlagen Druck)", value = FALSE)
+          checkboxInput("recreateUnterlagen", "Dokumente neu erstellen", value = FALSE)
         )
       )
     )
@@ -362,12 +367,12 @@ server <- function(input, output, session) {
       
       ## TN-Zertifikate
       
-      for (excel in list.files("Daten/SuS", pattern='xlsx')) {
-        xlPath <- paste0("Daten/SuS/", excel)
+      for (excel in list.files(paste0("Daten/SuS/", input$city), pattern='xlsx')) {
+        xlPath <- paste0("Daten/SuS/", input$city, "/", excel)
         for (sheet in excel_sheets(xlPath)) {
           df_xlsx <- read_excel(xlPath, sheet = sheet)
           # write.csv(df_xlsx, paste0("Daten/SuS/", sheet, ".csv"), row.names = FALSE, fileEncoding = "UTF-8", quote = FALSE)
-          write.csv(df_xlsx, paste0("Daten/SuS/", sheet, ".csv"), row.names = FALSE)
+          write.csv(df_xlsx[c("Vorname", "Nachname")], paste0("Daten/SuS/", sheet, ".csv"), row.names = FALSE, fileEncoding = "UTF-8", quote = FALSE)
           write_tex_vars(paste0("\\newcommand\\klasse{", sheet, "}"))
           compile_tex_checked("LaTeX/TN-Zertifikat.tex", clean = T)
           file.rename("TN-Zertifikat.pdf", paste0(input$resPath, "/Sonstiges/TN-Zertifikate/", sheet, ".pdf"))
@@ -493,7 +498,7 @@ server <- function(input, output, session) {
       xlPath <- paste0("Daten/SuS/", input$tnListPath, ".xlsx")
       for (sheet in excel_sheets(xlPath)) {
         df_xlsx <- read_excel(xlPath, sheet = sheet)
-        write.csv(df_xlsx, paste0("Daten/SuS/", sheet, ".csv"), row.names = FALSE, fileEncoding = "UTF-8", quote = FALSE)
+        write.csv(df_xlsx[c("Vorname", "Nachname")], paste0("Daten/SuS/", sheet, ".csv"), row.names = FALSE, fileEncoding = "UTF-8", quote = FALSE)
         write_tex_vars(paste0("\\newcommand\\klasse{", sheet, "}"))
         
         compile_tex_checked("LaTeX/TN-Zertifikat.tex", clean = T)
