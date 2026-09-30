@@ -140,26 +140,26 @@ body <- dashboardBody(
                                   "Mitglied des Landtags"),
                       selected = "Mitglied des Landtags"),
           selectInput("stadtvert", "Stadtvertreter:",
-                      choices = c("Dr. Andrea Heilmaier", "Verena Dietl"),
-                      selected = "Dr. Andrea Heilmaier"),
+                      choices = c("Cornelia Trinkl", "Verena Dietl"),
+                      selected = "Cornelia Trinkl"),
           selectInput("stadtvert_office", "Stadtvertreter (Amt):",
-                      choices = c("Wirtschafts- und Wissenschaftsreferentin der Stadt Nürnberg",
+                      choices = c("Bildungsreferentin der Stadt Nürnberg",
                                   "3. Bürgermeisterin der Stadt München"),
-                      selected = "Wirtschafts- und Wissenschaftsreferentin der Stadt Nürnberg"),        
+                      selected = "Bildungsreferentin der Stadt Nürnberg"),        
           # textInput("stadtvert", "Stadtvertreter:", value = "Dr. Andrea Heilmaier"),
           # textInput("stadtvert_office", "Stadtvertreter (Amt):", value = "Wirtschafts- und Wissenschaftsreferentin der Stadt Nürnberg"),
           selectInput("location", "Veranstaltungsort:",
                       choices = c("im Nürnberger Rathaus", "im Münchner Rathaus"),
                       selected = "im Nürnberger Rathaus"),
-          numericInput("numAntrag", "Antragsgrün Nummer:", 56456)
+          numericInput("numAntrag", "Antragsgrün Nummer:", 56457)
         ),
         box(
           width = 4,
-          textInput("leit_evp", "Leitung EVP:", value = "TBD"),
-          textInput("leit_sd", "Leitung S&D:", value = "TBD"),
-          textInput("leit_renew", "Leitung Renew:", value = "TBD"),
-          textInput("leit_pfe", "Leitung PfE:", value = "TBD"),
-          textInput("leit_5th", "Leitung 5. Fraktion:", value = "TBD")
+          textInput("leit_evp", "Leitung EVP:", value = "Farras"),
+          textInput("leit_sd", "Leitung S&D:", value = "Christoph"),
+          textInput("leit_renew", "Leitung Renew:", value = "Maike"),
+          textInput("leit_pfe", "Leitung PfE:", value = "Linus"),
+          textInput("leit_5th", "Leitung 5. Fraktion:", value = "Katharina")
         ),
         box(
           width = 4,
