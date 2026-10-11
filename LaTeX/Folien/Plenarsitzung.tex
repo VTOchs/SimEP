@@ -6,6 +6,12 @@
 \usepackage{tikz}
 \usepackage{verbatim}
 \usepackage{xstring}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{ragged2e}
+\usepackage{tabularx}
+\usepackage[normalem]{ulem}
+\usepackage{xcolor}
 \usepackage[german]{babel}
 \usetikzlibrary{calc}
 \input{../Meta/var.tex}
@@ -19,12 +25,30 @@
 \begin{document}
 \frame{\titlepage}
 
-\begin{frame}{Grußwort \stadtvertreter\ \small (\stadtvertreterOffice)}
-\vspace{-1.5cm}
+\IfFileExists{../Meta/antragsgruen_slide_Final.tex}{
+    \input{../Meta/antragsgruen_slide_Final.tex}
+}{
+    \begin{frame}{Finale Änderungsanträge}
+        Keine aktuelle Übersicht aus Antragsgrün vorhanden.
+    \end{frame}
+}
+
+\begingroup
+\addtobeamertemplate{frametitle}{\vspace*{.5cm}}{} % schiebt den Titel nach unten
+\begin{frame}{Grußwort Wolfgang Bücherl \small (Leiter der Regionalvertretung der Europäischen Kommission für Baden-Württemberg \& Bayern)}
+    \vspace{-1cm}
     \begin{center}
-        \includegraphics[height=4cm]{Bilder/Stadt\_\city.png}
+        \includegraphics[height=4cm]{Bilder/bücherl.png}
     \end{center}
 \end{frame}
+\endgroup
+
+%\begin{frame}{Grußwort \stadtvertreter\ \small (\stadtvertreterOffice)}
+%\vspace{-1.5cm}
+%    \begin{center}
+%        \includegraphics[height=4cm]{Bilder/Stadt\_\city.png}
+%    \end{center}
+%\end{frame}
 
 %\begin{frame}{Grußwort \politiker \newline \small (\politikerOffice)}
 %\vspace{-1cm}

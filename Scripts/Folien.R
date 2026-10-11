@@ -88,7 +88,9 @@ capitalize_first_letter <- function(text) {
 url_seats <- "https://www.europarl.europa.eu/meps/de/search/table"
 
 df_all <- url_seats |> 
-          read_html(as.data.frame = T, stringsAsFactors = TRUE) |> 
+          httr::GET() |> 
+          httr::content(as = "text", encoding = "UTF-8") |> 
+          read_html() |> 
           html_nodes("table") %>%
           .[[1]] %>%
           html_table()
@@ -164,7 +166,10 @@ map_political_group <- function(group) {
 
 fetch_group_presidents <- function() {
   url_pres <- "https://www.europarl.europa.eu/meps/en/download/advanced/xml?name=&euPoliticalGroupBodyRefNum=&countryCode=&bodyType=OTH&bodyReferenceNum=6631"
-  xml_data <- read_xml(url_pres)
+  xml_data <- url_pres |> 
+    httr::GET() |> 
+    httr::content(as = "text", encoding = "UTF-8") |> 
+    read_xml()
   meps <- xml_find_all(xml_data, ".//mep")
 
   full_names <- c()
@@ -257,6 +262,8 @@ get_committee_slugs <- function() {
   committee_url <- "https://www.europarl.europa.eu/committees/en/about/list-of-committees"
 
   com_list <- committee_url |>
+    httr::GET() |>
+    httr::content(as = "text", encoding = "UTF-8") |>
     read_html() |>
     html_elements("a[href*='/committees/en/']") |>
     html_attr("href") |>
@@ -307,6 +314,8 @@ build_chair_label <- function(df_com) {
 fetch_committee_row <- function(committee) {
   tryCatch({
     xml_com <- paste0("https://www.europarl.europa.eu/committees/en/", committee, "/home/members") |>
+      httr::GET() |>
+      httr::content(as = "text", encoding = "UTF-8") |>
       read_html() |>
       as_xml_document()
 

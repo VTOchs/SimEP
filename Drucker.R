@@ -21,8 +21,7 @@ sidebar <- dashboardSidebar(
     menuItem("R/U/TN", tabName = "r_u_tn_tab"),
     menuItem("R/TN", tabName = "r_tn_tab"),
     menuItem("R/U", tabName = "r_u_tab"),
-    menuItem("A", tabName = "a_tab"),
-    menuItem("R", tabName = "r_tab"),
+    menuItem("R/A", tabName = "r_tab"),
     menuItem("TN", tabName = "tn_tab"),
     menuItem("U", tabName = "u_tab")
   )
@@ -43,7 +42,10 @@ body <- dashboardBody(
               numericInput("numSuS", "Anzahl SuS:", 100),
               selectInput("fifthGroup", "Fünfte Fraktion:",
                           choices = c("Grüne", "Linke"),
-                          selected = "Grüne"),
+                          selected = "Linke"),
+              radioButtons("aeaMode", "ÄA-Übersicht:",
+                           choices = c("Ausschuss", "Final"),
+                           selected = "Ausschuss", inline = TRUE),
               actionButton("reload", "Daten aktualisieren"),
               actionButton("update_aea", "ÄA aktualisieren"),
               actionButton("print", "Drucken")
@@ -65,14 +67,14 @@ body <- dashboardBody(
           width = 12,
           selectInput("topic", "Thema:",
                       choices = c("Green Deal", "Asyl", "Armee"),
-                      selected = "Asyl"),
+                      selected = "Armee"),
           selectInput("city", "Stadt:",
-                      choices = c("München", "Nürnberg"),
-                      selected = "Nürnberg"),
+                      choices = c("München"),
+                      selected = "München"),
           dateInput("date", "Datum:", format = "dd.mm.yyyy", language = "de", weekstart = 1),
           selectInput("resPath", "Zielordner:",
-                      choices = c("München", "Nürnberg"),
-                      selected = "Nürnberg")
+                      choices = c("München"),
+                      selected = "München")
         )
       )
     ),
@@ -83,8 +85,8 @@ body <- dashboardBody(
         box(
           width = 12,
           selectInput("localSup", "Lokale Unterstützung:",
-                      choices = c("das Europe Direct München", "das Europe Direct Nürnberg"),
-                      selected = "das Europe Direct Nürnberg"),
+                      choices = c("das Europe Direct München"),
+                      selected = "das Europe Direct München"),
           textInput("sponsor", "Sponsor:", "die Vertretung der Europäischen Kommission in München"),
           textInput("jefvorsitz", "Vorsitz JEF Bayern:", value = "Farras Fathi"),
           selectInput("gender", "Geschlecht Vorsitz JEF Bayern", choices = c("M", "W"), selected = "M")
@@ -119,47 +121,37 @@ body <- dashboardBody(
       )
     ),
     tabItem(
-      tabName = "a_tab",
-      fluidRow(
-        box(
-          width = 12,
-            numericInput("numAntrag", "Antragsgrün Nummer:", 56456),
-        )
-      )
-    ),
-    tabItem(
       tabName = "r_tab",
       fluidRow(
         box(
           width = 4,
           selectInput("pol", "Politiker:",
-                      choices = c("Karl Freller", "Maria Noichl"),
-                      selected = "Karl Freller"),
+                      choices = c("Maria Noichl"),
+                      selected = "Maria Noichl"),
           selectInput("pol_office", "Politiker (Amt):",
                       choices = c("Mitglied des Europäischen Parlaments", "Mitglied des Bundestags",
                                   "Mitglied des Landtags"),
-                      selected = "Mitglied des Landtags"),
+                      selected = "Mitglied des Europäischen Parlaments"),
           selectInput("stadtvert", "Stadtvertreter:",
-                      choices = c("Cornelia Trinkl", "Verena Dietl"),
-                      selected = "Cornelia Trinkl"),
+                      choices = c("Verena Dietl"),
+                      selected = "Verena Dietl"),
           selectInput("stadtvert_office", "Stadtvertreter (Amt):",
-                      choices = c("Bildungsreferentin der Stadt Nürnberg",
-                                  "3. Bürgermeisterin der Stadt München"),
-                      selected = "Bildungsreferentin der Stadt Nürnberg"),        
+                      choices = c("3. Bürgermeisterin der Stadt München"),
+                      selected = "3. Bürgermeisterin der Stadt München"),        
           # textInput("stadtvert", "Stadtvertreter:", value = "Dr. Andrea Heilmaier"),
           # textInput("stadtvert_office", "Stadtvertreter (Amt):", value = "Wirtschafts- und Wissenschaftsreferentin der Stadt Nürnberg"),
           selectInput("location", "Veranstaltungsort:",
-                      choices = c("im Nürnberger Rathaus", "im Münchner Rathaus"),
-                      selected = "im Nürnberger Rathaus"),
-          numericInput("numAntrag", "Antragsgrün Nummer:", 56457)
+                      choices = c("im Münchner Rathaus"),
+                      selected = "im Münchner Rathaus"),
+          numericInput("numAntrag", "Antragsgrün Nummer:", 56456)
         ),
         box(
           width = 4,
-          textInput("leit_evp", "Leitung EVP:", value = "Farras"),
+          textInput("leit_evp", "Leitung EVP:", value = "Jana"),
           textInput("leit_sd", "Leitung S&D:", value = "Christoph"),
-          textInput("leit_renew", "Leitung Renew:", value = "Maike"),
-          textInput("leit_pfe", "Leitung PfE:", value = "Linus"),
-          textInput("leit_5th", "Leitung 5. Fraktion:", value = "Katharina")
+          textInput("leit_renew", "Leitung Renew:", value = "Katharina"),
+          textInput("leit_pfe", "Leitung PfE:", value = "Max"),
+          textInput("leit_5th", "Leitung 5. Fraktion:", value = "Farras")
         ),
         box(
           width = 4,
@@ -207,8 +199,20 @@ server <- function(input, output, session) {
 
   observeEvent(input$update_aea, {
     committees <- get_committees_for_topic(input$topic)
-    generate_ausschussuebersicht(committees, input$numAntrag, input$fifthGroup, input$resPath)
-    print(paste0("Ausschussübersicht (", input$city, ") fertig!"))
+    if (input$aeaMode == "Final") {
+      generate_finaluebersicht(input$numAntrag, input$fifthGroup)
+      dir.create(file.path(input$resPath, "Sonstiges"), recursive = TRUE, showWarnings = FALSE)
+      compile_tex_checked("LaTeX/Folien/Plenarsitzung.tex", clean = TRUE)
+      file.rename(
+        "Plenarsitzung.pdf",
+        file.path(input$resPath, "Sonstiges", "Plenarsitzung.pdf")
+      )
+      print("Finale Änderungsanträge fertig!")
+    } else {
+      unlink(file.path("LaTeX", "Meta", "antragsgruen_slide_Final.tex"))
+      generate_ausschussuebersicht(committees, input$numAntrag, input$fifthGroup, input$resPath)
+      print(paste0("Ausschussübersicht (", input$city, ") fertig!"))
+    }
   })
   
   observeEvent(input$print, 

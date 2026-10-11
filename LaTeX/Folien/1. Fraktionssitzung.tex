@@ -157,6 +157,24 @@
 	    }
 	    \newcommand{\entwurf}{Gesetzesentwurf}
     		\newcommand{\policy}{Umwelt- und Klimaschutzpolitik}
+		\newcommand{\slideOne}{%
+            	\vspace{-1cm}
+           	\begin{center}
+           	\includegraphics[height=6cm]{Bilder/em_sector.png} 
+        		\end{center}
+      	}%
+        \newcommand{\slideOneTitle}{%
+        		Treibhausgasemissionen in der EU nach Sektoren (2019)
+       	}%
+        	\newcommand{\slideTwo}{%
+        		\vspace{-1cm}
+            	\begin{center}
+            	\includegraphics[height=6cm, width=\textwidth]{Bilder/em_vergleich.png}
+            \end{center}
+      	}%
+        	\newcommand{\slideTwoTitle}{%
+        		Pro-Kopf-Treibhausgas-Emissionen der Europäischen Union im Vergleich (2021)
+       	}%
 	}%
 	{Asyl}{%
 		\newcommand{\ausschuesse}{
@@ -175,6 +193,24 @@
     		}
 	    \newcommand{\entwurf}{Gesetzesentwurf}
 	    \newcommand{\policy}{Asylpolitik}
+		\newcommand{\slideOne}{%
+        		\vspace{-1cm}
+			\begin{center}
+        		\includegraphics[height=6cm, width=\textwidth]{Bilder/asyl_num_2025.png} 
+        		\end{center}
+      	}
+        \newcommand{\slideOneTitle}{%
+        		Entwicklung der Anzahl der Asylanträge \newline in der EU
+      	}
+      	\newcommand{\slideTwo}{%
+        		\vspace{-1cm}
+            	\begin{center}
+            	\includegraphics[width=11cm]{Bilder/asyl_country_2025.png} 
+           	\end{center}
+       	}
+       	\newcommand{\slideTwoTitle}{%
+        		Anzahl der Asyl-Anträge pro Mitgliedstaat (2025)
+     	}
 	}%
 	{Armee}{
 		\newcommand{\ausschuesse}{
@@ -191,6 +227,24 @@
 	    	}
 	    \newcommand{\entwurf}{Entschließungsentwurf}
 	    \newcommand{\policy}{Außen- und Sicherheitspolitik}
+		\newcommand{\slideOne}{%
+        		\vspace{-1cm}
+            	\begin{center}
+            	\includegraphics[width=7cm]{Bilder/defence_exp.png} 
+            	\end{center}
+      	}
+        	\newcommand{\slideOneTitle}{%
+        		Gesamte Verteidigungsausgaben der EU-Mitgliedstaaten (2005-2025)
+       	}
+		\newcommand{\slideTwo}{%
+        		\vspace{-1cm}
+            	\begin{center}
+            	\includegraphics[height=6cm, width=10cm]{Bilder/weapon_system_eu.png} 
+            	\end{center}
+       	}
+        	\newcommand{\slideTwoTitle}{%
+        		Anzahl unterschiedliche Waffensysteme \newline Europa vs. USA (2025)
+		}%
 	}%
 }
 
@@ -229,6 +283,14 @@
     \item Nennt kurz reihum euren Namen und eure Klasse
     \item Teilt dann eure Gedanken mit der Gruppe
 \end{itemize}
+\end{frame}
+
+\begin{frame}{\slideOneTitle}
+    \slideOne
+\end{frame}
+
+\begin{frame}{\slideTwoTitle}
+    \slideTwo
 \end{frame}
 
 \begin{frame}{Unterlagenmappen}
@@ -325,7 +387,7 @@
     \GridCell{SD}{#1{SD}}\hfill
     \GridCell{RE}{#1{RE}}\par\vspace{0.4cm}
     \GridCell{PfE}{#1{PfE}}\hfill
-    \ifthenelse{\equal{\fifthGroup}{Green}}{%
+    \ifthenelse{\equal{\fifthGroup}{Grüne}}{%
       \GridCell{Green}{#1{Green}}%
     }{%
       \GridCell{Left}{#1{Linke}}%
@@ -336,7 +398,7 @@
       \GridCell{EVP}{#1{EVP}}\hfill
       \GridCell{RE}{#1{RE}}\par\vspace{0.4cm}
       \GridCell{PfE}{#1{PfE}}\hfill
-      \ifthenelse{\equal{\fifthGroup}{Green}}{%
+      \ifthenelse{\equal{\fifthGroup}{Grüne}}{%
         \GridCell{Green}{#1{Green}}%
       }{%
         \GridCell{Left}{#1{Linke}}%
@@ -347,7 +409,7 @@
         \GridCell{EVP}{#1{EVP}}\hfill
         \GridCell{SD}{#1{SD}}\par\vspace{0.4cm}
         \GridCell{PfE}{#1{PfE}}\hfill
-        \ifthenelse{\equal{\fifthGroup}{Green}}{%
+        \ifthenelse{\equal{\fifthGroup}{Grüne}}{%
           \GridCell{Green}{#1{Green}}%
         }{%
           \GridCell{Left}{#1{Linke}}%
@@ -358,7 +420,7 @@
           \GridCell{EVP}{#1{EVP}}\hfill
           \GridCell{SD}{#1{SD}}\par\vspace{0.4cm}
           \GridCell{RE}{#1{RE}}\hfill
-          \ifthenelse{\equal{\fifthGroup}{Green}}{%
+          \ifthenelse{\equal{\fifthGroup}{Grüne}}{%
             \GridCell{Green}{#1{Green}}%
           }{%
             \GridCell{Left}{#1{Linke}}%
@@ -381,7 +443,7 @@
     \GridCellGoal{SD}{#1{SD}}\hfill
     \GridCellGoal{RE}{#1{RE}}\par\vspace{0.4cm}
     \GridCellGoal{PfE}{#1{PfE}}\hfill
-    \ifthenelse{\equal{\fifthGroup}{Green}}{%
+    \ifthenelse{\equal{\fifthGroup}{Grüne}}{%
       \GridCellGoal{Green}{#1{Green}}%
     }{%
       \GridCellGoal{Left}{#1{Linke}}%
@@ -391,7 +453,7 @@
       \GridCellGoal{EVP}{#1{EVP}}\hfill
       \GridCellGoal{RE}{#1{RE}}\par\vspace{0.4cm}
       \GridCellGoal{PfE}{#1{PfE}}\hfill
-      \ifthenelse{\equal{\fifthGroup}{Green}}{%
+      \ifthenelse{\equal{\fifthGroup}{Grüne}}{%
         \GridCellGoal{Green}{#1{Green}}%
       }{%
         \GridCellGoal{Left}{#1{Linke}}%
@@ -401,7 +463,7 @@
         \GridCellGoal{EVP}{#1{EVP}}\hfill
         \GridCellGoal{SD}{#1{SD}}\par\vspace{0.4cm}
         \GridCellGoal{PfE}{#1{PfE}}\hfill
-        \ifthenelse{\equal{\fifthGroup}{Green}}{%
+        \ifthenelse{\equal{\fifthGroup}{Grüne}}{%
           \GridCellGoal{Green}{#1{Green}}%
         }{%
           \GridCellGoal{Left}{#1{Linke}}%
@@ -411,7 +473,7 @@
           \GridCellGoal{EVP}{#1{EVP}}\hfill
           \GridCellGoal{SD}{#1{SD}}\par\vspace{0.4cm}
           \GridCellGoal{RE}{#1{RE}}\hfill
-          \ifthenelse{\equal{\fifthGroup}{Green}}{%
+          \ifthenelse{\equal{\fifthGroup}{Grüne}}{%
             \GridCellGoal{Green}{#1{Green}}%
           }{%
             \GridCellGoal{Left}{#1{Linke}}%
@@ -528,7 +590,7 @@
 \begin{itemize}
 	\item \href{\slidolink}{Slido zum \entwurf\ \& \Fraktionskuerzel}
 \end{itemize}
-\end{frame}
+	\end{frame}
 
 \begin{frame}{Rolleneinteilung}
 \vspace{-1.5cm}

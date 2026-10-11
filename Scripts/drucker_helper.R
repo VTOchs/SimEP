@@ -4,6 +4,10 @@ library(tidyverse)
 
 groupsEP4 <- c("EVP", "SD", "RE", "PfE")
 
+write_tex_vars <- function(...) {
+  writeLines(unlist(list(...), use.names = FALSE), "LaTeX/Meta/var.tex", useBytes = TRUE)
+}
+
 countries <-  c("AUT", "BEL", "BGR", "HRV",
                 "CYP", "CZE", "DNK", "EST",
                 "FIN", "FRA", "DEU", "GRC",
@@ -361,6 +365,15 @@ compile_tex_checked <- function(tex_path, clean = TRUE, max_runs = 3) {
     existing[[1]]
   }
 
+  for (pdf_path in unique(c(
+    file.path(getwd(), pdf_name),
+    file.path(dirname(tex_path), pdf_name)
+  ))) {
+    if (file.exists(pdf_path)) {
+      file.remove(pdf_path)
+    }
+  }
+
   for (run_idx in seq_len(max_runs)) {
     tryCatch(
       tools::texi2pdf(tex_path, clean = FALSE),
@@ -370,7 +383,7 @@ compile_tex_checked <- function(tex_path, clean = TRUE, max_runs = 3) {
     )
 
     pdf_path <- find_artifact(pdf_name)
-    if (is.na(pdf_path) || !file.exists(pdf_path)) {
+    if (is.na(pdf_path) || !file.exists(pdf_path) || file.info(pdf_path)$size == 0) {
       stop(paste("PDF konnte nicht erzeugt werden:", pdf_path))
     }
 
@@ -384,6 +397,10 @@ compile_tex_checked <- function(tex_path, clean = TRUE, max_runs = 3) {
       readLines(log_path, warn = FALSE, encoding = "bytes"),
       error = function(error) readLines(log_path, warn = FALSE)
     )
+
+    if (any(grepl("Emergency stop|Fatal error occurred|No pages of output|Package .* Error|! LaTeX Error", log_lines, useBytes = TRUE))) {
+      stop(paste("LaTeX-Kompilierung erzeugte einen Fehler:", tex_path))
+    }
 
     rerun_pattern <- "Rerun to get cross-references right|Label\\(s\\) may have changed|Rerun filecheck"
     rerun_needed <- any(grepl(rerun_pattern, log_lines, useBytes = TRUE))
@@ -455,10 +472,12 @@ generate_ausschussuebersicht <- function(committees, motion_id, fifth_group, cit
 
   pdfs <- character(0)
   for (committee in committees) {
-    args <- c("Scripts/generate_antragsgruen_compare_tex.R", committee, as.character(motion_id), "--force-left=1")
-    if (identical(fifth_group, "Grüne")) {
-      args <- c("Scripts/generate_antragsgruen_compare_tex.R", committee, as.character(motion_id))
-    }
+    args <- c(
+      "Scripts/generate_antragsgruen_compare_tex.R",
+      committee,
+      as.character(motion_id),
+      paste0("--fifth-group=", fifth_group)
+    )
 
     status <- system2("Rscript", args = args, stdout = TRUE, stderr = TRUE)
     slide_snippet <- file.path("LaTeX", "Meta", sprintf("antragsgruen_slide_%s.tex", committee))
@@ -472,10 +491,10 @@ generate_ausschussuebersicht <- function(committees, motion_id, fifth_group, cit
       next
     }
 
-    sink("LaTeX/Meta/var.tex")
-    paste0("\\newcommand\\Committee{", committee, "}\n") |> cat()
-    paste0("\\newcommand\\Fraktion{LEER}\n") |> cat()
-    sink()
+    write_tex_vars(
+      paste0("\\newcommand\\Committee{", committee, "}"),
+      "\\newcommand\\Fraktion{LEER}"
+    )
 
     compile_tex_checked("LaTeX/Folien/Ausschusssitzung.tex", clean = TRUE)
     target_pdf <- file.path(output_dir, paste0(committee, ".pdf"))
@@ -488,6 +507,29 @@ generate_ausschussuebersicht <- function(committees, motion_id, fifth_group, cit
   }
 
   pdfs
+}
+
+generate_finaluebersicht <- function(motion_id, fifth_group) {
+  generated_file <- file.path("LaTeX", "Meta", "antragsgruen_slide_Final.tex")
+
+  unlink(generated_file)
+
+  args <- c(
+    "Scripts/generate_antragsgruen_compare_tex.R",
+    "Final",
+    as.character(motion_id),
+    paste0("--fifth-group=", fifth_group)
+  )
+
+  status <- system2("Rscript", args = args, stdout = TRUE, stderr = TRUE)
+  if (!file.exists(generated_file)) {
+    stop(sprintf(
+      "Finale Änderungsanträge konnten nicht aktualisiert werden. Ausgabe: %s",
+      paste(status, collapse = "\n")
+    ))
+  }
+
+  generated_file
 }
 
 

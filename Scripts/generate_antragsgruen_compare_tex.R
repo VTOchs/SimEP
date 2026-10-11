@@ -122,6 +122,13 @@ read_fifth_group <- function(path = file.path("LaTeX", "Meta", "shinyin.tex")) {
   read_shinyin_value("fifthGroup", "Left", path)
 }
 
+normalize_fifth_group <- function(value) {
+  value <- trimws(as.character(value))
+  if (value %in% c("Grüne", "Green")) return("Grüne")
+  if (value %in% c("Linke", "Left")) return("Linke")
+  stop(sprintf("Unknown fifth group '%s'. Expected Grüne/Green or Linke/Left.", value))
+}
+
 read_shinyin_city <- function(path = file.path("LaTeX", "Meta", "shinyin.tex")) {
   read_shinyin_value("city", "", path)
 }
@@ -209,6 +216,11 @@ resolve_party_rows <- function(amendments, committee, fifth_group) {
 
 build_tex <- function(committee, motion_id, amendments, fifth_group) {
   rows <- resolve_party_rows(amendments$items, committee, fifth_group)
+  frame_title <- if (identical(committee, "Final")) {
+    "Finale Änderungsanträge"
+  } else {
+    paste0("Änderungsanträge (", latex_escape(committee), ")")
+  }
   row_lines <- vapply(
     rows,
     function(row) {
@@ -222,7 +234,7 @@ build_tex <- function(committee, motion_id, amendments, fifth_group) {
   )
 
   paste0(
-    "\\begin{frame}{Änderungsanträge (", latex_escape(committee), ")}\n",
+    "\\begin{frame}{", frame_title, "}\n",
     "\\tiny\n",
     "\\vspace{-0.45cm}\n",
     "\\renewcommand{\\arraystretch}{0.9}\n",
@@ -253,10 +265,7 @@ main <- function() {
     fifth_group <- read_fifth_group()
   }
 
-  # Allow an explicit override to force the fifth group to Linke (Left)
-  if (!is.null(args$named$`force-left`) && args$named$`force-left` %in% c("1", "true", "TRUE", "True")) {
-    fifth_group <- "Linke"
-  }
+  fifth_group <- normalize_fifth_group(fifth_group)
 
   if (!nzchar(committee)) {
     stop("Missing committee argument.")
