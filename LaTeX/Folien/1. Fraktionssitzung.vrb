@@ -1,0 +1,14 @@
+\frametitle{\Fraktionsname \ --- \GoalTitleThree {\Thema }}
+\vspace{-0.15cm}
+\begin{minipage}[c][0.85cm][c]{0.15\textwidth}\centering
+  \includegraphics[height=0.8cm]{Bilder/\Fraktion.png}
+\end{minipage}\hfill
+\begin{minipage}[c][0.85cm][c]{0.82\textwidth}\small
+  \ShowGoal{3}
+\end{minipage}
+\vspace{0.08cm}
+\hrule
+\vspace{0.1cm}
+{\footnotesize
+  \ShowCaucusGridGoal{\SharedGoalThree}
+}

@@ -3,3 +3,11 @@
 .RData
 .Ruserdata
 .positai
+basic_external/
+rsconnect/
+renv/
+Daten/
+temp/
+
+München/
+Nürnberg/

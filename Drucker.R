@@ -143,23 +143,23 @@ body <- dashboardBody(
           selectInput("location", "Veranstaltungsort:",
                       choices = c("im Münchner Rathaus"),
                       selected = "im Münchner Rathaus"),
-          numericInput("numAntrag", "Antragsgrün Nummer:", 56456)
+              numericInput("numAntrag", "Antragsgrün Nummer:", 56748)
         ),
         box(
           width = 4,
           textInput("leit_evp", "Leitung EVP:", value = "Jana"),
           textInput("leit_sd", "Leitung S&D:", value = "Christoph"),
           textInput("leit_renew", "Leitung Renew:", value = "Katharina"),
-          textInput("leit_pfe", "Leitung PfE:", value = "Max"),
+          textInput("leit_pfe", "Leitung PfE:", value = "Marco"),
           textInput("leit_5th", "Leitung 5. Fraktion:", value = "Farras")
         ),
         box(
           width = 4,
-          textInput("room_evp", "Raum EVP:", value = "TBD"),
-          textInput("room_sd", "Raum S&D:", value = "TBD"),
-          textInput("room_renew", "Raum Renew:", value = "TBD"),
-          textInput("room_pfe", "Raum PfE:", value = "TBD"),
-          textInput("room_5th", "Raum 5. Fraktion:", value = "TBD")
+          textInput("room_evp", "Raum EVP:", value = "kl. Sitzungssaal"),
+          textInput("room_sd", "Raum S&D:", value = "144"),
+          textInput("room_renew", "Raum Renew:", value = "280"),
+          textInput("room_pfe", "Raum PfE:", value = "209"),
+          textInput("room_5th", "Raum 5. Fraktion:", value = "33")
         )
       )
     ),

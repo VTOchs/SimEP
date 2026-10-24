@@ -523,8 +523,14 @@ generate_finaluebersicht <- function(motion_id, fifth_group) {
 
   status <- system2("Rscript", args = args, stdout = TRUE, stderr = TRUE)
   if (!file.exists(generated_file)) {
+    exit_status <- attr(status, "status")
+    if (is.null(exit_status)) {
+      exit_status <- 0
+    }
     stop(sprintf(
-      "Finale Änderungsanträge konnten nicht aktualisiert werden. Ausgabe: %s",
+      "Finale Änderungsanträge konnten nicht aktualisiert werden (Antrag %s, Exit-Status %s). Ausgabe: %s",
+      motion_id,
+      exit_status,
       paste(status, collapse = "\n")
     ))
   }
