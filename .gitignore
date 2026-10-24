@@ -3,11 +3,12 @@
 .RData
 .Ruserdata
 .positai
-basic_external/
 rsconnect/
 renv/
-Daten/
 temp/
-
+Daten/SuS
 München/
 Nürnberg/
+
+basic_external/.Rprofile
+basic_external/.posit/
