@@ -34,10 +34,12 @@
 
 
         % Bottom right corner
+        \iflocalSupportPresent
         \node[anchor=south east, inner sep=0pt, text width=4.5cm, align=right] at ([xshift=-10mm, yshift=10mm] current page.south east) {
             \small Unterst\"utzt durch:\\[3mm]
             \citylogo
         };
+        \fi
 
 \end{tikzpicture}
 }
@@ -82,10 +84,12 @@
 
 
         % Bottom right corner
+        \iflocalSupportPresent
         \node[anchor=south east, inner sep=0pt, text width=4.5cm, align=right] at ([xshift=-10mm, yshift=10mm] current page.south east) {
             \small Unterst\"utzt durch:\\[3mm]
             \citylogo
         };
+        \fi
 
 \end{tikzpicture}
 }

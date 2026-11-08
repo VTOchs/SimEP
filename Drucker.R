@@ -42,7 +42,7 @@ body <- dashboardBody(
               numericInput("numSuS", "Anzahl SuS:", 100),
               selectInput("fifthGroup", "Fünfte Fraktion:",
                           choices = c("Grüne", "Linke"),
-                          selected = "Linke"),
+                          selected = "Grüne"),
               radioButtons("aeaMode", "ÄA-Übersicht:",
                            choices = c("Ausschuss", "Final"),
                            selected = "Ausschuss", inline = TRUE),
@@ -67,14 +67,14 @@ body <- dashboardBody(
           width = 12,
           selectInput("topic", "Thema:",
                       choices = c("Green Deal", "Asyl", "Armee"),
-                      selected = "Armee"),
+                      selected = "Asyl"),
           selectInput("city", "Stadt:",
-                      choices = c("München"),
-                      selected = "München"),
+                      choices = c("Ansbach"),
+                      selected = "Ansbach"),
           dateInput("date", "Datum:", format = "dd.mm.yyyy", language = "de", weekstart = 1),
           selectInput("resPath", "Zielordner:",
-                      choices = c("München"),
-                      selected = "München")
+                      choices = c("Ansbach"),
+                      selected = "Ansbach")
         )
       )
     ),
@@ -85,8 +85,9 @@ body <- dashboardBody(
         box(
           width = 12,
           selectInput("localSup", "Lokale Unterstützung:",
-                      choices = c("das Europe Direct München"),
-                      selected = "das Europe Direct München"),
+                      # choices = c("Keine" = "", "das Europe Direct München" = "das Europe Direct München"),
+                      choices = c("Keine" = ""),
+                      selected = ""),
           textInput("sponsor", "Sponsor:", "die Vertretung der Europäischen Kommission in München"),
           textInput("jefvorsitz", "Vorsitz JEF Bayern:", value = "Farras Fathi"),
           selectInput("gender", "Geschlecht Vorsitz JEF Bayern", choices = c("M", "W"), selected = "M")
@@ -143,23 +144,23 @@ body <- dashboardBody(
           selectInput("location", "Veranstaltungsort:",
                       choices = c("im Münchner Rathaus"),
                       selected = "im Münchner Rathaus"),
-              numericInput("numAntrag", "Antragsgrün Nummer:", 56748)
+              numericInput("numAntrag", "Antragsgrün Nummer:", 56457)
         ),
         box(
           width = 4,
-          textInput("leit_evp", "Leitung EVP:", value = "Jana"),
-          textInput("leit_sd", "Leitung S&D:", value = "Christoph"),
-          textInput("leit_renew", "Leitung Renew:", value = "Katharina"),
-          textInput("leit_pfe", "Leitung PfE:", value = "Marco"),
-          textInput("leit_5th", "Leitung 5. Fraktion:", value = "Farras")
+          textInput("leit_evp", "Leitung EVP:", value = "TBD"),
+          textInput("leit_sd", "Leitung S&D:", value = "TBD"),
+          textInput("leit_renew", "Leitung Renew:", value = "TBD"),
+          textInput("leit_pfe", "Leitung PfE:", value = "TBD"),
+          textInput("leit_5th", "Leitung 5. Fraktion:", value = "TBD")
         ),
         box(
           width = 4,
-          textInput("room_evp", "Raum EVP:", value = "kl. Sitzungssaal"),
-          textInput("room_sd", "Raum S&D:", value = "144"),
-          textInput("room_renew", "Raum Renew:", value = "280"),
-          textInput("room_pfe", "Raum PfE:", value = "209"),
-          textInput("room_5th", "Raum 5. Fraktion:", value = "33")
+          textInput("room_evp", "Raum EVP:", value = "TBD"),
+          textInput("room_sd", "Raum S&D:", value = "TBD"),
+          textInput("room_renew", "Raum Renew:", value = "TBD"),
+          textInput("room_pfe", "Raum PfE:", value = "TBD"),
+          textInput("room_5th", "Raum 5. Fraktion:", value = "TBD")
         )
       )
     ),
@@ -223,6 +224,7 @@ server <- function(input, output, session) {
 
         # Fix LaTex-Variables into tex-File
         committee_summary <- get_committee_summary()
+        local_support <- trimws(input$localSup)
 
         sink("LaTeX/Meta/shinyin.tex")
         cat(paste0("\\newcommand\\Thema{", input$topic, "}\n"))
@@ -242,7 +244,9 @@ server <- function(input, output, session) {
         cat(paste0("\\newcommand\\politikerOffice{", input$pol_office, "}\n"))
         cat(paste0("\\newcommand\\stadtvertreter{", input$stadtvert, "}\n"))
         cat(paste0("\\newcommand\\stadtvertreterOffice{", input$stadtvert_office, "}\n"))
-        cat(paste0("\\newcommand\\localSupport{", input$localSup, "}\n"))
+        cat("\\newif\\iflocalSupportPresent\n")
+        cat(if (nzchar(local_support)) "\\localSupportPresenttrue\n" else "\\localSupportPresentfalse\n")
+        cat(paste0("\\newcommand\\localSupport{", local_support, "}\n"))
         cat(paste0("\\newcommand\\sponsor{", input$sponsor, "}\n"))
         cat(paste0("\\newcommand\\jefvorsitz{", input$jefvorsitz, "}\n"))
         cat(paste0("\\newcommand\\gendervorsitz{", ifelse(input$gender == "M", "Landesvorsitzender", "Landesvorsitzende"), "}\n"))
